@@ -1,4 +1,5 @@
 type themeOption = "light" | "dark";
+type pageOption = "home" | "portfolio";
 
 interface CreateContextType {
   theme: string;

@@ -18,6 +18,8 @@ export default function AppContextProvider({
 
   const colors = {
     background: theme === "dark" ? "#13121B" : "#F3F5F9",
+    backgroundSecondary:
+      theme === "dark" ? "#191925" : "rgba(204, 204, 254, 0.4)",
     primary: theme === "dark" ? "#191926" : "#FFF",
     accent:
       theme === "dark" ? "rgba(97, 97, 222, 0.50)" : "rgba(97, 97, 222, 0.50)",
@@ -26,6 +28,10 @@ export default function AppContextProvider({
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty("--color-background", colors.background);
+    root.style.setProperty(
+      "--color-background-secondary",
+      colors.backgroundSecondary
+    );
     root.style.setProperty("--color-primary", colors.primary);
     root.style.setProperty("--color-accent", colors.accent);
   }, [theme, colors]);
