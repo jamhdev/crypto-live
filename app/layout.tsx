@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "./components/navigation/NavBar";
 import AppContextProvider from "./contexts/AppContext";
 import { ReactNode } from "react";
+import HomeChartSection from "./components/home-chart-section/HomeChartSection";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,7 @@ export default function RootLayout({
       <AppContextProvider>
         <BodyWapper>
           <NavBar />
+          <HomeChartSection />
           {children}
         </BodyWapper>
       </AppContextProvider>
