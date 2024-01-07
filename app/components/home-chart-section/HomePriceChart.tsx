@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
-
+import React, { useState } from "react";
 import {
   Chart as ChartJS,
   LineElement,
-  CategoryScale, //x axis
-  LinearScale, //y axis
+  CategoryScale,
+  LinearScale,
   PointElement,
   Legend,
   Tooltip,
@@ -22,7 +21,6 @@ export default function HomePriceChart() {
     Tooltip,
     Filler
   );
-
   const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
 
   const fetchData = async () => {
@@ -40,8 +38,19 @@ export default function HomePriceChart() {
   const coinPrice = currentCoinData?.map((value) => value[1]);
   const labels = currentCoinData?.map((value) => new Date(value[0]).getDate());
 
-  const minPrice = Math.min(...(coinPrice || []));
-  const maxPrice = Math.max(...(coinPrice || []));
+  // Function to create gradient
+  const createGradient = (ctx: any, chartArea: any) => {
+    const gradientBg = ctx.createLinearGradient(
+      0,
+      chartArea.top,
+      0,
+      chartArea.bottom
+    );
+    gradientBg.addColorStop(0, "rgba(116, 116, 250, 1)");
+    gradientBg.addColorStop(0.5, "rgba(116, 116, 250, 0.5)");
+    gradientBg.addColorStop(1, "rgba(116, 116, 250, 0)");
+    return gradientBg;
+  };
 
   const data = {
     labels: labels,
@@ -49,34 +58,22 @@ export default function HomePriceChart() {
       {
         label: "Coin Prices",
         data: coinPrice,
-        // backgroundColor: "black",
-        backgroundColor: (context) => {
-          const bgColor = [
-            "rgba(255, 26, 104, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
-            "rgba(0, 0, 0, 0.2)",
-          ];
-
-          console.log(context);
+        backgroundColor: (context: any) => {
+          if (!context.chart.chartArea) {
+            return;
+          }
+          return createGradient(context.chart.ctx, context.chart.chartArea);
         },
-        pointBorderColor: "red",
-        borderColor: "blue",
+        pointBorderColor: "rgba(116, 116, 250)",
+        borderColor: "rgba(116, 116, 250)",
+        pointBackgroundColor: "rgba(116, 116, 250, 0.5)",
         tension: 0.4,
         borderWidth: 1,
-        pointRadius: 0,
+        pointRadius: 2,
         pointBorderWidth: 0,
         hitRadius: 10,
         hoverBorderWidth: 3,
-        showLine: true,
-        fill: {
-          target: "origin",
-          above: "black",
-          below: "pink",
-        },
+        fill: "origin",
       },
     ],
   };
@@ -84,19 +81,14 @@ export default function HomePriceChart() {
   const options = {
     plugins: {
       legend: {
-        display: true,
+        display: false,
       },
       tooltip: {
         enabled: true,
       },
-      filler: {
-        propagate: true,
-      },
     },
     scales: {
       y: {
-        // min: minPrice,
-        // max: maxPrice,
         display: false,
       },
       x: {
@@ -109,18 +101,21 @@ export default function HomePriceChart() {
 
   return (
     <>
-      <Line
-        data={data}
-        options={options}
-        className="bg-chartBackground p-2 rounded-xl"
-      />
-      {currentCoinData !== null ? (
-        false
-      ) : (
-        <button onClick={fetchData} className="bg-red-200 p-2 rounded-lg mt-10">
-          FETCH DATA
-        </button>
-      )}
+      <div className="bg-chartBackground p-4 rounded-xl flex flex-col">
+        {currentCoinData ? (
+          <>
+            <div className="text-accent">Bitcoin(BTC)</div>
+            <Line data={data} options={options} />
+          </>
+        ) : (
+          <button
+            onClick={fetchData}
+            className="bg-red-200 p-2 rounded-lg mt-10"
+          >
+            FETCH PRICE DATA
+          </button>
+        )}
+      </div>
     </>
   );
 }
