@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-export default function HomePriceChart() {
+export default function HomePriceChart({ currentSelectedCoinData }: any) {
   ChartJS.register(
     LineElement,
     CategoryScale,
@@ -36,7 +36,12 @@ export default function HomePriceChart() {
   };
 
   const coinPrice = currentCoinData?.map((value) => value[1]);
-  const labels = currentCoinData?.map((value) => new Date(value[0]).getDate());
+  const labels = currentCoinData?.map((value) =>
+    new Date(value[0]).toLocaleDateString(undefined, {
+      month: "numeric",
+      day: "numeric",
+    })
+  );
 
   // Function to create gradient
   const createGradient = (ctx: any, chartArea: any) => {
@@ -69,9 +74,9 @@ export default function HomePriceChart() {
         pointBackgroundColor: "rgba(116, 116, 250, 0.5)",
         tension: 0.4,
         borderWidth: 1,
-        pointRadius: 2,
+        pointRadius: 0,
         pointBorderWidth: 0,
-        hitRadius: 10,
+        hitRadius: 20,
         hoverBorderWidth: 3,
         fill: "origin",
       },
@@ -101,10 +106,15 @@ export default function HomePriceChart() {
 
   return (
     <>
-      <div className="bg-chartBackground p-4 rounded-xl flex flex-col">
+      <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
         {currentCoinData ? (
           <>
-            <div className="text-accent">Bitcoin(BTC)</div>
+            <div className="text-accent">
+              {currentSelectedCoinData.name}({currentSelectedCoinData.symbol})
+            </div>
+            <div className="text-accent font-extrabold text-2xl">
+              {currentSelectedCoinData.market_data.current_price.usd}
+            </div>
             <Line data={data} options={options} />
           </>
         ) : (

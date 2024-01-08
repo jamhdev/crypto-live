@@ -11,7 +11,7 @@ import { Bar } from "react-chartjs-2";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
-export default function HomeVolumeChart() {
+export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
   const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
 
   const fetchData = async () => {
@@ -26,7 +26,12 @@ export default function HomeVolumeChart() {
   };
 
   const coinVolume = currentCoinData?.map((value) => value[1]);
-  const labels = currentCoinData?.map((value) => new Date(value[0]).getDate());
+  const labels = currentCoinData?.map((value) =>
+    new Date(value[0]).toLocaleDateString(undefined, {
+      month: "numeric",
+      day: "numeric",
+    })
+  );
 
   // Function to create gradient
   const createGradient = (ctx: any, chartArea: any) => {
@@ -76,10 +81,15 @@ export default function HomeVolumeChart() {
 
   return (
     <>
-      <div className="bg-chartBackground p-4 rounded-xl flex flex-col">
+      <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
         {currentCoinData ? (
           <>
-            <div className="text-accent">Volume 24h</div>
+            <div className="text-accent">
+              {currentSelectedCoinData.name}({currentSelectedCoinData.symbol})
+            </div>
+            <div className="text-accent font-extrabold text-2xl">
+              {currentSelectedCoinData.market_data.total_volume.usd}
+            </div>
             <Bar data={data} options={options} />
           </>
         ) : (
