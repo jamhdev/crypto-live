@@ -23,6 +23,7 @@ export default function AppContextProvider({
     primary: theme === "dark" ? "#191926" : "#FFF",
     accent:
       theme === "dark" ? "rgba(97, 97, 222, 0.50)" : "rgba(97, 97, 222, 0.50)",
+    chartBackground: theme === "dark" ? "#191934" : "#FFF",
   };
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function AppContextProvider({
     );
     root.style.setProperty("--color-primary", colors.primary);
     root.style.setProperty("--color-accent", colors.accent);
+    root.style.setProperty("--color-chart-background", colors.chartBackground);
   }, [theme, colors]);
 
   return (
@@ -51,7 +53,9 @@ export const AppContext = createContext<CreateContextType>({
   toggleTheme: () => {},
   colors: {
     background: "#13121B",
+    backgroundSecondary: "#191925",
     primary: "#191926",
     accent: "rgba(97, 97, 222, 0.50)",
+    chartBackground: "#191934",
   },
 });

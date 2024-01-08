@@ -13,6 +13,7 @@ const config: Config = {
         backgroundSecondary: `var(--color-background-secondary)`,
         primary: `var(--color-primary)`,
         accent: `var(--color-accent)`,
+        chartBackground: `var(--color-chart-background)`,
       },
     },
   },
