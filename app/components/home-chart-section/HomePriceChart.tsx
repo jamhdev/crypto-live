@@ -24,15 +24,19 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
   const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
 
   const fetchData = async () => {
-    console.log("fetching");
-    const response = await fetch(
-      "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
-    );
-    if (!response.ok) {
-      throw new Error("ERROR FETCHING");
+    try {
+      console.log("fetching");
+      const response = await fetch(
+        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
+      );
+      if (!response.ok) {
+        throw new Error("ERROR FETCHING");
+      }
+      const coinData = await response.json();
+      setCurrentCoinData(coinData?.prices);
+    } catch (err) {
+      console.error("Fetch Error:", err);
     }
-    const coinData = await response.json();
-    setCurrentCoinData(coinData?.prices);
   };
 
   const coinPrice = currentCoinData?.map((value) => value[1]);
@@ -42,20 +46,6 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
       day: "numeric",
     })
   );
-
-  // Function to create gradient
-  const createGradient = (ctx: any, chartArea: any) => {
-    const gradientBg = ctx.createLinearGradient(
-      0,
-      chartArea.top,
-      0,
-      chartArea.bottom
-    );
-    gradientBg.addColorStop(0, "rgba(116, 116, 250, 1)");
-    gradientBg.addColorStop(0.5, "rgba(116, 116, 250, 0.5)");
-    gradientBg.addColorStop(1, "rgba(116, 116, 250, 0)");
-    return gradientBg;
-  };
 
   const data = {
     labels: labels,
@@ -83,27 +73,6 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
     ],
   };
 
-  const options = {
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        enabled: true,
-      },
-    },
-    scales: {
-      y: {
-        display: false,
-      },
-      x: {
-        grid: {
-          display: false,
-        },
-      },
-    },
-  };
-
   return (
     <>
       <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
@@ -129,3 +98,38 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
     </>
   );
 }
+
+const options = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: true,
+    },
+  },
+  scales: {
+    y: {
+      display: false,
+    },
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+  },
+};
+
+// Function to create gradient
+const createGradient = (ctx: any, chartArea: any) => {
+  const gradientBg = ctx.createLinearGradient(
+    0,
+    chartArea.top,
+    0,
+    chartArea.bottom
+  );
+  gradientBg.addColorStop(0, "rgba(116, 116, 250, 1)");
+  gradientBg.addColorStop(0.5, "rgba(116, 116, 250, 0.5)");
+  gradientBg.addColorStop(1, "rgba(116, 116, 250, 0)");
+  return gradientBg;
+};

@@ -7,18 +7,23 @@ export default function HomeChartSection() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/bitcoin"
-      );
-      if (!response.ok) {
-        throw new Error("ERROR FETCHING");
+      try {
+        const response = await fetch(
+          "https://api.coingecko.com/api/v3/coins/bitcoin"
+        );
+        if (!response.ok) {
+          throw new Error("ERROR FETCHING");
+        }
+        const data = await response.json();
+        setCurrentSelectedCoinData(data);
+      } catch (error) {
+        console.error("Fetch Error:", error);
       }
-      const data = await response.json();
-      setCurrentSelectedCoinData(data);
     };
 
     fetchData();
   }, []);
+
   return (
     <>
       <div className="pt-4 w-full flex justify-center items-center flex-col">

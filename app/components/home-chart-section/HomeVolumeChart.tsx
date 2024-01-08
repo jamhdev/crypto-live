@@ -15,14 +15,18 @@ export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
   const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
 
   const fetchData = async () => {
-    const response = await fetch(
-      "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
-    );
-    if (!response.ok) {
-      throw new Error("ERROR FETCHING");
+    try {
+      const response = await fetch(
+        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
+      );
+      if (!response.ok) {
+        throw new Error("ERROR FETCHING");
+      }
+      const coinData = await response.json();
+      setCurrentCoinData(coinData.total_volumes);
+    } catch (err) {
+      console.error("Fetch Error:", err);
     }
-    const coinData = await response.json();
-    setCurrentCoinData(coinData.total_volumes);
   };
 
   const coinVolume = currentCoinData?.map((value) => value[1]);
@@ -32,22 +36,6 @@ export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
       day: "numeric",
     })
   );
-
-  // Function to create gradient
-  const createGradient = (ctx: any, chartArea: any) => {
-    const gradient = ctx.createLinearGradient(
-      0,
-      chartArea.bottom,
-      0,
-      chartArea.top
-    );
-
-    gradient.addColorStop(0, "rgba(190, 113, 250, 0)");
-    gradient.addColorStop(0.3, "rgba(190, 113, 250, 0.5)");
-    gradient.addColorStop(1, "rgba(190, 113, 250, 1)");
-
-    return gradient;
-  };
 
   const data = {
     labels: labels,
@@ -68,25 +56,12 @@ export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
     ],
   };
 
-  const options = {
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: true },
-    },
-    scales: {
-      y: { display: false },
-      x: { grid: { display: false } },
-    },
-  };
-
   return (
     <>
       <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
         {currentCoinData ? (
           <>
-            <div className="text-accent">
-              {currentSelectedCoinData.name}({currentSelectedCoinData.symbol})
-            </div>
+            <div className="text-accent">volume</div>
             <div className="text-accent font-extrabold text-2xl">
               {currentSelectedCoinData.market_data.total_volume.usd}
             </div>
@@ -104,3 +79,30 @@ export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
     </>
   );
 }
+
+const options = {
+  plugins: {
+    legend: { display: false },
+    tooltip: { enabled: true },
+  },
+  scales: {
+    y: { display: false },
+    x: { grid: { display: false } },
+  },
+};
+
+// Function to create gradient
+const createGradient = (ctx: any, chartArea: any) => {
+  const gradient = ctx.createLinearGradient(
+    0,
+    chartArea.bottom,
+    0,
+    chartArea.top
+  );
+
+  gradient.addColorStop(0, "rgba(190, 113, 250, 0)");
+  gradient.addColorStop(0.3, "rgba(190, 113, 250, 0.5)");
+  gradient.addColorStop(1, "rgba(190, 113, 250, 1)");
+
+  return gradient;
+};
