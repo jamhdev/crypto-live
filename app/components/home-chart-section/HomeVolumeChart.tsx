@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -8,11 +8,13 @@ import {
   Tooltip,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { AppContext } from "@/app/contexts/AppContext";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
 export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
   const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
+  const { currencyFormat } = useContext(AppContext);
 
   const fetchData = async () => {
     try {
@@ -63,7 +65,9 @@ export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
           <>
             <div className="text-accent">volume</div>
             <div className="text-accent font-extrabold text-2xl">
-              {currentSelectedCoinData.market_data.total_volume.usd}
+              {currencyFormat.format(
+                currentSelectedCoinData.market_data.total_volume.usd
+              )}
             </div>
             <Bar data={data} options={options} />
           </>

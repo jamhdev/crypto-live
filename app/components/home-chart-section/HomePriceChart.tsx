@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Chart as ChartJS,
   LineElement,
@@ -10,6 +10,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { AppContext } from "@/app/contexts/AppContext";
 
 export default function HomePriceChart({ currentSelectedCoinData }: any) {
   ChartJS.register(
@@ -22,6 +23,7 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
     Filler
   );
   const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
+  const { currencyFormat } = useContext(AppContext);
 
   const fetchData = async () => {
     try {
@@ -82,7 +84,9 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
               {currentSelectedCoinData.name}({currentSelectedCoinData.symbol})
             </div>
             <div className="text-accent font-extrabold text-2xl">
-              {currentSelectedCoinData.market_data.current_price.usd}
+              {currencyFormat.format(
+                currentSelectedCoinData.market_data.current_price.usd
+              )}
             </div>
             <Line data={data} options={options} />
           </>

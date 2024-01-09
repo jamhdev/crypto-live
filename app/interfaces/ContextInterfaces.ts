@@ -13,4 +13,5 @@ interface CreateContextType {
   colors: {
     [key: string]: string;
   };
+  currencyFormat: Intl.NumberFormat;
 }
