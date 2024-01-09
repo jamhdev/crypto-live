@@ -1,15 +1,15 @@
 import { AppContext } from "@/app/contexts/AppContext";
 import React, { useContext } from "react";
 
+const standardStyles =
+  "flex-grow h-full rounded-lg flex justify-center items-center text-themeTextColor";
+
+const selectedStyles =
+  "flex-grow h-full rounded-lg flex justify-center items-center text-themeTextColor bg-accent shadow-[inset_0_0_5px_rgb(0,0,0,0.3)]";
+
 export default function CoinOrConverterSelector() {
   const { coinsOrConverterSelector, setCoinsOrConverterSelector } =
     useContext(AppContext);
-
-  const standardStyles =
-    "flex-grow h-full rounded-lg flex justify-center items-center text-themeTextColor";
-
-  const selectedStyles =
-    "flex-grow h-full rounded-lg flex justify-center items-center text-themeTextColor bg-accent shadow-[inset_0_0_5px_rgb(0,0,0,0.3)]";
 
   return (
     <>
