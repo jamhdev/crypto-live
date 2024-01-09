@@ -50,7 +50,6 @@ export default function AppContextProvider({
   return (
     <>
       <AppContext.Provider
-        value={{ theme, setTheme, toggleTheme, colors, currencyFormat }}
         value={{
           theme,
           setTheme,
@@ -58,7 +57,7 @@ export default function AppContextProvider({
           colors,
           coinsOrConverterSelector,
           setCoinsOrConverterSelector,
-          currencyFormat
+          currencyFormat,
         }}
       >
         {children}
