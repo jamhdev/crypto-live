@@ -7,6 +7,8 @@ export default function AppContextProvider({
   children: React.ReactNode;
 }) {
   const [theme, setTheme] = useState<themeOption>("dark");
+  const [coinsOrConverterSelector, setCoinsOrConverterSelector] =
+    useState<CoinOrConverterSelectorOption>("coins");
 
   const toggleTheme = () => {
     setTheme((prev: themeOption) => {
@@ -24,6 +26,7 @@ export default function AppContextProvider({
     accent:
       theme === "dark" ? "rgba(97, 97, 222, 0.50)" : "rgba(97, 97, 222, 0.50)",
     chartBackground: theme === "dark" ? "#191934" : "#FFF",
+    themeTextColor: theme === "dark" ? "#ffffff" : "#424286",
   };
 
   useEffect(() => {
@@ -36,11 +39,21 @@ export default function AppContextProvider({
     root.style.setProperty("--color-primary", colors.primary);
     root.style.setProperty("--color-accent", colors.accent);
     root.style.setProperty("--color-chart-background", colors.chartBackground);
+    root.style.setProperty("--color-themeTextColor", colors.themeTextColor);
   }, [theme, colors]);
 
   return (
     <>
-      <AppContext.Provider value={{ theme, setTheme, toggleTheme, colors }}>
+      <AppContext.Provider
+        value={{
+          theme,
+          setTheme,
+          toggleTheme,
+          colors,
+          coinsOrConverterSelector,
+          setCoinsOrConverterSelector,
+        }}
+      >
         {children}
       </AppContext.Provider>
     </>
@@ -51,6 +64,8 @@ export const AppContext = createContext<CreateContextType>({
   theme: "dark",
   setTheme: () => {},
   toggleTheme: () => {},
+  coinsOrConverterSelector: "coins",
+  setCoinsOrConverterSelector: () => {},
   colors: {
     background: "#13121B",
     backgroundSecondary: "#191925",
