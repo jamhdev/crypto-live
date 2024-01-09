@@ -5,6 +5,7 @@ import NavBar from "./components/navigation/NavBar";
 import AppContextProvider from "./contexts/AppContext";
 import { ReactNode } from "react";
 import HomeChartSection from "./components/home-chart-section/HomeChartSection";
+import CoinOrConverterSelector from "./components/CoinOrConverterSelector/CoinOrConverterSelector";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({
       <AppContextProvider>
         <BodyWapper>
           <NavBar />
+          <CoinOrConverterSelector />
           <HomeChartSection />
           {children}
         </BodyWapper>
