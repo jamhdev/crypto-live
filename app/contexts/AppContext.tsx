@@ -26,6 +26,11 @@ export default function AppContextProvider({
     chartBackground: theme === "dark" ? "#191934" : "#FFF",
   };
 
+  const currencyFormat = new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: "usd",
+  });
+
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty("--color-background", colors.background);
@@ -40,7 +45,9 @@ export default function AppContextProvider({
 
   return (
     <>
-      <AppContext.Provider value={{ theme, setTheme, toggleTheme, colors }}>
+      <AppContext.Provider
+        value={{ theme, setTheme, toggleTheme, colors, currencyFormat }}
+      >
         {children}
       </AppContext.Provider>
     </>
@@ -58,4 +65,8 @@ export const AppContext = createContext<CreateContextType>({
     accent: "rgba(97, 97, 222, 0.50)",
     chartBackground: "#191934",
   },
+  currencyFormat: new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: "usd",
+  }),
 });
