@@ -6,6 +6,7 @@ import AppContextProvider from "./contexts/AppContext";
 import { ReactNode } from "react";
 import HomeChartSection from "./components/home-chart-section/HomeChartSection";
 import CoinOrConverterSelector from "./components/CoinOrConverterSelector/CoinOrConverterSelector";
+import MarketDataNav from "./components/market-data-nav/MarketDataNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <AppContextProvider>
         <BodyWapper>
+          <MarketDataNav />
           <NavBar />
           <CoinOrConverterSelector />
           <HomeChartSection />
