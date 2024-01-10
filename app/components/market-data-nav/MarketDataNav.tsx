@@ -8,6 +8,13 @@ import EthereumIcon from "./EthereumIcon.svg";
 //
 import IncreaseValueIcon from "./IncreaseValueIcon.svg";
 import DecreaseValueIcon from "./DecreaseValueIcon.svg";
+//
+import {
+  marketCapCurrencyFormat,
+  percentFormat,
+  marketCapPercentageFormat,
+  percentageBarFormat,
+} from "@/app/utils/numberFormatting";
 
 export default function MarketDataNav() {
   const [globalMarketData, setGlobalMarketData] =
@@ -146,20 +153,3 @@ export default function MarketDataNav() {
     </>
   );
 }
-
-const marketCapCurrencyFormat = new Intl.NumberFormat(undefined, {
-  currency: "usd",
-  maximumSignificantDigits: 3,
-});
-
-const percentFormat = new Intl.NumberFormat(undefined, {
-  style: "percent",
-});
-
-const marketCapPercentageFormat = new Intl.NumberFormat(undefined, {
-  maximumSignificantDigits: 3,
-});
-
-const percentageBarFormat = new Intl.NumberFormat(undefined, {
-  maximumSignificantDigits: 3,
-});
