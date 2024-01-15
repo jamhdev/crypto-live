@@ -1,3 +1,4 @@
+"use client";
 import {
   Chart as ChartJS,
   LineElement,
@@ -9,7 +10,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-export default function HomeTableItem7dGraph({ prices }: { prices: [] }) {
+export default function HomeTableItem7dGraph({ prices }: { prices: number[] }) {
   ChartJS.register(
     LineElement,
     CategoryScale,
@@ -19,13 +20,20 @@ export default function HomeTableItem7dGraph({ prices }: { prices: [] }) {
     Tooltip
   );
 
+  const firstPrice = prices[0];
+  const secondPrice = prices[prices.length - 1];
+
+  const increasedValueColor = "#00f5e4";
+  const decreasedValueColor = "#ff0061";
+
   const data = {
     labels: Array.from({ length: prices.length }, (_, i) => `Day ${i + 1}`),
     datasets: [
       {
         data: prices,
-        pointBorderColor: "white",
-        borderColor: "red",
+        pointBorderColor: "black",
+        borderColor:
+          firstPrice < secondPrice ? increasedValueColor : decreasedValueColor,
         pointBackgroundColor: "transparent",
         tension: 0,
         borderWidth: 2,

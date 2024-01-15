@@ -10,6 +10,7 @@ import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
 import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
 import HomeTableItem7dGraph from "./HomeTableItem7dGraph";
 //
+
 export default function HomeTableItem({
   id,
   symbol,
@@ -29,6 +30,7 @@ export default function HomeTableItem({
   const percentageBarCirculatingSupply = `${
     (circulating_supply / total_supply) * 100
   }%`;
+
   return (
     <>
       <div className="text-themeTextColor bg-primary flex rounded-lg gap-6 mb-1 justify-start items-center p-4">
@@ -100,7 +102,7 @@ export default function HomeTableItem({
           </div>
           <div className="bg-[rgb(0,0,0,0.25)] w-[200px] h-[6px] rounded-full relative flex flex-col">
             <div
-              className={`bg-[rgb(0,0,0,1)] h-full rounded-full absolute`}
+              className={`bg-[#00f5e4] h-full rounded-full absolute`}
               style={{ maxWidth: "100%", width: percentageBar24HVolume }}
             ></div>
           </div>
@@ -112,7 +114,7 @@ export default function HomeTableItem({
           </div>
           <div className="bg-[rgb(0,0,0,0.25)] w-[200px] h-[6px] rounded-full relative flex flex-col">
             <div
-              className={`bg-[rgb(0,0,0,1)] h-full rounded-full absolute`}
+              className={`bg-[#00f5e4] h-full rounded-full absolute`}
               style={{
                 maxWidth: "100%",
                 width: percentageBarCirculatingSupply,
