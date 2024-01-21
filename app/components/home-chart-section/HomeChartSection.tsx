@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import HomePriceChart from "./HomePriceChart";
 import HomeVolumeChart from "./HomeVolumeChart";
+import ChartDurationSelector from "./ChartDurationSelector";
 
 export default function HomeChartSection() {
   const [currentSelectedCoinData, setCurrentSelectedCoinData] = useState(null);
+  const [chartDurationSelector, setChartDurationSelector] =
+    useState<durationOption>("1M");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +38,10 @@ export default function HomeChartSection() {
           <HomeVolumeChart currentSelectedCoinData={currentSelectedCoinData} />
         </div>
       </div>
+      <ChartDurationSelector
+        chartDurationSelector={chartDurationSelector}
+        setChartDurationSelector={setChartDurationSelector}
+      />
     </>
   );
 }
