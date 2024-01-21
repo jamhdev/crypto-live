@@ -13,7 +13,7 @@ export default function CoinOrConverterSelector() {
 
   return (
     <>
-      <div className="flex p-10 w-full">
+      <div className="flex p-10 self-start m-auto md:m-0">
         <div className="w-[506px] h-[53px] bg-backgroundSecondary rounded-lg flex justify-between items-center cursor-pointer">
           <div
             className={

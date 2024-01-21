@@ -1,6 +1,7 @@
 type themeOption = "light" | "dark";
 type pageOption = "home" | "portfolio";
 type CoinOrConverterSelectorOption = "coins" | "converter";
+type durationOption = "1D" | "7D" | "14D" | "1M" | "1Y";
 
 interface CreateContextType {
   theme: string;
