@@ -15,6 +15,7 @@ export default function ChartDurationSelector({
       <div className="bg-primary flex gap-10 rounded-lg p-1">
         {sortOptions.map((value) => (
           <div
+            key={value}
             className={
               chartDurationSelector === value ? selectedStyles : defaultStyles
             }
