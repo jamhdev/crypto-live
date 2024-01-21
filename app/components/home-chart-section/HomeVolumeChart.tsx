@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -16,20 +16,23 @@ export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
   const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
   const { currencyFormat } = useContext(AppContext);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
-      );
-      if (!response.ok) {
-        throw new Error("ERROR FETCHING");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
+        );
+        if (!response.ok) {
+          throw new Error("ERROR FETCHING");
+        }
+        const coinData = await response.json();
+        setCurrentCoinData(coinData.total_volumes);
+      } catch (err) {
+        console.error("Fetch Error:", err);
       }
-      const coinData = await response.json();
-      setCurrentCoinData(coinData.total_volumes);
-    } catch (err) {
-      console.error("Fetch Error:", err);
-    }
-  };
+    };
+    fetchData();
+  }, []);
 
   const coinVolume = currentCoinData?.map((value) => value[1]);
   const labels = currentCoinData?.map((value) =>
@@ -66,18 +69,13 @@ export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
             <div className="text-accent">volume</div>
             <div className="text-accent font-extrabold text-2xl">
               {currencyFormat.format(
-                currentSelectedCoinData.market_data.total_volume.usd
+                currentSelectedCoinData?.market_data.total_volume?.usd
               )}
             </div>
             <Bar data={data} options={options} />
           </>
         ) : (
-          <button
-            onClick={fetchData}
-            className="bg-red-200 p-2 rounded-lg mt-10"
-          >
-            FETCH VOLUME DATA
-          </button>
+          <div>Loading...</div>
         )}
       </div>
     </>

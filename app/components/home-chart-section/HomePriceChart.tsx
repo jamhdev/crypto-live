@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   LineElement,
@@ -25,21 +25,24 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
   const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
   const { currencyFormat } = useContext(AppContext);
 
-  const fetchData = async () => {
-    try {
-      console.log("fetching");
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
-      );
-      if (!response.ok) {
-        throw new Error("ERROR FETCHING");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("fetching");
+        const response = await fetch(
+          "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
+        );
+        if (!response.ok) {
+          throw new Error("ERROR FETCHING");
+        }
+        const coinData = await response.json();
+        setCurrentCoinData(coinData?.prices);
+      } catch (err) {
+        console.error("Fetch Error:", err);
       }
-      const coinData = await response.json();
-      setCurrentCoinData(coinData?.prices);
-    } catch (err) {
-      console.error("Fetch Error:", err);
-    }
-  };
+    };
+    fetchData();
+  }, []);
 
   const coinPrice = currentCoinData?.map((value) => value[1]);
   const labels = currentCoinData?.map((value) =>
@@ -81,22 +84,17 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
         {currentCoinData ? (
           <>
             <div className="text-accent">
-              {currentSelectedCoinData.name}({currentSelectedCoinData.symbol})
+              {currentSelectedCoinData?.name}({currentSelectedCoinData?.symbol})
             </div>
             <div className="text-accent font-extrabold text-2xl">
               {currencyFormat.format(
-                currentSelectedCoinData.market_data.current_price.usd
+                currentSelectedCoinData?.market_data.current_price.usd
               )}
             </div>
             <Line data={data} options={options} />
           </>
         ) : (
-          <button
-            onClick={fetchData}
-            className="bg-red-200 p-2 rounded-lg mt-10"
-          >
-            FETCH PRICE DATA
-          </button>
+          <div>Loading...</div>
         )}
       </div>
     </>

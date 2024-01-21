@@ -28,3 +28,19 @@ interface GlobalMarketDataType {
     eth: number;
   };
 }
+
+interface CoinData {
+  id: string;
+  symbol: string;
+  current_price: number;
+  index: number;
+  image: string;
+  price_change_percentage_1h_in_currency: number;
+  price_change_percentage_24h_in_currency: number;
+  price_change_percentage_7d_in_currency: number;
+  circulating_supply: number;
+  total_supply: number;
+  market_cap: number;
+  total_volume: number;
+  sparkline_in_7d: { price: [] };
+}
