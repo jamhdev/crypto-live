@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+"use client";
+
+import React, { useContext } from "react";
 import {
   Chart as ChartJS,
   LineElement,
@@ -12,7 +14,13 @@ import {
 import { Line } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
 
-export default function HomePriceChart({ currentSelectedCoinData }: any) {
+export default function HomePriceChart({
+  currentSelectedCoinData,
+  durationFilteredCoinData,
+}: {
+  currentSelectedCoinData: any;
+  durationFilteredCoinData: any;
+}) {
   ChartJS.register(
     LineElement,
     CategoryScale,
@@ -22,30 +30,12 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
     Tooltip,
     Filler
   );
-  const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
   const { currencyFormat } = useContext(AppContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log("fetching");
-        const response = await fetch(
-          "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
-        );
-        if (!response.ok) {
-          throw new Error("ERROR FETCHING");
-        }
-        const coinData = await response.json();
-        setCurrentCoinData(coinData?.prices);
-      } catch (err) {
-        console.error("Fetch Error:", err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const coinPrice = currentCoinData?.map((value) => value[1]);
-  const labels = currentCoinData?.map((value) =>
+  const coinPrice = durationFilteredCoinData?.map(
+    (value: number[]) => value[1]
+  );
+  const labels = durationFilteredCoinData?.map((value: number[]) =>
     new Date(value[0]).toLocaleDateString(undefined, {
       month: "numeric",
       day: "numeric",
@@ -81,14 +71,14 @@ export default function HomePriceChart({ currentSelectedCoinData }: any) {
   return (
     <>
       <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
-        {currentCoinData ? (
+        {durationFilteredCoinData ? (
           <>
             <div className="text-accent">
               {currentSelectedCoinData?.name}({currentSelectedCoinData?.symbol})
             </div>
             <div className="text-accent font-extrabold text-2xl">
               {currencyFormat.format(
-                currentSelectedCoinData?.market_data.current_price.usd
+                currentSelectedCoinData?.market_data?.current_price?.usd
               )}
             </div>
             <Line data={data} options={options} />

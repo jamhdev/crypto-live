@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -12,30 +12,19 @@ import { AppContext } from "@/app/contexts/AppContext";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
-export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
-  const [currentCoinData, setCurrentCoinData] = useState<[] | null>(null);
+export default function HomeVolumeChart({
+  currentSelectedCoinData,
+  durationFilteredCoinData,
+}: {
+  currentSelectedCoinData: any;
+  durationFilteredCoinData: any;
+}) {
   const { currencyFormat } = useContext(AppContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
-        );
-        if (!response.ok) {
-          throw new Error("ERROR FETCHING");
-        }
-        const coinData = await response.json();
-        setCurrentCoinData(coinData.total_volumes);
-      } catch (err) {
-        console.error("Fetch Error:", err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const coinVolume = currentCoinData?.map((value) => value[1]);
-  const labels = currentCoinData?.map((value) =>
+  const coinVolume = durationFilteredCoinData?.map(
+    (value: number[]) => value[1]
+  );
+  const labels = durationFilteredCoinData?.map((value: number[]) =>
     new Date(value[0]).toLocaleDateString(undefined, {
       month: "numeric",
       day: "numeric",
@@ -64,7 +53,7 @@ export default function HomeVolumeChart({ currentSelectedCoinData }: any) {
   return (
     <>
       <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
-        {currentCoinData ? (
+        {durationFilteredCoinData ? (
           <>
             <div className="text-accent">volume</div>
             <div className="text-accent font-extrabold text-2xl">
