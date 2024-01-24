@@ -20,6 +20,7 @@ import ColumnCirculatingSupplyItem from "./column-components/ColumnCirculatingSu
 
 import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
 import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
+import { tableData } from "@/mock-api/mock-db";
 
 export default function HomeTableSection() {
   const [allCoinsData, setAllCoinsData] = useState<CoinData[] | []>([]);
@@ -145,21 +146,44 @@ export default function HomeTableSection() {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
-        );
-        if (!response.ok) {
-          throw new Error("Error fetching table data");
+    if (process && process.env.NODE_ENV === "development") {
+      const getData = () =>
+        new Promise<CoinData[]>((resolve, reject) => {
+          if (!tableData) {
+            return setTimeout(
+              () => reject(new Error("Market data not found")),
+              250
+            );
+          }
+          setTimeout(() => {
+            resolve(tableData);
+          }, 250);
+        });
+
+      getData()
+        .then((result) => {
+          setAllCoinsData(result);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
+          );
+          if (!response.ok) {
+            throw new Error("Error fetching table data");
+          }
+          const json = await response.json();
+          setAllCoinsData(json);
+        } catch (err) {
+          console.error(err);
         }
-        const json = await response.json();
-        setAllCoinsData(json);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchData();
+      };
+      fetchData();
+    }
   }, []);
 
   if (!allCoinsData || allCoinsData.length === 0) {

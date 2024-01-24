@@ -15,25 +15,52 @@ import {
   marketCapPercentageFormat,
   percentageBarFormat,
 } from "@/app/utils/numberFormatting";
+//
+import { marketData } from "../../../mock-api/mock-db";
 
 export default function MarketDataNav() {
   const [globalMarketData, setGlobalMarketData] =
     useState<GlobalMarketDataType>();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("https://api.coingecko.com/api/v3/global");
-        const json = await response.json();
-        if (!response.ok) {
-          throw new Error("Error Fetching");
+    if (process && process.env.NODE_ENV === "development") {
+      const getData = () =>
+        new Promise<GlobalMarketDataType>((resolve, reject) => {
+          if (!marketData) {
+            return setTimeout(
+              () => reject(new Error("Market data not found")),
+              250
+            );
+          }
+          setTimeout(() => {
+            resolve(marketData);
+          }, 250);
+        });
+
+      getData()
+        .then((result) => {
+          setGlobalMarketData(result);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            "https://api.coingecko.com/api/v3/global"
+          );
+          const json = await response.json();
+          if (!response.ok) {
+            throw new Error("Error Fetching");
+          }
+          setGlobalMarketData(json.data);
+        } catch (err) {
+          console.error(err);
         }
-        setGlobalMarketData(json.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchData();
+      };
+      fetchData();
+    }
   }, []);
 
   const numberToDivideMarketCapBy = () => {
@@ -90,9 +117,18 @@ export default function MarketDataNav() {
       : "..."
   }%`;
 
+  function isDevOrProd() {
+    return process && process.env.NODE_ENV === "development" ? (
+      <div className="absolute top-0 left-0 text-primary text-xs">DEV</div>
+    ) : (
+      <div className="absolute top-0 left-0 text-primary text-xs">PROD</div>
+    );
+  }
+
   return (
     <>
-      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md">
+      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
+        {isDevOrProd()}
         <div className="flex justify-center items-center gap-2">
           <AmountOfCoinsIcon />
           <span>Coins</span>
@@ -101,6 +137,7 @@ export default function MarketDataNav() {
               ? globalMarketData.active_cryptocurrencies
               : "..."}
           </span>
+          Next
         </div>
         <div className="flex justify-center items-center gap-2">
           <ExchangeMarketsIcon />
