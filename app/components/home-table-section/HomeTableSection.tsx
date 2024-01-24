@@ -90,11 +90,14 @@ export default function HomeTableSection() {
         const volume = props.row.original.total_volume;
         const marketCap = props.row.original.market_cap;
         const percentageBar24HVolume = `${(volume / marketCap) * 100}%`;
+        const row = props.row.original;
+        const prices = row.sparkline_in_7d.price;
         return (
           <Column24HourVolumeItem
             volume={volume}
             marketCap={marketCap}
             percentageBar24HVolume={percentageBar24HVolume}
+            prices={prices}
           />
         );
       },
@@ -110,11 +113,14 @@ export default function HomeTableSection() {
         const percentageBarCirculatingSupply = `${
           (circulatingSupply / totalSupply) * 100
         }%`;
+        const row = props.row.original;
+        const prices = row.sparkline_in_7d.price;
         return (
           <ColumnCirculatingSupplyItem
             circulatingSupply={circulatingSupply}
             totalSupply={totalSupply}
             percentageBarCirculatingSupply={percentageBarCirculatingSupply}
+            prices={prices}
           />
         );
       },
