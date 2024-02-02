@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AmountOfCoinsIcon from "./AmountOfCoinsIcon.svg";
 import ExchangeMarketsIcon from "./ExchangeMarketsIcon.svg";
 //
@@ -17,55 +17,25 @@ import {
 } from "@/app/utils/numberFormatting";
 //
 import { marketData } from "../../../mock-api/mock-db";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store/store";
+import { getMarketData } from "@/app/store/marketDataNavSlice";
+//
 
 export default function MarketDataNav() {
-  const [globalMarketData, setGlobalMarketData] =
-    useState<GlobalMarketDataType>();
+  const dispatch = useDispatch<AppDispatch>();
+  const { data, isLoading, error } = useSelector(
+    (state: RootState) => state.marketData
+  );
+  console.log(isLoading);
 
   useEffect(() => {
-    if (process && process.env.NODE_ENV === "development") {
-      const getData = () =>
-        new Promise<GlobalMarketDataType>((resolve, reject) => {
-          if (!marketData) {
-            return setTimeout(
-              () => reject(new Error("Market data not found")),
-              250
-            );
-          }
-          setTimeout(() => {
-            resolve(marketData);
-          }, 250);
-        });
-
-      getData()
-        .then((result) => {
-          setGlobalMarketData(result);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            "https://api.coingecko.com/api/v3/global"
-          );
-          const json = await response.json();
-          if (!response.ok) {
-            throw new Error("Error Fetching");
-          }
-          setGlobalMarketData(json.data);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      fetchData();
-    }
+    dispatch(getMarketData());
   }, []);
 
   const numberToDivideMarketCapBy = () => {
-    if (globalMarketData) {
-      return globalMarketData?.total_market_cap?.usd > 9_999_999_999
+    if (data) {
+      return data?.total_market_cap?.usd > 9_999_999_999
         ? 1_000_000_000_000
         : 1_000_000_000;
     }
@@ -73,31 +43,25 @@ export default function MarketDataNav() {
   };
 
   const billionOrTrillionSymbol = () => {
-    if (globalMarketData) {
-      return globalMarketData?.total_market_cap?.usd > 9_999_999_999
-        ? "T"
-        : "B";
+    if (data) {
+      return data?.total_market_cap?.usd > 9_999_999_999 ? "T" : "B";
     }
     return "T";
   };
 
   const valueChanged = () => {
-    if (globalMarketData) {
-      return globalMarketData?.market_cap_change_percentage_24h_usd > 0 ? (
+    if (data) {
+      return data?.market_cap_change_percentage_24h_usd > 0 ? (
         <div className="flex justify-center items-center text-xs">
           <span>
-            {percentFormat.format(
-              globalMarketData?.market_cap_change_percentage_24h_usd
-            )}
+            {percentFormat.format(data?.market_cap_change_percentage_24h_usd)}
           </span>
           <IncreaseValueIcon />
         </div>
       ) : (
         <div className="flex justify-center items-center text-xs">
           <span>
-            {percentFormat.format(
-              globalMarketData?.market_cap_change_percentage_24h_usd
-            )}
+            {percentFormat.format(data?.market_cap_change_percentage_24h_usd)}
           </span>
           <DecreaseValueIcon />
         </div>
@@ -106,15 +70,11 @@ export default function MarketDataNav() {
   };
 
   const percentageBarBtc = `${
-    globalMarketData
-      ? percentageBarFormat.format(globalMarketData?.market_cap_percentage.btc)
-      : "..."
+    data ? percentageBarFormat.format(data?.market_cap_percentage?.btc) : "..."
   }%`;
 
   const percentageBarEth = `${
-    globalMarketData
-      ? percentageBarFormat.format(globalMarketData?.market_cap_percentage.eth)
-      : "..."
+    data ? percentageBarFormat.format(data?.market_cap_percentage?.eth) : "..."
   }%`;
 
   function isDevOrProd() {
@@ -125,6 +85,19 @@ export default function MarketDataNav() {
     );
   }
 
+  if (isLoading)
+    return (
+      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
+        <div>LOADING...</div>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
+        <div>Error loading market data</div>
+      </div>
+    );
+
   return (
     <>
       <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
@@ -132,24 +105,19 @@ export default function MarketDataNav() {
         <div className="flex justify-center items-center gap-2">
           <AmountOfCoinsIcon />
           <span>Coins</span>
-          <span>
-            {globalMarketData
-              ? globalMarketData.active_cryptocurrencies
-              : "..."}
-          </span>
+          <span>{data ? data?.active_cryptocurrencies : "..."}</span>
           Next
         </div>
         <div className="flex justify-center items-center gap-2">
           <ExchangeMarketsIcon />
           <span>Exchange</span>
-          {globalMarketData ? globalMarketData.markets : "..."}
+          {data ? data?.markets : "..."}
         </div>
         <div className="flex justify-center items-center gap-2">
           {valueChanged()}
-          {globalMarketData
+          {data
             ? marketCapCurrencyFormat.format(
-                globalMarketData.total_market_cap.usd /
-                  numberToDivideMarketCapBy()
+                data?.total_market_cap?.usd / numberToDivideMarketCapBy()
               )
             : "..."}
           {billionOrTrillionSymbol()}
@@ -157,9 +125,9 @@ export default function MarketDataNav() {
         <div className="flex justify-center items-center gap-2 text-sm">
           <BitcoinIcon />
           <span>
-            {globalMarketData
+            {data
               ? marketCapPercentageFormat.format(
-                  globalMarketData?.market_cap_percentage.btc
+                  data?.market_cap_percentage?.btc
                 )
               : "..."}
             %
@@ -173,10 +141,8 @@ export default function MarketDataNav() {
         </div>
         <div className="flex justify-center items-center gap-2 text-sm">
           <EthereumIcon />
-          {globalMarketData
-            ? marketCapPercentageFormat.format(
-                globalMarketData?.market_cap_percentage.eth
-              )
+          {data
+            ? marketCapPercentageFormat.format(data?.market_cap_percentage?.eth)
             : "..."}
           %
           <div className="bg-[rgb(255,255,255,0.4)] w-[53px] h-[6px] rounded-full relative">
