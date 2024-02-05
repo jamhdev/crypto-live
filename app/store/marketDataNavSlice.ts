@@ -4,6 +4,9 @@ export const getMarketData = createAsyncThunk("getMarketData", async () => {
   const proxyUrl = "https://corsproxy.io/?";
   const targetUrl = "https://api.coingecko.com/api/v3/global";
   const response = await fetch(proxyUrl + targetUrl);
+  if (!response.ok) {
+    throw new Error(`API request failed with status ${response.status}`);
+  }
   const data = await response.json();
   return data.data;
 });
@@ -57,12 +60,12 @@ export const marketDataNavSlice = createSlice({
       state.data = action.payload;
     });
     builder.addCase(getMarketData.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = true;
     });
   },
 });
 
-// Action creators are generated for each case reducer function
 export const {} = marketDataNavSlice.actions;
 
 export default marketDataNavSlice.reducer;

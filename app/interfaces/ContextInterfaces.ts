@@ -16,20 +16,3 @@ interface CreateContextType {
   };
   currencyFormat: Intl.NumberFormat;
 }
-
-interface CoinData {
-  id: string;
-  symbol: string;
-  current_price: number;
-  image: string;
-  price_change_percentage_1h_in_currency: number;
-  price_change_percentage_24h_in_currency: number;
-  price_change_percentage_7d_in_currency: number;
-  circulating_supply: number;
-  total_supply: number | null;
-  market_cap: number;
-  total_volume: number;
-  sparkline_in_7d: {
-    price: number[];
-  };
-}
