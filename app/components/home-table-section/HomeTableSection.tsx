@@ -17,14 +17,11 @@ import Column24HourItem from "./column-components/Column24HourItem";
 import Column7DayItem from "./column-components/Column7DayItem";
 import Column24HourVolumeItem from "./column-components/Column24HourVolumeItem";
 import ColumnCirculatingSupplyItem from "./column-components/ColumnCirculatingSupplyItem";
-
 import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
 import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
-//
 import { getTableData } from "@/app/store/tableDataSlice";
-//
 import LoadingCircleLine from "@/public/LoadingCircleLineSvg.svg";
 
 export default function HomeTableSection() {

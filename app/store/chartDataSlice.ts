@@ -105,42 +105,39 @@ export const {} = homeChartDataSlice.actions;
 
 export default homeChartDataSlice.reducer;
 
+const filterDataByDuration = (data: any, duration: number): [] | null => {
+  return data?.filter((_: any, index: number) => index > 361 - duration);
+};
+
 const setDurationFilteredCoinDataPrices = (
   prices: [] | null,
   volumes: [] | null,
   durationSelector: durationOption
 ) => {
+  let duration = 0;
+
   switch (durationSelector) {
     case "1D":
-      return {
-        prices: prices,
-        volumes: volumes,
-      };
-
+      duration = 1;
+      break;
     case "7D":
-      return {
-        prices: prices?.filter((_, index: number) => index > 361 - 8),
-        volumes: volumes?.filter((_, index: number) => index > 361 - 8),
-      };
+      duration = 8;
+      break;
     case "14D":
-      return {
-        prices: prices?.filter((_, index: number) => index > 361 - 15),
-        volumes: volumes?.filter((_, index: number) => index > 361 - 15),
-      };
+      duration = 15;
+      break;
     case "1M":
-      return {
-        prices: prices?.filter((_, index: number) => index > 361 - 31),
-        volumes: volumes?.filter((_, index: number) => index > 361 - 31),
-      };
+      duration = 31;
+      break;
     case "1Y":
-      return {
-        prices: prices,
-        volumes: volumes,
-      };
+      duration = 365;
+      break;
     default:
-      return {
-        prices: prices?.filter((_, index: number) => index > 361 - 31),
-        volumes: volumes?.filter((_, index: number) => index > 361 - 31),
-      };
+      duration = 31;
   }
+
+  return {
+    prices: filterDataByDuration(prices, duration),
+    volumes: filterDataByDuration(volumes, duration),
+  };
 };

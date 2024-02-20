@@ -2,25 +2,19 @@
 import { useEffect } from "react";
 import AmountOfCoinsIcon from "./AmountOfCoinsIcon.svg";
 import ExchangeMarketsIcon from "./ExchangeMarketsIcon.svg";
-//
 import BitcoinIcon from "./BitcoinIcon.svg";
 import EthereumIcon from "./EthereumIcon.svg";
-//
 import IncreaseValueIcon from "./IncreaseValueIcon.svg";
 import DecreaseValueIcon from "./DecreaseValueIcon.svg";
-//
 import {
   marketCapCurrencyFormat,
   percentFormat,
   marketCapPercentageFormat,
   percentageBarFormat,
 } from "@/app/utils/numberFormatting";
-//
-import { marketData } from "../../../mock-api/mock-db";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { getMarketData } from "@/app/store/marketDataNavSlice";
-//
 import LoadingCircleLine from "@/public/LoadingCircleLineSvg.svg";
 
 export default function MarketDataNav() {
