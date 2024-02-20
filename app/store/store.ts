@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import testSlice from "./testSlice";
 import marketDataNavSlice from "./marketDataNavSlice";
 import tableDataSlice from "./tableDataSlice";
 import homeChartDataSlice from "./chartDataSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: testSlice,
     marketData: marketDataNavSlice,
     tableData: tableDataSlice,
     homeChartData: homeChartDataSlice,

@@ -9,7 +9,6 @@ import CoinOrConverterSelector from "./components/CoinOrConverterSelector/CoinOr
 import MarketDataNav from "./components/market-data-nav/MarketDataNav";
 import HomeTableSection from "./components/home-table-section/HomeTableSection";
 import { StoreProvider } from "./store/StoreProvider";
-import TestSliceComp from "./components/TestSliceComp";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +22,6 @@ export default function RootLayout({
       <StoreProvider>
         <html lang="en">
           <BodyWapper>
-            <TestSliceComp />
             <MarketDataNav />
             <NavBar />
             <CoinOrConverterSelector />

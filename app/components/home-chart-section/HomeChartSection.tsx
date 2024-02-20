@@ -64,8 +64,6 @@ export default function HomeChartSection() {
     dispatch(getChartData(getFetchDetails()));
   }, [chartDurationSelector, dispatch]);
 
-  console.log("chart data: ", chartData);
-  console.log("coin data: ", coinData);
   if (isLoading)
     return (
       <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
