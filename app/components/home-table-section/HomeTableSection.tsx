@@ -17,14 +17,24 @@ import Column24HourItem from "./column-components/Column24HourItem";
 import Column7DayItem from "./column-components/Column7DayItem";
 import Column24HourVolumeItem from "./column-components/Column24HourVolumeItem";
 import ColumnCirculatingSupplyItem from "./column-components/ColumnCirculatingSupplyItem";
-
 import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
 import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
-import { tableData } from "@/mock-api/mock-db";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store/store";
+import { getTableData } from "@/app/store/tableDataSlice";
+import LoadingCircleLine from "@/public/LoadingCircleLineSvg.svg";
 
 export default function HomeTableSection() {
-  const [allCoinsData, setAllCoinsData] = useState<CoinData[] | []>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { data, isLoading, error } = useSelector(
+    (state: RootState) => state.tableData
+  );
+
+  useEffect(() => {
+    dispatch(getTableData());
+  }, [dispatch]);
 
   const columns = [
     {
@@ -139,7 +149,7 @@ export default function HomeTableSection() {
   ];
 
   const table = useReactTable({
-    data: allCoinsData,
+    data: data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     enableColumnResizing: true,
@@ -151,50 +161,19 @@ export default function HomeTableSection() {
     },
   });
 
-  useEffect(() => {
-    if (process && process.env.NODE_ENV === "development") {
-      const getData = () =>
-        new Promise<CoinData[]>((resolve, reject) => {
-          if (!tableData) {
-            return setTimeout(
-              () => reject(new Error("Market data not found")),
-              250
-            );
-          }
-          setTimeout(() => {
-            resolve(tableData);
-          }, 250);
-        });
+  if (isLoading)
+    return (
+      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
+        <LoadingCircleLine />
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
+        <div>Error loading table data</div>
+      </div>
+    );
 
-      getData()
-        .then((result) => {
-          setAllCoinsData(result);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
-          );
-          if (!response.ok) {
-            throw new Error("Error fetching table data");
-          }
-          const json = await response.json();
-          setAllCoinsData(json);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      fetchData();
-    }
-  }, []);
-
-  if (!allCoinsData || allCoinsData.length === 0) {
-    return <div>Loading...</div>;
-  }
   return (
     <>
       <div

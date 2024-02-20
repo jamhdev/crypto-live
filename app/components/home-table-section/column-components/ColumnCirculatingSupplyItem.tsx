@@ -19,7 +19,7 @@ export default function ColumnCirculatingSupplyItem({
   const decreasedValueColor = "#ff0061";
   return (
     <div>
-      <div className="flex justify-between w-[200px] p-4">
+      <div className="flex justify-between w-[200px]">
         <div>{formatLargeNumber(circulatingSupply)}</div>
         <div>{formatLargeNumber(totalSupply)}</div>
       </div>

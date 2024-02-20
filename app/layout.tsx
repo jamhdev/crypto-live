@@ -8,6 +8,7 @@ import HomeChartSection from "./components/home-chart-section/HomeChartSection";
 import CoinOrConverterSelector from "./components/CoinOrConverterSelector/CoinOrConverterSelector";
 import MarketDataNav from "./components/market-data-nav/MarketDataNav";
 import HomeTableSection from "./components/home-table-section/HomeTableSection";
+import { StoreProvider } from "./store/StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,18 +18,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <AppContextProvider>
-        <BodyWapper>
-          <MarketDataNav />
-          <NavBar />
-          <CoinOrConverterSelector />
-          <HomeChartSection />
-          <HomeTableSection />
-          {children}
-        </BodyWapper>
-      </AppContextProvider>
-    </html>
+    <AppContextProvider>
+      <StoreProvider>
+        <html lang="en">
+          <BodyWapper>
+            <MarketDataNav />
+            <NavBar />
+            <CoinOrConverterSelector />
+            <HomeChartSection />
+            <HomeTableSection />
+            {children}
+          </BodyWapper>
+        </html>
+      </StoreProvider>
+    </AppContextProvider>
   );
 }
 

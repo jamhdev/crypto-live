@@ -9,6 +9,7 @@ export default function AppContextProvider({
   const [theme, setTheme] = useState<themeOption>("dark");
   const [coinsOrConverterSelector, setCoinsOrConverterSelector] =
     useState<CoinOrConverterSelectorOption>("coins");
+  const isProd = process.env.NODE_ENV === "production";
 
   const toggleTheme = () => {
     setTheme((prev: themeOption) => {
@@ -58,6 +59,7 @@ export default function AppContextProvider({
           coinsOrConverterSelector,
           setCoinsOrConverterSelector,
           currencyFormat,
+          isProd,
         }}
       >
         {children}
@@ -83,4 +85,5 @@ export const AppContext = createContext<CreateContextType>({
     style: "currency",
     currency: "usd",
   }),
+  isProd: process.env.NODE_ENV === "production",
 });
