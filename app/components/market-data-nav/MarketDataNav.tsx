@@ -30,17 +30,12 @@ export default function MarketDataNav() {
   );
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "production") {
-      dispatch(getMarketData());
-    }
-  }, []);
-
-  const allMarketData =
-    process && process.env.NODE_ENV === "development" ? marketData : data;
+    dispatch(getMarketData());
+  }, [dispatch]);
 
   const numberToDivideMarketCapBy = () => {
-    if (allMarketData) {
-      return allMarketData?.total_market_cap?.usd > 9_999_999_999
+    if (data) {
+      return data?.total_market_cap?.usd > 9_999_999_999
         ? 1_000_000_000_000
         : 1_000_000_000;
     }
@@ -48,29 +43,25 @@ export default function MarketDataNav() {
   };
 
   const billionOrTrillionSymbol = () => {
-    if (allMarketData) {
-      return allMarketData?.total_market_cap?.usd > 9_999_999_999 ? "T" : "B";
+    if (data) {
+      return data?.total_market_cap?.usd > 9_999_999_999 ? "T" : "B";
     }
     return "T";
   };
 
   const valueChanged = () => {
-    if (allMarketData) {
-      return allMarketData?.market_cap_change_percentage_24h_usd > 0 ? (
+    if (data) {
+      return data?.market_cap_change_percentage_24h_usd > 0 ? (
         <div className="flex justify-center items-center text-xs">
           <span>
-            {percentFormat.format(
-              allMarketData?.market_cap_change_percentage_24h_usd
-            )}
+            {percentFormat.format(data?.market_cap_change_percentage_24h_usd)}
           </span>
           <IncreaseValueIcon />
         </div>
       ) : (
         <div className="flex justify-center items-center text-xs">
           <span>
-            {percentFormat.format(
-              allMarketData?.market_cap_change_percentage_24h_usd
-            )}
+            {percentFormat.format(data?.market_cap_change_percentage_24h_usd)}
           </span>
           <DecreaseValueIcon />
         </div>
@@ -79,15 +70,11 @@ export default function MarketDataNav() {
   };
 
   const percentageBarBtc = `${
-    allMarketData
-      ? percentageBarFormat.format(allMarketData?.market_cap_percentage?.btc)
-      : "..."
+    data ? percentageBarFormat.format(data?.market_cap_percentage?.btc) : "..."
   }%`;
 
   const percentageBarEth = `${
-    allMarketData
-      ? percentageBarFormat.format(allMarketData?.market_cap_percentage?.eth)
-      : "..."
+    data ? percentageBarFormat.format(data?.market_cap_percentage?.eth) : "..."
   }%`;
 
   function isDevOrProd() {
@@ -118,22 +105,19 @@ export default function MarketDataNav() {
         <div className="flex justify-center items-center gap-2">
           <AmountOfCoinsIcon />
           <span>Coins</span>
-          <span>
-            {allMarketData ? allMarketData?.active_cryptocurrencies : "..."}
-          </span>
+          <span>{data ? data?.active_cryptocurrencies : "..."}</span>
           Next
         </div>
         <div className="flex justify-center items-center gap-2">
           <ExchangeMarketsIcon />
           <span>Exchange</span>
-          {allMarketData ? allMarketData?.markets : "..."}
+          {data ? data?.markets : "..."}
         </div>
         <div className="flex justify-center items-center gap-2">
           {valueChanged()}
-          {allMarketData
+          {data
             ? marketCapCurrencyFormat.format(
-                allMarketData?.total_market_cap?.usd /
-                  numberToDivideMarketCapBy()
+                data?.total_market_cap?.usd / numberToDivideMarketCapBy()
               )
             : "..."}
           {billionOrTrillionSymbol()}
@@ -141,9 +125,9 @@ export default function MarketDataNav() {
         <div className="flex justify-center items-center gap-2 text-sm">
           <BitcoinIcon />
           <span>
-            {allMarketData
+            {data
               ? marketCapPercentageFormat.format(
-                  allMarketData?.market_cap_percentage?.btc
+                  data?.market_cap_percentage?.btc
                 )
               : "..."}
             %
@@ -157,10 +141,8 @@ export default function MarketDataNav() {
         </div>
         <div className="flex justify-center items-center gap-2 text-sm">
           <EthereumIcon />
-          {allMarketData
-            ? marketCapPercentageFormat.format(
-                allMarketData?.market_cap_percentage?.eth
-              )
+          {data
+            ? marketCapPercentageFormat.format(data?.market_cap_percentage?.eth)
             : "..."}
           %
           <div className="bg-[rgb(255,255,255,0.4)] w-[53px] h-[6px] rounded-full relative">

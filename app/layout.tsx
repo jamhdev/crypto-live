@@ -19,9 +19,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <StoreProvider>
-      <html lang="en">
-        <AppContextProvider>
+    <AppContextProvider>
+      <StoreProvider>
+        <html lang="en">
           <BodyWapper>
             <TestSliceComp />
             <MarketDataNav />
@@ -31,9 +31,9 @@ export default function RootLayout({
             <HomeTableSection />
             {children}
           </BodyWapper>
-        </AppContextProvider>
-      </html>
-    </StoreProvider>
+        </html>
+      </StoreProvider>
+    </AppContextProvider>
   );
 }
 

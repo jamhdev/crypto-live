@@ -20,7 +20,6 @@ import ColumnCirculatingSupplyItem from "./column-components/ColumnCirculatingSu
 
 import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
 import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
-import { tableData } from "@/mock-api/mock-db";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 //
@@ -37,13 +36,8 @@ export default function HomeTableSection() {
   );
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "production") {
-      dispatch(getTableData());
-    }
-  }, []);
-
-  const allCoinsData =
-    process && process.env.NODE_ENV === "development" ? tableData : data;
+    dispatch(getTableData());
+  }, [dispatch]);
 
   const columns = [
     {
@@ -158,7 +152,7 @@ export default function HomeTableSection() {
   ];
 
   const table = useReactTable({
-    data: allCoinsData,
+    data: data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     enableColumnResizing: true,

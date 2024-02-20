@@ -15,4 +15,5 @@ interface CreateContextType {
     [key: string]: string;
   };
   currencyFormat: Intl.NumberFormat;
+  isProd: boolean;
 }

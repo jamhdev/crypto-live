@@ -1,16 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import { tableData } from "@/mock-api/mock-db";
 export const getTableData = createAsyncThunk("getTableData", async () => {
-  const proxyUrl = "https://corsproxy.io/?";
-  const targetUrl =
-    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d";
-  const response = await fetch(proxyUrl + targetUrl);
-  if (!response.ok) {
-    throw new Error(`API request failed with status ${response.status}`);
+  if (process.env.NODE_ENV === "development") {
+    return tableData;
+  } else {
+    const proxyUrl = "https://corsproxy.io/?";
+    const targetUrl =
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d";
+    const response = await fetch(proxyUrl + targetUrl);
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(data);
+    return data;
   }
-  const data = await response.json();
-  console.log(data);
-  return data;
 });
 
 interface TableDataState {

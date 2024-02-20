@@ -58,7 +58,7 @@ export default function HomeVolumeChart({
             <div className="text-accent">volume</div>
             <div className="text-accent font-extrabold text-2xl">
               {currencyFormat.format(
-                currentSelectedCoinData?.market_data.total_volume?.usd
+                currentSelectedCoinData?.market_data?.total_volume?.usd
               )}
             </div>
             <Bar data={data} options={options} />
