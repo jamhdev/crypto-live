@@ -4,11 +4,11 @@ import "./globals.css";
 import NavBar from "./components/navigation/NavBar";
 import AppContextProvider from "./contexts/AppContext";
 import { ReactNode } from "react";
-import HomeChartSection from "./components/home-chart-section/HomeChartSection";
 import CoinOrConverterSelector from "./components/CoinOrConverterSelector/CoinOrConverterSelector";
 import MarketDataNav from "./components/market-data-nav/MarketDataNav";
 import HomeTableSection from "./components/home-table-section/HomeTableSection";
 import { StoreProvider } from "./store/StoreProvider";
+import ChartAndCarouselContainer from "./components/home-chart-and-carousel-section/ChartAndCarouselContainer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +25,7 @@ export default function RootLayout({
             <MarketDataNav />
             <NavBar />
             <CoinOrConverterSelector />
-            <HomeChartSection />
+            <ChartAndCarouselContainer />
             <HomeTableSection />
             {children}
           </BodyWapper>

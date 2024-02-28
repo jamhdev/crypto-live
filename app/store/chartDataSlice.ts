@@ -25,22 +25,24 @@ export const getChartData = createAsyncThunk(
       throw new Error(`API request failed with status ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
     return data;
   }
 );
 
-export const getCoinData = createAsyncThunk("getCoinData", async () => {
-  const proxyUrl = "https://corsproxy.io/?";
-  const targetUrl = "https://api.coingecko.com/api/v3/coins/bitcoin";
-  const response = await fetch(proxyUrl + targetUrl);
-  if (!response.ok) {
-    throw new Error(`API request failed with status ${response.status}`);
+export const getCoinData = createAsyncThunk(
+  "getCoinData",
+  async (name: string) => {
+    const proxyUrl = "https://corsproxy.io/?";
+    const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}`;
+    const response = await fetch(proxyUrl + targetUrl);
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(data);
+    return data;
   }
-  const data = await response.json();
-  console.log(data);
-  return data;
-});
+);
 
 interface ChartDataState {
   isLoading: boolean;
