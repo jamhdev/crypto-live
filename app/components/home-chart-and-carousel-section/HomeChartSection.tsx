@@ -6,13 +6,7 @@ import LoadingCircleLine from "@/public/LoadingCircleLineSvg.svg";
 import { RootState } from "@/app/store/store";
 import { useSelector } from "react-redux";
 
-export default function HomeChartSection({
-  chartDurationSelector,
-  setChartDurationSelector,
-}: {
-  chartDurationSelector: any;
-  setChartDurationSelector: any;
-}) {
+export default function HomeChartSection() {
   const { chartData, coinData, isLoading, error } = useSelector(
     (state: RootState) => state.homeChartData
   );
@@ -47,10 +41,7 @@ export default function HomeChartSection({
           />
         </div>
       </div>
-      <ChartDurationSelector
-        chartDurationSelector={chartDurationSelector}
-        setChartDurationSelector={setChartDurationSelector}
-      />
+      <ChartDurationSelector />
     </>
   );
 }

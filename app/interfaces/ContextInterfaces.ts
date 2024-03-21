@@ -16,4 +16,6 @@ interface CreateContextType {
   };
   currencyFormat: Intl.NumberFormat;
   isProd: boolean;
+  isViewingCoinPage: boolean;
+  setIsViewingCoinPage: React.Dispatch<React.SetStateAction<boolean>>;
 }

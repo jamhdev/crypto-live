@@ -15,6 +15,8 @@ const config: Config = {
         accent: `var(--color-accent)`,
         chartBackground: `var(--color-chart-background)`,
         themeTextColor: `var(--color-themeTextColor)`,
+        greenMain: `var(--color-green-main)`,
+        redMain: `var(--color-red-main)`,
       },
     },
   },

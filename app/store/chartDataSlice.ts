@@ -1,61 +1,120 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
   coinDataPrices,
   coinDataPrices1dHourly,
   coindData,
 } from "@/mock-api/mock-db";
+import { RootState } from "./store";
 
 export const getChartData = createAsyncThunk(
   "getChartData",
-  async ({
-    name,
-    currency,
-    days,
-    interval,
-  }: {
-    name: string;
-    currency: string;
-    days: number;
-    interval: string;
-  }) => {
-    const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
-    const response = await fetch(proxyUrl + targetUrl);
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+  async (_, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    console.log("RUNNING getChartData");
+    if (
+      state.chartData.lastFetchedChartData === null ||
+      Date.now() - state.chartData.lastFetchedChartData > 300000 ||
+      state.chartData.coinSelected !== state.chartData.coinData.id
+    ) {
+      const { coinSelected, durationSelector } = state.chartData;
+      const { name, currency, days, interval } = getFetchDetails(
+        coinSelected,
+        durationSelector
+      );
+
+      const proxyUrl = "https://corsproxy.io/?";
+      const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
+      const response = await fetch(proxyUrl + targetUrl);
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } else {
+      console.log("CHART DATA STAYED THE SAME");
+      return state.chartData.chartData;
     }
-    const data = await response.json();
-    return data;
+  }
+);
+
+export const getChartDataOnDurationChange = createAsyncThunk(
+  "getChartDataOnDurationChange",
+  async (_, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    console.log("RUNNING getChartDataDuratioNChange");
+    if (
+      state.chartData.durationSelector !== state.chartData.prevDurationSelector
+    ) {
+      const { coinSelected, durationSelector } = state.chartData;
+      const { name, currency, days, interval } = getFetchDetails(
+        coinSelected,
+        durationSelector
+      );
+      const proxyUrl = "https://corsproxy.io/?";
+      const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
+      const response = await fetch(proxyUrl + targetUrl);
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } else {
+      console.log("CHART DATA STAYED THE SAME");
+      return state.chartData.chartData;
+    }
   }
 );
 
 export const getCoinData = createAsyncThunk(
   "getCoinData",
-  async (name: string) => {
-    const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}`;
-    const response = await fetch(proxyUrl + targetUrl);
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+  async (_, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    if (
+      state.chartData.lastFetchedChartData === null ||
+      Date.now() - state.chartData.lastFetchedChartData > 300000 ||
+      state.chartData.coinSelected !== state.chartData.prevCoinSelected
+    ) {
+      const coinSelected = state.chartData.coinSelected;
+      const proxyUrl = "https://corsproxy.io/?";
+      const targetUrl = `https://api.coingecko.com/api/v3/coins/${coinSelected}?x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
+      const response = await fetch(proxyUrl + targetUrl);
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } else {
+      console.log("COIN DATA STAYED THE SAME");
+      return state.chartData.coinData;
     }
-    const data = await response.json();
-    console.log(data);
-    return data;
   }
 );
 
 interface ChartDataState {
   isLoading: boolean;
   chartData: ChartData | { prices: []; total_volumes: []; market_caps: [] };
-  coinData: CoinData | {};
+  coinData: CoinData | { id: string };
   error: boolean;
+  lastFetchedCoinData: number | null;
+  lastFetchedChartData: number | null;
+  coinSelected: string;
+  durationSelector: durationOption;
+  prevCoinSelected: string;
+  prevDurationSelector: durationOption;
 }
 
 const initialState: ChartDataState = {
   isLoading: false,
   chartData: { prices: [], total_volumes: [], market_caps: [] },
-  coinData: {},
+  coinData: { id: "" },
   error: false,
+  lastFetchedCoinData: null,
+  lastFetchedChartData: null,
+  coinSelected: "bitcoin",
+  durationSelector: "1M",
+  prevCoinSelected: "bitcoin",
+  prevDurationSelector: "1M",
 };
 
 export interface CoinData {
@@ -74,9 +133,18 @@ interface ChartData {
 }
 
 export const homeChartDataSlice = createSlice({
-  name: "tableData",
+  name: "chartData",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setCoinSelected: (state, action: PayloadAction<string>) => {
+      state.prevCoinSelected = state.coinSelected;
+      state.coinSelected = action.payload;
+    },
+    setDurationSelector: (state, action: PayloadAction<durationOption>) => {
+      state.prevDurationSelector = state.durationSelector;
+      state.durationSelector = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(getChartData.pending, (state, action) => {
       state.isLoading = true;
@@ -84,17 +152,33 @@ export const homeChartDataSlice = createSlice({
     builder.addCase(getChartData.fulfilled, (state, action) => {
       state.isLoading = false;
       state.chartData = action.payload;
+      state.lastFetchedChartData = Date.now();
     });
     builder.addCase(getChartData.rejected, (state, action) => {
       state.isLoading = false;
       state.error = true;
     });
+    //---------
+    builder.addCase(getChartDataOnDurationChange.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getChartDataOnDurationChange.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.chartData = action.payload;
+      state.lastFetchedChartData = Date.now();
+    });
+    builder.addCase(getChartDataOnDurationChange.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = true;
+    });
+    //---------
     builder.addCase(getCoinData.pending, (state, action) => {
       state.isLoading = true;
     });
     builder.addCase(getCoinData.fulfilled, (state, action) => {
       state.isLoading = false;
       state.coinData = action.payload;
+      state.lastFetchedCoinData = Date.now();
     });
     builder.addCase(getCoinData.rejected, (state, action) => {
       state.isLoading = false;
@@ -103,7 +187,8 @@ export const homeChartDataSlice = createSlice({
   },
 });
 
-export const {} = homeChartDataSlice.actions;
+export const { setDurationSelector, setCoinSelected } =
+  homeChartDataSlice.actions;
 
 export default homeChartDataSlice.reducer;
 
@@ -142,4 +227,47 @@ const setDurationFilteredCoinDataPrices = (
     prices: filterDataByDuration(prices, duration),
     volumes: filterDataByDuration(volumes, duration),
   };
+};
+
+const getFetchDetails = (
+  coinSelected: string,
+  durationSelector: durationOption
+) => {
+  let name;
+  let currency;
+  let days;
+  let interval = "&interval=daily";
+  switch (durationSelector) {
+    case "1D":
+      name = coinSelected;
+      currency = "usd";
+      days = 1;
+      interval = "";
+      break;
+    case "7D":
+      name = coinSelected;
+      currency = "usd";
+      days = 7;
+      interval = "";
+      break;
+    case "14D":
+      name = coinSelected;
+      currency = "usd";
+      days = 14;
+      interval = "";
+      break;
+    case "1M":
+      name = coinSelected;
+      currency = "usd";
+      days = 30;
+      interval = "";
+      break;
+    case "1Y":
+      name = coinSelected;
+      currency = "usd";
+      days = 360;
+      interval = "";
+      break;
+  }
+  return { name, currency, days, interval };
 };

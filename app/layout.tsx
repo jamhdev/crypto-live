@@ -1,14 +1,9 @@
-"use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NavBar from "./components/navigation/NavBar";
 import AppContextProvider from "./contexts/AppContext";
 import { ReactNode } from "react";
-import CoinOrConverterSelector from "./components/CoinOrConverterSelector/CoinOrConverterSelector";
-import MarketDataNav from "./components/market-data-nav/MarketDataNav";
-import HomeTableSection from "./components/home-table-section/HomeTableSection";
 import { StoreProvider } from "./store/StoreProvider";
-import ChartAndCarouselContainer from "./components/home-chart-and-carousel-section/ChartAndCarouselContainer";
+import MainBody from "./components/MainBody/MainBody";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,11 +17,7 @@ export default function RootLayout({
       <StoreProvider>
         <html lang="en">
           <BodyWapper>
-            <MarketDataNav />
-            <NavBar />
-            <CoinOrConverterSelector />
-            <ChartAndCarouselContainer />
-            <HomeTableSection />
+            <MainBody />
             {children}
           </BodyWapper>
         </html>

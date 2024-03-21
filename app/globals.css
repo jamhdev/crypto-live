@@ -9,6 +9,8 @@
   --color-accent: rgba(97, 97, 222, 0.5);
   --color-chart-background: #191934;
   --color-themeTextColor: #424286;
+  --color-green-main: #00f58f;
+  --color-red-main: #ff0015;
 }
 
 @layer utilities {
