@@ -5,12 +5,13 @@ export const getCoinPageData = createAsyncThunk(
   async (_, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const name = state.coinPageData.selectedCoinName.toLowerCase();
-    if (
-      state.coinPageData.lastFetched === null ||
-      Date.now() - state.coinPageData.lastFetched > 300000 ||
-      name !== state.coinPageData.coinData.id
-    ) {
-      console.log("API HIT WITH:", name);
+    const isFetchedYet = state.coinPageData.lastFetched === null;
+    const moreThan5MinutesSinceLastFetch =
+      state.coinPageData.lastFetched !== null &&
+      Date.now() - state.coinPageData.lastFetched > 300000;
+    const isNewCoinSelected = name !== state.coinPageData.coinData.id;
+
+    if (isFetchedYet || moreThan5MinutesSinceLastFetch || isNewCoinSelected) {
       const proxyUrl = "https://corsproxy.io/?";
       const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
       const response = await fetch(proxyUrl + targetUrl);
@@ -18,7 +19,6 @@ export const getCoinPageData = createAsyncThunk(
         throw new Error(`API request failed with status ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
       return data;
     } else {
       return state.coinPageData.coinData;
@@ -42,7 +42,6 @@ const initialState: CoinDataState = {
   lastFetched: null,
 };
 
-/////////////////////////////////////////////////////////////////////
 export interface CoinPageData {
   id: string;
   symbol: string;

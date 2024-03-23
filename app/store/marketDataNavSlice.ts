@@ -5,15 +5,17 @@ export const getMarketData = createAsyncThunk(
   "getMarketData",
   async (_, thunkApi) => {
     const state = thunkApi.getState() as RootState;
-    if (
-      state.marketData.lastFetched === null ||
-      Date.now() - state.marketData.lastFetched > 300000
-    ) {
+    const isFetchedYet = state.marketData.lastFetched === null;
+    const moreThan5MinutesSinceLastFetch =
+      state.marketData.lastFetched !== null &&
+      Date.now() - state.marketData.lastFetched > 300000;
+
+    if (isFetchedYet || moreThan5MinutesSinceLastFetch) {
       if (process.env.NODE_ENV === "development") {
         return marketData;
       } else {
         const proxyUrl = "https://corsproxy.io/?";
-        const targetUrl = `https://api.coingecko.com/api/v3/global&x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
+        const targetUrl = `https://api.coingecko.com/api/v3/global`;
         const response = await fetch(proxyUrl + targetUrl);
         if (!response.ok) {
           throw new Error(`API request failed with status ${response.status}`);

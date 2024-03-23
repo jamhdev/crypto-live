@@ -6,10 +6,12 @@ export const getTableData = createAsyncThunk(
   "getTableData",
   async (_, thunkApi) => {
     const state = thunkApi.getState() as RootState;
-    if (
-      state.tableData.lastFetched === null ||
-      Date.now() - state.tableData.lastFetched > 300000
-    ) {
+    const isFetchedYet = state.tableData.lastFetched === null;
+    const moreThan5MinutesSinceLastFetch =
+      state.tableData.lastFetched !== null &&
+      Date.now() - state.tableData.lastFetched > 300000;
+
+    if (isFetchedYet || moreThan5MinutesSinceLastFetch) {
       if (process.env.NODE_ENV === "development") {
         return tableData;
       } else {
@@ -20,7 +22,6 @@ export const getTableData = createAsyncThunk(
           throw new Error(`API request failed with status ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
         return data;
       }
     } else {

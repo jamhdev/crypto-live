@@ -10,12 +10,14 @@ export const getChartData = createAsyncThunk(
   "getChartData",
   async (_, thunkApi) => {
     const state = thunkApi.getState() as RootState;
-    console.log("RUNNING getChartData");
-    if (
-      state.chartData.lastFetchedChartData === null ||
-      Date.now() - state.chartData.lastFetchedChartData > 300000 ||
-      state.chartData.coinSelected !== state.chartData.coinData.id
-    ) {
+    const isFetchedYet = state.chartData.lastFetchedChartData === null;
+    const moreThan5MinutesSinceLastFetch =
+      state.chartData.lastFetchedChartData !== null &&
+      Date.now() - state.chartData.lastFetchedChartData > 300000;
+    const isNewCoinSelected =
+      state.chartData.coinSelected !== state.chartData.coinData.id;
+
+    if (isFetchedYet || moreThan5MinutesSinceLastFetch || isNewCoinSelected) {
       const { coinSelected, durationSelector } = state.chartData;
       const { name, currency, days, interval } = getFetchDetails(
         coinSelected,
@@ -31,7 +33,6 @@ export const getChartData = createAsyncThunk(
       const data = await response.json();
       return data;
     } else {
-      console.log("CHART DATA STAYED THE SAME");
       return state.chartData.chartData;
     }
   }
@@ -41,10 +42,10 @@ export const getChartDataOnDurationChange = createAsyncThunk(
   "getChartDataOnDurationChange",
   async (_, thunkApi) => {
     const state = thunkApi.getState() as RootState;
-    console.log("RUNNING getChartDataDuratioNChange");
-    if (
-      state.chartData.durationSelector !== state.chartData.prevDurationSelector
-    ) {
+    const isNewDuration =
+      state.chartData.durationSelector !== state.chartData.prevDurationSelector;
+
+    if (isNewDuration) {
       const { coinSelected, durationSelector } = state.chartData;
       const { name, currency, days, interval } = getFetchDetails(
         coinSelected,
@@ -59,7 +60,6 @@ export const getChartDataOnDurationChange = createAsyncThunk(
       const data = await response.json();
       return data;
     } else {
-      console.log("CHART DATA STAYED THE SAME");
       return state.chartData.chartData;
     }
   }
@@ -69,11 +69,14 @@ export const getCoinData = createAsyncThunk(
   "getCoinData",
   async (_, thunkApi) => {
     const state = thunkApi.getState() as RootState;
-    if (
-      state.chartData.lastFetchedChartData === null ||
-      Date.now() - state.chartData.lastFetchedChartData > 300000 ||
-      state.chartData.coinSelected !== state.chartData.prevCoinSelected
-    ) {
+    const isFetchedYet = state.chartData.lastFetchedChartData === null;
+    const moreThan5MinutesSinceLastFetch =
+      state.chartData.lastFetchedChartData !== null &&
+      Date.now() - state.chartData.lastFetchedChartData > 300000;
+    const isNewCoinSelected =
+      state.chartData.coinSelected !== state.chartData.prevCoinSelected;
+
+    if (isFetchedYet || moreThan5MinutesSinceLastFetch || isNewCoinSelected) {
       const coinSelected = state.chartData.coinSelected;
       const proxyUrl = "https://corsproxy.io/?";
       const targetUrl = `https://api.coingecko.com/api/v3/coins/${coinSelected}?x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
@@ -82,10 +85,8 @@ export const getCoinData = createAsyncThunk(
         throw new Error(`API request failed with status ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
       return data;
     } else {
-      console.log("COIN DATA STAYED THE SAME");
       return state.chartData.coinData;
     }
   }
@@ -158,7 +159,6 @@ export const homeChartDataSlice = createSlice({
       state.isLoading = false;
       state.error = true;
     });
-    //---------
     builder.addCase(getChartDataOnDurationChange.pending, (state, action) => {
       state.isLoading = true;
     });
@@ -171,7 +171,6 @@ export const homeChartDataSlice = createSlice({
       state.isLoading = false;
       state.error = true;
     });
-    //---------
     builder.addCase(getCoinData.pending, (state, action) => {
       state.isLoading = true;
     });
