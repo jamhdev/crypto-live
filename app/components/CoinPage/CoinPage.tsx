@@ -30,7 +30,6 @@ export default function CoinPage() {
     </div>
   );
 
-  console.log("coin data: ", coinData);
   if (isLoading) {
     return (
       <>
