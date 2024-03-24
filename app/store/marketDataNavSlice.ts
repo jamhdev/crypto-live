@@ -1,24 +1,39 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { marketData } from "@/mock-api/mock-db";
-export const getMarketData = createAsyncThunk("getMarketData", async () => {
-  if (process.env.NODE_ENV === "development") {
-    return marketData;
-  } else {
-    const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = "https://api.coingecko.com/api/v3/global";
-    const response = await fetch(proxyUrl + targetUrl);
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+import { RootState } from "./store";
+export const getMarketData = createAsyncThunk(
+  "getMarketData",
+  async (_, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    const isFetchedYet = state.marketData.lastFetched === null;
+    const moreThan5MinutesSinceLastFetch =
+      state.marketData.lastFetched !== null &&
+      Date.now() - state.marketData.lastFetched > 300000;
+
+    if (isFetchedYet || moreThan5MinutesSinceLastFetch) {
+      if (process.env.NODE_ENV === "development") {
+        return marketData;
+      } else {
+        const proxyUrl = "https://corsproxy.io/?";
+        const targetUrl = `https://api.coingecko.com/api/v3/global`;
+        const response = await fetch(proxyUrl + targetUrl);
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+        const data = await response.json();
+        return data.data;
+      }
+    } else {
+      return state.marketData.data;
     }
-    const data = await response.json();
-    return data.data;
   }
-});
+);
 
 interface MarketDataState {
   isLoading: boolean;
   data: GlobalMarketDataType;
   error: boolean;
+  lastFetched: number | null;
 }
 
 interface GlobalMarketDataType {
@@ -49,6 +64,7 @@ const initialState: MarketDataState = {
     },
   },
   error: false,
+  lastFetched: null,
 };
 
 export const marketDataNavSlice = createSlice({
@@ -62,6 +78,7 @@ export const marketDataNavSlice = createSlice({
     builder.addCase(getMarketData.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
+      state.lastFetched = Date.now();
     });
     builder.addCase(getMarketData.rejected, (state, action) => {
       state.isLoading = false;

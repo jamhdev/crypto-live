@@ -23,11 +23,7 @@ export default function HomeCarouselSection({
 
   const slideData = data.map((value) => (
     <div className="embla__slide" key={value.id}>
-      <CarouselItem
-        {...value}
-        coinSelected={coinSelected}
-        setCoinSelected={setCoinSelected}
-      />
+      <CarouselItem {...value} />
     </div>
   ));
 

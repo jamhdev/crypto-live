@@ -1,15 +1,17 @@
 "use client";
+import {
+  getChartDataOnDurationChange,
+  setDurationSelector,
+} from "@/app/store/chartDataSlice";
+import { AppDispatch, RootState } from "@/app/store/store";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function ChartDurationSelector({
-  chartDurationSelector,
-  setChartDurationSelector,
-}: {
-  chartDurationSelector: string;
-  setChartDurationSelector: React.Dispatch<
-    React.SetStateAction<durationOption>
-  >;
-}) {
+export default function ChartDurationSelector() {
+  const dispatch = useDispatch<AppDispatch>();
+  const chartDurationSelector = useSelector(
+    (state: RootState) => state.chartData.durationSelector
+  );
   return (
     <div className="flex justify-start px-10 self-start text-themeTextColor m-auto md:m-0">
       <div className="bg-primary flex gap-10 rounded-lg p-1">
@@ -20,7 +22,8 @@ export default function ChartDurationSelector({
               chartDurationSelector === value ? selectedStyles : defaultStyles
             }
             onClick={() => {
-              setChartDurationSelector(value);
+              dispatch(setDurationSelector(value));
+              dispatch(getChartDataOnDurationChange());
             }}
           >
             {value}

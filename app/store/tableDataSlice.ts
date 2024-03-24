@@ -1,26 +1,40 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { tableData } from "@/mock-api/mock-db";
-export const getTableData = createAsyncThunk("getTableData", async () => {
-  if (process.env.NODE_ENV === "development") {
-    return tableData;
-  } else {
-    const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl =
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d";
-    const response = await fetch(proxyUrl + targetUrl);
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+import { RootState } from "./store";
+
+export const getTableData = createAsyncThunk(
+  "getTableData",
+  async (_, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    const isFetchedYet = state.tableData.lastFetched === null;
+    const moreThan5MinutesSinceLastFetch =
+      state.tableData.lastFetched !== null &&
+      Date.now() - state.tableData.lastFetched > 300000;
+
+    if (isFetchedYet || moreThan5MinutesSinceLastFetch) {
+      if (process.env.NODE_ENV === "development") {
+        return tableData;
+      } else {
+        const proxyUrl = "https://corsproxy.io/?";
+        const targetUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
+        const response = await fetch(proxyUrl + targetUrl);
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+      }
+    } else {
+      return state.tableData.data;
     }
-    const data = await response.json();
-    console.log(data);
-    return data;
   }
-});
+);
 
 interface TableDataState {
   isLoading: boolean;
   data: TableDataType[];
   error: boolean;
+  lastFetched: number | null;
 }
 
 interface TableDataType {
@@ -70,6 +84,7 @@ const initialState: TableDataState = {
   isLoading: false,
   data: [],
   error: false,
+  lastFetched: null,
 };
 
 export const tableDataSlice = createSlice({
@@ -83,6 +98,7 @@ export const tableDataSlice = createSlice({
     builder.addCase(getTableData.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
+      state.lastFetched = Date.now();
     });
     builder.addCase(getTableData.rejected, (state, action) => {
       state.isLoading = false;

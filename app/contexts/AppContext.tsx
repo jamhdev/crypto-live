@@ -10,6 +10,7 @@ export default function AppContextProvider({
   const [coinsOrConverterSelector, setCoinsOrConverterSelector] =
     useState<CoinOrConverterSelectorOption>("coins");
   const isProd = process.env.NODE_ENV === "production";
+  const [isViewingCoinPage, setIsViewingCoinPage] = useState<boolean>(false);
 
   const toggleTheme = () => {
     setTheme((prev: themeOption) => {
@@ -28,6 +29,8 @@ export default function AppContextProvider({
       theme === "dark" ? "rgba(97, 97, 222, 0.50)" : "rgba(97, 97, 222, 0.50)",
     chartBackground: theme === "dark" ? "#191934" : "#FFF",
     themeTextColor: theme === "dark" ? "#ffffff" : "#424286",
+    greenMain: theme === "dark" ? "#00f58f" : "#00f58f",
+    redMain: theme === "dark" ? "#ff0015" : "#ff0015",
   };
 
   const currencyFormat = new Intl.NumberFormat(undefined, {
@@ -46,6 +49,8 @@ export default function AppContextProvider({
     root.style.setProperty("--color-accent", colors.accent);
     root.style.setProperty("--color-chart-background", colors.chartBackground);
     root.style.setProperty("--color-themeTextColor", colors.themeTextColor);
+    root.style.setProperty("--color-green-main", colors.greenMain);
+    root.style.setProperty("--color-red-main", colors.redMain);
   }, [theme, colors]);
 
   return (
@@ -60,6 +65,8 @@ export default function AppContextProvider({
           setCoinsOrConverterSelector,
           currencyFormat,
           isProd,
+          isViewingCoinPage,
+          setIsViewingCoinPage,
         }}
       >
         {children}
@@ -86,4 +93,6 @@ export const AppContext = createContext<CreateContextType>({
     currency: "usd",
   }),
   isProd: process.env.NODE_ENV === "production",
+  isViewingCoinPage: false,
+  setIsViewingCoinPage: () => {},
 });
