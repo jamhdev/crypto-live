@@ -4,6 +4,7 @@ import tableDataSlice from "./tableDataSlice";
 import homeChartDataSlice from "./chartDataSlice";
 import coinPageSlice from "./coinPageSlice";
 import chartDataSlice from "./chartDataSlice";
+import coinListSlice from "./coinListSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     homeChartData: homeChartDataSlice,
     coinPageData: coinPageSlice,
     chartData: chartDataSlice,
+    coinList: coinListSlice,
   },
 });
 
