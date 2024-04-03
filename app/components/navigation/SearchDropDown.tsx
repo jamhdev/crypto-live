@@ -37,7 +37,18 @@ export default function SearchDropDown() {
       setCurrentSelectedDropdownItem(0);
     }
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowDown") {
+      if (event.key === "Tab") {
+        event.preventDefault();
+        if (event.shiftKey) {
+          if (currentSelectedDropdownItem > 0) {
+            setCurrentSelectedDropdownItem((prev) => prev - 1);
+          }
+        } else {
+          if (currentSelectedDropdownItem < filteredData.length - 1) {
+            setCurrentSelectedDropdownItem((prev) => prev + 1);
+          }
+        }
+      } else if (event.key === "ArrowDown") {
         setCurrentSelectedDropdownItem((prev) => {
           if (prev === 9) {
             return 9;
@@ -57,7 +68,7 @@ export default function SearchDropDown() {
         });
       } else if (event.key === "Enter") {
         const selectedCoin = filteredData[currentSelectedDropdownItem];
-        dispatch(setSelectedCoinName(selectedCoin.name.toLowerCase()));
+        dispatch(setSelectedCoinName(selectedCoin?.name?.toLowerCase()));
         setIsViewingCoinPage((prev) => !prev);
       }
     };
@@ -71,11 +82,11 @@ export default function SearchDropDown() {
     };
   }, [isfocused, currentSelectedDropdownItem]);
 
-  const listItemStyles = (id) => {
+  const listItemStyles = (id: any) => {
     if (id === currentSelectedDropdownItem) {
       return "p-2 cursor-pointer bg-chartBackground border-2 border-accent";
     } else {
-      return "p-2 cursor-pointer";
+      return "p-2 cursor-pointer hover:bg-chartBackground hover:border-2 hover:border-accent";
     }
   };
 
@@ -85,6 +96,7 @@ export default function SearchDropDown() {
         {theme === "dark" ? <DarkNavSearchIcon /> : <LightNavSearchIcon />}
         <input
           value={searchInputValue}
+          autoComplete="off"
           type="text"
           name="search"
           id="search"
@@ -102,18 +114,20 @@ export default function SearchDropDown() {
             setSearchInputValue(e.target.value);
           }}
         />
-        <div className="text-themeTextColor">{currentSelectedDropdownItem}</div>
         {isfocused === true ? (
           <>
             <div className="bg-backgroundSecondary absolute w-full top-10 border-t-[1px] border-gray-600 flex flex-col z-20 text-themeTextColor">
               {searchInputValue.length > 0
                 ? filteredData.map((value, index) => (
                     <div
+                      tabIndex={0}
                       className={listItemStyles(index)}
                       key={value.id}
                       onClick={() => {
                         dispatch(setSelectedCoinName(value.name.toLowerCase()));
-                        setIsViewingCoinPage((prev) => !prev);
+                        setTimeout(() => {
+                          setIsViewingCoinPage((prev) => !prev);
+                        }, 200);
                       }}
                     >
                       {value.name}
