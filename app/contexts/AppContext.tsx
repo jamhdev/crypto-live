@@ -23,7 +23,7 @@ export default function AppContextProvider({
   const colors = {
     background: theme === "dark" ? "#13121B" : "#F3F5F9",
     backgroundSecondary:
-      theme === "dark" ? "#191925" : "rgba(204, 204, 254, 0.4)",
+      theme === "dark" ? "#191925" : "rgba(204, 204, 254, 1)",
     primary: theme === "dark" ? "#191926" : "#FFF",
     accent:
       theme === "dark" ? "rgba(97, 97, 222, 0.50)" : "rgba(97, 97, 222, 0.50)",

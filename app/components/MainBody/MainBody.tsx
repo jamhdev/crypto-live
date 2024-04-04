@@ -1,6 +1,6 @@
 "use client";
 import { AppContext } from "@/app/contexts/AppContext";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import CoinPage from "../CoinPage/CoinPage";
 import MarketDataNav from "../market-data-nav/MarketDataNav";
 import NavBar from "../navigation/NavBar";
@@ -15,6 +15,7 @@ export default function MainBody() {
     <>
       {isViewingCoinPage === true ? (
         <>
+          s
           <MarketDataNav />
           <NavBar />
           <CoinPage />

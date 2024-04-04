@@ -19,6 +19,7 @@ import LightPortfolioNavIcon from "./LightPortfolioNavIcon.svg";
 import LightPortfolioNavIconSelected from "./LightPortfolioNavIconSelected.svg";
 //
 import NavLogoSvg from "./NavLogoSvg.svg";
+import SearchDropDown from "./SearchDropDown";
 
 export default function NavBar() {
   const { theme, toggleTheme } = useContext(AppContext);
@@ -108,16 +109,7 @@ export default function NavBar() {
         </div>
 
         <div className="flex gap-2">
-          <div className="bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1">
-            {theme === "dark" ? <DarkNavSearchIcon /> : <LightNavSearchIcon />}
-            <input
-              type="text"
-              name="search"
-              id="search"
-              placeholder="Search..."
-              className="bg-transparent"
-            />
-          </div>
+          <SearchDropDown />
           <select
             value={currencyOption}
             onChange={(e) => {
