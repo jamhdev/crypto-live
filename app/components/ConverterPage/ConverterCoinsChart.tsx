@@ -136,7 +136,7 @@ const options = {
     },
     tooltip: {
       enabled: true,
-      mode: "index",
+      mode: "index" as const,
       intersect: false,
       callbacks: {
         label: function (tooltipItem: any) {

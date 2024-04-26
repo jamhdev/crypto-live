@@ -74,7 +74,7 @@ export default function ConverterCoinSelector({
       const otherPrice = new Big(
         otherCoinData.data.market_data.current_price.usd
       );
-      const newOtherAmount = (newAmount * currentPrice) / otherPrice;
+      const newOtherAmount = newAmount.times(currentPrice).div(otherPrice);
 
       setOtherCoinData((prev: any) => ({
         ...prev,
@@ -185,21 +185,26 @@ function CoinSearchSelector({
   }, [coinData.name, data, currentSelectedDropdownItem]);
 
   const updateDataFetch = async (updatedName: string) => {
-    const response = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${updatedName}`
-    );
-    const data = await response.json();
-    setCoinData((prev: any) => {
-      return { ...prev, data: data };
-    });
-    setCoinData((prev: any) => {
-      return {
+    try {
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${updatedName}`
+      );
+      if (!response.ok) {
+        console.error("Failed to fetch data: ", response.status);
+        return;
+      }
+
+      const data = await response.json();
+      setCoinData((prev: any) => ({
         ...prev,
+        data: data,
         name: `${data?.id?.charAt(0)?.toUpperCase()}${data?.id?.slice(
           1
         )} (${data?.symbol?.toUpperCase()})`,
-      };
-    });
+      }));
+    } catch (error) {
+      console.error("Error: ", error);
+    }
   };
 
   useEffect(() => {

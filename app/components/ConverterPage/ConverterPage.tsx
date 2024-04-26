@@ -11,7 +11,7 @@ export default function ConverterPage() {
   const { theme } = useContext(AppContext);
   const switchIcon =
     theme === "dark" ? <VerticalSwitchDarkIcon /> : <VerticalSwitchLightIcon />;
-  const [firstCoinData, setFirstCoinData] = useState({
+  const [firstCoinData, setFirstCoinData] = useState<any>({
     name: "bitcoin",
     fetchName: "bitcoin",
     amount: 1,
@@ -19,7 +19,7 @@ export default function ConverterPage() {
     isSecondCoin: false,
     coinChartData: null,
   });
-  const [secondCoinData, setSecondCoinData] = useState({
+  const [secondCoinData, setSecondCoinData] = useState<any>({
     name: "ethereum",
     fetchName: "ethereum",
     amount: 1,
@@ -31,16 +31,12 @@ export default function ConverterPage() {
     useState<durationOption>("7D");
 
   const onSwitchButtonClick = () => {
-    setFirstCoinData((prev) => {
+    setFirstCoinData((prev: any) => {
       const newFirst = { ...secondCoinData, isSecondCoin: false };
       setSecondCoinData({ ...prev, isSecondCoin: true });
       return newFirst;
     });
   };
-
-  const firstCoinPrice = firstCoinData.data?.market_data?.current_price?.usd;
-  const secondCoinPrice = secondCoinData.data?.market_data?.current_price?.usd;
-  const amountOfFirstCoin = firstCoinData.amount;
 
   useEffect(() => {
     if (
@@ -52,7 +48,7 @@ export default function ConverterPage() {
         (firstCoinData.amount *
           firstCoinData.data?.market_data?.current_price?.usd) /
         secondCoinData.data?.market_data?.current_price?.usd;
-      setSecondCoinData((prev) => ({ ...prev, amount: newOtherAmount }));
+      setSecondCoinData((prev: any) => ({ ...prev, amount: newOtherAmount }));
     }
   }, [firstCoinData.amount, firstCoinData.data, secondCoinData.data]);
 
