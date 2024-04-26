@@ -18,4 +18,6 @@ interface CreateContextType {
   isProd: boolean;
   isViewingCoinPage: boolean;
   setIsViewingCoinPage: React.Dispatch<React.SetStateAction<boolean>>;
+  currentPage: pageOption;
+  setCurrentPage: React.Dispatch<React.SetStateAction<pageOption>>;
 }

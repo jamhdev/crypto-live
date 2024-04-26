@@ -22,8 +22,8 @@ import NavLogoSvg from "./NavLogoSvg.svg";
 import SearchDropDown from "./SearchDropDown";
 
 export default function NavBar() {
-  const { theme, toggleTheme } = useContext(AppContext);
-  const [currentPage, setCurrentPage] = useState<pageOption>("home");
+  const { theme, toggleTheme, currentPage, setCurrentPage } =
+    useContext(AppContext);
   const [currencyOption, setCurrencyOption] = useState("USD");
 
   const currentPageDarkMode =

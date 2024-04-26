@@ -14,6 +14,7 @@ const config: Config = {
         primary: `var(--color-primary)`,
         accent: `var(--color-accent)`,
         chartBackground: `var(--color-chart-background)`,
+        chartBackgroundSecondary: "var(--color-chart-background-secondary)",
         themeTextColor: `var(--color-themeTextColor)`,
         greenMain: `var(--color-green-main)`,
         redMain: `var(--color-red-main)`,
