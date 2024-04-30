@@ -2,7 +2,7 @@ import { RootState } from "@/app/store/store";
 import { currencyFormat } from "@/app/utils/numberFormatting";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { ConverterInputData } from "./ConverterPage";
+import { ConverterCoinData, ConverterInputData } from "./ConverterPage";
 
 export default function ConverterCoinSelector({
   coinData,
@@ -30,9 +30,7 @@ export default function ConverterCoinSelector({
       return {
         ...prev,
         data: data,
-        name: `${data?.id?.charAt(0)?.toUpperCase()}${data?.id?.slice(
-          1
-        )} (${data?.symbol?.toUpperCase()})`,
+        name: getCoinNameFormatted(data),
       };
     });
   };
@@ -113,19 +111,13 @@ export default function ConverterCoinSelector({
               }}
             />
           </div>
-          {isCoinNameFocused === true ? (
-            coinData.name.length > 0 ? (
-              <CoinSearchSelector
-                coinData={coinData}
-                isCoinNameFocused={isCoinNameFocused}
-                isCoinAmountFocused={isCoinAmountFocused}
-                setCoinData={setCoinData}
-              />
-            ) : (
-              false
-            )
-          ) : (
-            false
+          {isCoinNameFocused && coinData.name.length > 0 && (
+            <CoinSearchSelector
+              coinData={coinData}
+              isCoinNameFocused={isCoinNameFocused}
+              isCoinAmountFocused={isCoinAmountFocused}
+              setCoinData={setCoinData}
+            />
           )}
         </div>
         <input
@@ -201,9 +193,7 @@ function CoinSearchSelector({
       setCoinData((prev: ConverterInputData) => ({
         ...prev,
         data: data,
-        name: `${data?.id?.charAt(0)?.toUpperCase()}${data?.id?.slice(
-          1
-        )} (${data?.symbol?.toUpperCase()})`,
+        name: getCoinNameFormatted(data),
       }));
     } catch (error) {
       console.error("Error: ", error);
@@ -327,3 +317,9 @@ const getFetchDetails = (
   }
   return { name, currency, days, interval };
 };
+
+function getCoinNameFormatted(data: ConverterCoinData) {
+  return `${data?.id?.charAt(0)?.toUpperCase()}${data?.id?.slice(
+    1
+  )} (${data?.symbol?.toUpperCase()})`;
+}
