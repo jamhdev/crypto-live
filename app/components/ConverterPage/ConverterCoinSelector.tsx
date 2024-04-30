@@ -1,8 +1,8 @@
-import { AppDispatch, RootState } from "@/app/store/store";
+import { RootState } from "@/app/store/store";
 import { currencyFormat } from "@/app/utils/numberFormatting";
 import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Big from "big.js";
+import { useSelector } from "react-redux";
+import { ConverterInputData } from "./ConverterPage";
 
 export default function ConverterCoinSelector({
   coinData,
@@ -11,21 +11,22 @@ export default function ConverterCoinSelector({
   setOtherCoinData,
   converterChartDurationSelector,
 }: {
-  coinData: any;
-  setCoinData: any;
-  otherCoinData: any;
-  setOtherCoinData: any;
+  coinData: ConverterInputData;
+  setCoinData: React.Dispatch<React.SetStateAction<ConverterInputData>>;
+  otherCoinData: ConverterInputData;
+  setOtherCoinData: React.Dispatch<React.SetStateAction<ConverterInputData>>;
   converterChartDurationSelector: durationOption;
 }) {
-  const [isCoinNameFocused, setIsCoinNameFocused] = useState(false);
-  const [isCoinAmountFocused, setIsCoinAmountFocused] = useState(false);
+  const [isCoinNameFocused, setIsCoinNameFocused] = useState<boolean>(false);
+  const [isCoinAmountFocused, setIsCoinAmountFocused] =
+    useState<boolean>(false);
 
   const initialFetch = async () => {
     const response = await fetch(
       `https://api.coingecko.com/api/v3/coins/${coinData?.name}`
     );
     const data = await response.json();
-    setCoinData((prev: any) => {
+    setCoinData((prev: ConverterInputData) => {
       return {
         ...prev,
         data: data,
@@ -45,7 +46,7 @@ export default function ConverterCoinSelector({
     const targetUrl = `https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
     const response = await fetch(proxyUrl + targetUrl);
     const data = await response.json();
-    setCoinData((prev: any) => {
+    setCoinData((prev: ConverterInputData) => {
       return { ...prev, coinChartData: data };
     });
   };
@@ -58,27 +59,29 @@ export default function ConverterCoinSelector({
     chartDataFetch();
   }, [converterChartDurationSelector]);
 
-  const handleAmountInputChange = (e: any) => {
+  const handleAmountInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputVal = e.target.value;
 
     if (parseFloat(inputVal) < 0) {
-      setCoinData((prev: any) => ({ ...prev, amount: "0" }));
+      setCoinData((prev: ConverterInputData) => ({ ...prev, amount: 0 }));
       return;
     }
 
-    const newAmount = new Big(inputVal);
-    setCoinData((prev: any) => ({ ...prev, amount: newAmount.toString() }));
+    const newAmount = inputVal;
+    setCoinData((prev: ConverterInputData) => ({
+      ...prev,
+      amount: parseFloat(newAmount),
+    }));
 
     if (coinData.data && otherCoinData.data) {
-      const currentPrice = new Big(coinData.data.market_data.current_price.usd);
-      const otherPrice = new Big(
-        otherCoinData.data.market_data.current_price.usd
-      );
-      const newOtherAmount = newAmount.times(currentPrice).div(otherPrice);
+      const currentPrice = coinData.data.market_data.current_price.usd;
+      const otherPrice = otherCoinData.data.market_data.current_price.usd;
+      const newOtherAmount =
+        (parseFloat(newAmount) * currentPrice) / otherPrice;
 
-      setOtherCoinData((prev: any) => ({
+      setOtherCoinData((prev: ConverterInputData) => ({
         ...prev,
-        amount: newOtherAmount.toString(),
+        amount: parseFloat(newOtherAmount.toString()),
       }));
     }
   };
@@ -96,7 +99,7 @@ export default function ConverterCoinSelector({
               className="appearance-none bg-transparent w-full p-2"
               value={coinData.name}
               onChange={(e) => {
-                setCoinData((prev: any) => {
+                setCoinData((prev: ConverterInputData) => {
                   return { ...prev, name: e.target.value };
                 });
               }}
@@ -149,9 +152,9 @@ export default function ConverterCoinSelector({
         </div>
         <div>
           $
-          {currencyFormat.format(
-            parseInt(coinData?.data.market_data?.current_price.usd)
-          )}
+          {currencyFormat
+            .format(coinData?.data.market_data?.current_price?.usd)
+            .toString()}
         </div>
       </div>
     </div>
@@ -166,10 +169,10 @@ function CoinSearchSelector({
   isCoinAmountFocused,
   setCoinData,
 }: {
-  coinData: any;
-  isCoinNameFocused: any;
-  isCoinAmountFocused: any;
-  setCoinData: any;
+  coinData: ConverterInputData;
+  isCoinNameFocused: boolean;
+  isCoinAmountFocused: boolean;
+  setCoinData: React.Dispatch<React.SetStateAction<ConverterInputData>>;
 }) {
   const data = useSelector((state: RootState) => state.coinList.data);
   const [currentSelectedDropdownItem, setCurrentSelectedDropdownItem] =
@@ -195,7 +198,7 @@ function CoinSearchSelector({
       }
 
       const data = await response.json();
-      setCoinData((prev: any) => ({
+      setCoinData((prev: ConverterInputData) => ({
         ...prev,
         data: data,
         name: `${data?.id?.charAt(0)?.toUpperCase()}${data?.id?.slice(
@@ -255,9 +258,8 @@ function CoinSearchSelector({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isCoinAmountFocused, isCoinNameFocused, currentSelectedDropdownItem]);
-  const dispatch = useDispatch<AppDispatch>();
 
-  const listItemStyles = (id: any) => {
+  const listItemStyles = (id: number) => {
     if (id === currentSelectedDropdownItem) {
       return "p-2 cursor-pointer bg-chartBackground border-2 border-accent";
     } else {

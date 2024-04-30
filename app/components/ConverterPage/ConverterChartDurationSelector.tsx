@@ -4,7 +4,12 @@ import React from "react";
 export default function ConverterChartDurationSelector({
   converterChartDurationSelector,
   setConverterChartDurationSelector,
-}: any) {
+}: {
+  converterChartDurationSelector: durationOption;
+  setConverterChartDurationSelector: React.Dispatch<
+    React.SetStateAction<durationOption>
+  >;
+}) {
   return (
     <div className="flex justify-start self-end text-themeTextColor m-auto md:m-0 absolute top-0">
       <div className="bg-chartBackground flex gap-10 rounded-lg p-1 ">

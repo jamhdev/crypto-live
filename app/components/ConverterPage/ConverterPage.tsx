@@ -40,15 +40,16 @@ export default function ConverterPage() {
 
   useEffect(() => {
     if (
-      firstCoinData &&
-      secondCoinData &&
-      (firstCoinData.data || secondCoinData.data)
+      firstCoinData.data?.market_data?.current_price &&
+      secondCoinData.data?.market_data?.current_price
     ) {
-      const newOtherAmount =
-        (firstCoinData.amount *
-          firstCoinData.data?.market_data?.current_price?.usd) /
-        secondCoinData.data?.market_data?.current_price?.usd;
-      setSecondCoinData((prev: any) => ({ ...prev, amount: newOtherAmount }));
+      const firstPrice = firstCoinData.data.market_data.current_price.usd;
+      const secondPrice = secondCoinData.data.market_data.current_price.usd;
+      const newOtherAmount = (firstCoinData.amount * firstPrice) / secondPrice;
+      setSecondCoinData((prev: ConverterInputData) => ({
+        ...prev,
+        amount: newOtherAmount,
+      }));
     }
   }, [firstCoinData.amount, firstCoinData.data, secondCoinData.data]);
 
@@ -98,4 +99,43 @@ export default function ConverterPage() {
       </div>
     </div>
   );
+}
+
+export interface ConverterInputData {
+  name: string;
+  fetchName: string;
+  amount: number;
+  data: ConverterCoinData | null;
+  isSecondCoin: boolean;
+  coinChartData: any | null;
+}
+
+export interface ConverterCoinData {
+  id: string;
+  symbol: string;
+  name: string;
+  image: Image;
+  country_origin: string;
+  genesis_date: Date;
+  sentiment_votes_up_percentage: number;
+  sentiment_votes_down_percentage: number;
+  watchlist_portfolio_users: number;
+  market_cap_rank: number;
+  market_data: MarketData;
+}
+
+export interface Image {
+  thumb: string;
+  small: string;
+  large: string;
+}
+
+export interface MarketData {
+  current_price: { [key: string]: number };
+}
+
+export interface ConverterCoinChartData {
+  prices: Array<number[]>;
+  market_caps: Array<number[]>;
+  total_volumes: Array<number[]>;
 }

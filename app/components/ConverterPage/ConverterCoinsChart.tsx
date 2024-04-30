@@ -10,6 +10,7 @@ import {
   Legend,
   Tooltip,
   Filler,
+  TooltipItem,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
@@ -139,7 +140,7 @@ const options = {
       mode: "index" as const,
       intersect: false,
       callbacks: {
-        label: function (tooltipItem: any) {
+        label: function (tooltipItem: TooltipItem<"line">) {
           return `${tooltipItem.dataset.label}: ${currencyFormat.format(
             tooltipItem.parsed.y
           )}`;
