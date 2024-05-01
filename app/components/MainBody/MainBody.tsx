@@ -7,9 +7,22 @@ import NavBar from "../navigation/NavBar";
 import CoinOrConverterSelector from "../CoinOrConverterSelector/CoinOrConverterSelector";
 import ChartAndCarouselContainer from "../home-chart-and-carousel-section/ChartAndCarouselContainer";
 import HomeTableSection from "../home-table-section/HomeTableSection";
+import ConverterPage from "../ConverterPage/ConverterPage";
 
 export default function MainBody() {
-  const { isViewingCoinPage, setIsViewingCoinPage } = useContext(AppContext);
+  const { isViewingCoinPage, setIsViewingCoinPage, coinsOrConverterSelector } =
+    useContext(AppContext);
+
+  if (coinsOrConverterSelector === "converter") {
+    return (
+      <>
+        <MarketDataNav />
+        <NavBar />
+        <CoinOrConverterSelector />
+        <ConverterPage />
+      </>
+    );
+  }
 
   return (
     <>

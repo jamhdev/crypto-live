@@ -11,6 +11,7 @@ export default function AppContextProvider({
     useState<CoinOrConverterSelectorOption>("coins");
   const isProd = process.env.NODE_ENV === "production";
   const [isViewingCoinPage, setIsViewingCoinPage] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<pageOption>("home");
 
   const toggleTheme = () => {
     setTheme((prev: themeOption) => {
@@ -67,6 +68,8 @@ export default function AppContextProvider({
           isProd,
           isViewingCoinPage,
           setIsViewingCoinPage,
+          currentPage,
+          setCurrentPage,
         }}
       >
         {children}
@@ -95,4 +98,6 @@ export const AppContext = createContext<CreateContextType>({
   isProd: process.env.NODE_ENV === "production",
   isViewingCoinPage: false,
   setIsViewingCoinPage: () => {},
+  currentPage: "home",
+  setCurrentPage: () => {},
 });
