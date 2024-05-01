@@ -102,7 +102,7 @@ export default function ConverterCoinsChart({
 
   return (
     <>
-      <div className="flex flex-col w-full h-[300px] p-4 pb-10">
+      <div className="flex flex-col w-full h-[300px] p-4 pb-10 mt-2">
         {firstCoinChartData ? (
           <>
             <div className="flex gap-4">
