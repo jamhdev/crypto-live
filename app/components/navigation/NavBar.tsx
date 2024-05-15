@@ -27,7 +27,7 @@ export default function NavBar() {
   const [currencyOption, setCurrencyOption] = useState("USD");
 
   const currentPageDarkMode =
-    currentPage === "home" ? (
+    currentPage === "home" || currentPage === "converter" ? (
       <div className="text-white flex gap-2 justify-center items-center cursor-pointer">
         <div className="flex gap-1">
           <DarkNavHomeIconSelected />
@@ -62,7 +62,7 @@ export default function NavBar() {
     );
 
   const currentPageLightMode =
-    currentPage === "home" ? (
+    currentPage === "home" || currentPage === "converter" ? (
       <div className="flex gap-2 justify-center items-center cursor-pointer">
         <div className="flex gap-1">
           <LightNavHomeIconSelected />

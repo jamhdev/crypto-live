@@ -16,6 +16,7 @@ export default function SearchDropDown() {
   const data = useSelector((state: RootState) => state.coinList.data);
   const [currentSelectedDropdownItem, setCurrentSelectedDropdownItem] =
     useState(0);
+  const { currentPage, setCurrentPage } = useContext(AppContext);
 
   const filteredData = useMemo(() => {
     return searchInputValue.length > 0
@@ -67,6 +68,8 @@ export default function SearchDropDown() {
           }
         });
       } else if (event.key === "Enter") {
+        if (currentPage === "portfolio" || currentPage === "converter")
+          setCurrentPage("home");
         const selectedCoin = filteredData[currentSelectedDropdownItem];
         dispatch(setSelectedCoinName(selectedCoin?.name?.toLowerCase()));
         setIsViewingCoinPage((prev) => !prev);
@@ -124,6 +127,11 @@ export default function SearchDropDown() {
                       className={listItemStyles(index)}
                       key={value.id}
                       onClick={() => {
+                        if (
+                          currentPage === "portfolio" ||
+                          currentPage === "converter"
+                        )
+                          setCurrentPage("home");
                         dispatch(setSelectedCoinName(value.name.toLowerCase()));
                         setTimeout(() => {
                           setIsViewingCoinPage((prev) => !prev);
