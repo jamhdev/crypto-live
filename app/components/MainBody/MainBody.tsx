@@ -8,6 +8,7 @@ import CoinOrConverterSelector from "../CoinOrConverterSelector/CoinOrConverterS
 import ChartAndCarouselContainer from "../home-chart-and-carousel-section/ChartAndCarouselContainer";
 import HomeTableSection from "../home-table-section/HomeTableSection";
 import ConverterPage from "../ConverterPage/ConverterPage";
+import PortfolioMain from "../portfolio-page/PortfolioMain";
 
 export default function MainBody() {
   const { isViewingCoinPage } = useContext(AppContext);
@@ -18,6 +19,7 @@ export default function MainBody() {
       <>
         <MarketDataNav />
         <NavBar />
+        <PortfolioMain />
       </>
     );
   } else if (currentPage === "converter") {
