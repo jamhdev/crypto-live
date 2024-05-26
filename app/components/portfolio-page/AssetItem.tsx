@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { PersonalAssetData, CurrentCoinData } from "./PortfolioInterfaces";
 import {
   currencyFormat,
@@ -10,6 +10,7 @@ import ArrowDownLargeRedIconSvg from "./ArrowDownLargeRedIconSvg.svg";
 import ArrowDownSmallRedIconSvg from "./ArrowDownSmallRedIconSvg.svg";
 import ArrowUpLargeGreenIconSvg from "./ArrowUpLargeGreenIconSvg.svg";
 import ArrowUpSmallGreenIconSvg from "./ArrowUpSmallGreenIconSvg.svg";
+import { AppContext } from "@/app/contexts/AppContext";
 
 export default function AssetItem({
   value,
@@ -18,8 +19,9 @@ export default function AssetItem({
   value: PersonalAssetData;
   currentAssetData: { [key: string]: CurrentCoinData };
 }) {
+  const { theme } = useContext(AppContext);
   const coinCurrentData = currentAssetData[value.coinData.id];
-  const assetVisualGridItemStyles = `h-full w-full border-2 border-[#2D2D51] rounded-lg p-2`;
+  const assetVisualGridItemStyles = `h-full w-full border-2 border-[#2D2D51] rounded-lg p-2 min-w-[218px]`;
   const datePurchased = new Date(value.dataDate);
   const datePurchasedFormatted =
     "Purchased " +
@@ -64,7 +66,7 @@ export default function AssetItem({
   const decreasedValueColor = "#ff0061";
 
   return (
-    <div className="text-themeTextColor w-full h-[216px] rounded-lg flex items-center bg-chartBackground">
+    <div className="text-themeTextColor w-full h-[216px] rounded-lg flex items-center min-w-[840px]">
       <div className="h-full w-[380px] bg-chartBackground rounded-bl-lg rounded-tl-lg flex flex-col p-4 gap-1">
         <div className="text-3xl flex gap-2 items-center mb-6">
           <img src={coinImage} alt="Coin Image" width={48} />
@@ -100,7 +102,13 @@ export default function AssetItem({
           <div>{datePurchasedFormatted}</div>
         </div>
       </div>
-      <div className="h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-backgroundSecondary">
+      <div
+        className={
+          theme === "dark"
+            ? "h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-backgroundSecondary"
+            : "h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-background border-4 border-primary"
+        }
+      >
         <div className={assetVisualGridItemStyles}>
           <div className="flex flex-col text-themeTextColor justify-center">
             <div className=" text-2xl">
