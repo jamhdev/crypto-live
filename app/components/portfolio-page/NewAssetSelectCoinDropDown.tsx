@@ -115,7 +115,7 @@ export default function NewAssetSelectCoinDropDown({
         />
         {isfocused === true ? (
           <>
-            <div className="bg-backgroundSecondary absolute w-full top-10 border-t-[1px] border-gray-600 flex flex-col z-20 text-themeTextColor">
+            <div className="bg-backgroundSecondary absolute w-full top-10 flex flex-col z-20 text-themeTextColor">
               {newAssetModalData.coinName.length > 0
                 ? filteredData.map((value, index) => (
                     <div

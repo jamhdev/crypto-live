@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { SetStateAction, useContext, useState } from "react";
 import { PersonalAssetData, CurrentCoinData } from "./PortfolioInterfaces";
 import {
   currencyFormat,
@@ -11,15 +11,27 @@ import ArrowDownSmallRedIconSvg from "./ArrowDownSmallRedIconSvg.svg";
 import ArrowUpLargeGreenIconSvg from "./ArrowUpLargeGreenIconSvg.svg";
 import ArrowUpSmallGreenIconSvg from "./ArrowUpSmallGreenIconSvg.svg";
 import { AppContext } from "@/app/contexts/AppContext";
+import trashcan from "./trashcan.png";
+import exitIcon from "./exitIcon.png";
+import Image from "next/image";
 
 export default function AssetItem({
   value,
   currentAssetData,
+  handleDeleteAssetConfirm,
+  personalAssetData,
 }: {
   value: PersonalAssetData;
   currentAssetData: { [key: string]: CurrentCoinData };
+  handleDeleteAssetConfirm: (
+    id: string,
+    coinName: string,
+    personalAssetData: PersonalAssetData[]
+  ) => void;
+  personalAssetData: PersonalAssetData[];
 }) {
   const { theme } = useContext(AppContext);
+  const [deleteScreenVisible, setDeleteScreenVisible] = useState(false);
   const coinCurrentData = currentAssetData[value.coinData.id];
   const assetVisualGridItemStyles = `h-full w-full border-2 border-[#2D2D51] rounded-lg p-2 min-w-[218px]`;
   const datePurchased = new Date(value.dataDate);
@@ -65,9 +77,56 @@ export default function AssetItem({
   const increasedValueColor = "#00f5e4";
   const decreasedValueColor = "#ff0061";
 
+  const deleteAssetSection = (
+    <>
+      {deleteScreenVisible === true ? (
+        <div className="absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-[#fe0202] z-10">
+          <div className="text-black text-lg flex justify-center items-center text-center w-3/4 m-auto mt-6 font-semibold">
+            Are you sure you want to PERMANETLY DELETE this asset?
+          </div>
+          <div
+            className="bg-black rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-[#fe0202] hover:scale-110 transition-all cursor-pointer"
+            onClick={() =>
+              handleDeleteAssetConfirm(
+                value.id,
+                value.coinData.id,
+                personalAssetData
+              )
+            }
+          >
+            DELETE
+          </div>
+        </div>
+      ) : null}
+
+      <div className="absolute bottom-2 left-[351px] z-10">
+        {deleteScreenVisible === false ? (
+          <Image
+            src={trashcan}
+            width={20}
+            height={20}
+            alt="trashcan"
+            className="cursor-pointer hover:scale-125 transition-all"
+            onClick={() => setDeleteScreenVisible((prev) => !prev)}
+          />
+        ) : (
+          <Image
+            src={exitIcon}
+            width={20}
+            height={20}
+            alt="trashcan"
+            className="cursor-pointer hover:scale-125 transition-all"
+            onClick={() => setDeleteScreenVisible((prev) => !prev)}
+          />
+        )}
+      </div>
+    </>
+  );
+
   return (
-    <div className="text-themeTextColor w-full h-[216px] rounded-lg flex items-center min-w-[840px]">
-      <div className="h-full w-[380px] bg-chartBackground rounded-bl-lg rounded-tl-lg flex flex-col p-4 gap-1">
+    <div className="text-themeTextColor w-full h-[216px] rounded-lg flex items-center min-w-[840px] relative">
+      {deleteAssetSection}
+      <div className="h-full w-[380px] bg-chartBackground rounded-bl-lg rounded-tl-lg flex flex-col p-4 gap-1 relative">
         <div className="text-3xl flex gap-2 items-center mb-6">
           <img src={coinImage} alt="Coin Image" width={48} />
           {coinNameFormatted}

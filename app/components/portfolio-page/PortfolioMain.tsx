@@ -26,6 +26,29 @@ export default function PortfolioMain() {
     }
   );
 
+  const handleDeleteAssetConfirm = (
+    id: string,
+    coinName: string,
+    personalAssetData: PersonalAssetData[]
+  ) => {
+    let amountWithSameCoinName = 0;
+    personalAssetData.forEach((value) => {
+      if (value.coinData.id === coinName) amountWithSameCoinName++;
+    });
+
+    setPersonalAssetData((prev: PersonalAssetData[]) => {
+      return prev.filter((value) => value.id !== id);
+    });
+
+    if (amountWithSameCoinName < 2) {
+      setCurrentAssetData((prev: { [key: string]: CurrentCoinData }) => {
+        const newObject = { ...prev };
+        delete newObject[coinName];
+        return newObject;
+      });
+    }
+  };
+
   const fetchNewCurrentCoinData = async (name: string) => {
     const proxyUrl = "https://corsproxy.io/?";
     const fetchUrl = `https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}`;
@@ -125,6 +148,8 @@ export default function PortfolioMain() {
             key={value.id}
             value={value}
             currentAssetData={currentAssetData}
+            personalAssetData={personalAssetData}
+            handleDeleteAssetConfirm={handleDeleteAssetConfirm}
           />
         ))}
       </div>
