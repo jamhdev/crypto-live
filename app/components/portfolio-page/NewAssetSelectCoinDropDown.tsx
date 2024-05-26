@@ -1,37 +1,32 @@
 "use client";
 import { AppContext } from "@/app/contexts/AppContext";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import DarkNavSearchIcon from "./DarkNavSearchIcon.svg";
-import LightNavSearchIcon from "./LightNavSearchIcon.svg";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/app/store/store";
-import { getCoinList } from "@/app/store/coinListSlice";
-import { setSelectedCoinName } from "@/app/store/coinPageSlice";
-
-export default function SearchDropDown() {
-  const { theme, toggleTheme, isViewingCoinPage, setIsViewingCoinPage } =
-    useContext(AppContext);
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { NewAssetModalData } from "./PortfolioInterfaces";
+export default function NewAssetSelectCoinDropDown({
+  newAssetModalData,
+  setNewAssetModalData,
+}: {
+  newAssetModalData: NewAssetModalData;
+  setNewAssetModalData: React.Dispatch<React.SetStateAction<NewAssetModalData>>;
+}) {
   const [isfocused, setIsFocused] = useState(false);
-  const [searchInputValue, setSearchInputValue] = useState("");
   const data = useSelector((state: RootState) => state.coinList.data);
   const [currentSelectedDropdownItem, setCurrentSelectedDropdownItem] =
     useState(0);
-  const { currentPage, setCurrentPage } = useContext(AppContext);
 
   const filteredData = useMemo(() => {
-    return searchInputValue.length > 0
+    return newAssetModalData.coinName.length > 0
       ? data
           .filter((value) =>
-            value.name.toLowerCase().includes(searchInputValue.toLowerCase())
+            value.name
+              .toLowerCase()
+              .includes(newAssetModalData.coinName.toLowerCase())
           )
           .slice(0, 10)
       : [];
-  }, [searchInputValue, data, currentSelectedDropdownItem]);
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(getCoinList());
-  }, []);
+  }, [newAssetModalData.coinName, data, currentSelectedDropdownItem]);
 
   useEffect(() => {
     if (currentSelectedDropdownItem > filteredData.length) {
@@ -68,11 +63,11 @@ export default function SearchDropDown() {
           }
         });
       } else if (event.key === "Enter") {
-        if (currentPage === "portfolio" || currentPage === "converter")
-          setCurrentPage("home");
         const selectedCoin = filteredData[currentSelectedDropdownItem];
-        dispatch(setSelectedCoinName(selectedCoin?.name?.toLowerCase()));
-        setIsViewingCoinPage((prev) => !prev);
+        setNewAssetModalData((prev) => {
+          return { ...prev, coinName: selectedCoin.name };
+        });
+        setIsFocused(false);
       }
     };
 
@@ -95,16 +90,15 @@ export default function SearchDropDown() {
 
   return (
     <>
-      <div className="bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1 relative rounded-br-none rounded-bl-none">
-        {theme === "dark" ? <DarkNavSearchIcon /> : <LightNavSearchIcon />}
+      <div className="rounded-lg flex justify-center items-center gap-1 relative rounded-br-none rounded-bl-none w-full bg-inherit">
         <input
-          value={searchInputValue}
+          value={newAssetModalData.coinName}
           autoComplete="off"
           type="text"
           name="search"
           id="search"
-          placeholder="Search..."
-          className="bg-transparent min-w-[300px] text-themeTextColor"
+          placeholder="Select Coin"
+          className="bg-inherit w-full text-themeTextColor outline-none"
           onFocus={() => {
             setIsFocused(true);
           }}
@@ -114,28 +108,25 @@ export default function SearchDropDown() {
             }, 400);
           }}
           onChange={(e) => {
-            setSearchInputValue(e.target.value);
+            setNewAssetModalData((prev) => {
+              return { ...prev, coinName: e.target.value };
+            });
           }}
         />
         {isfocused === true ? (
           <>
-            <div className="bg-backgroundSecondary absolute w-full top-10 border-t-[1px] border-gray-600 flex flex-col z-20 text-themeTextColor">
-              {searchInputValue.length > 0
+            <div className="bg-backgroundSecondary absolute w-full top-10 flex flex-col z-20 text-themeTextColor">
+              {newAssetModalData.coinName.length > 0
                 ? filteredData.map((value, index) => (
                     <div
                       tabIndex={0}
                       className={listItemStyles(index)}
                       key={value.id}
                       onClick={() => {
-                        if (
-                          currentPage === "portfolio" ||
-                          currentPage === "converter"
-                        )
-                          setCurrentPage("home");
-                        dispatch(setSelectedCoinName(value.name.toLowerCase()));
-                        setTimeout(() => {
-                          setIsViewingCoinPage((prev) => !prev);
-                        }, 200);
+                        setNewAssetModalData((prev) => {
+                          setIsFocused(false);
+                          return { ...prev, coinName: value.name };
+                        });
                       }}
                     >
                       {value.name}

@@ -8,12 +8,21 @@ import CoinOrConverterSelector from "../CoinOrConverterSelector/CoinOrConverterS
 import ChartAndCarouselContainer from "../home-chart-and-carousel-section/ChartAndCarouselContainer";
 import HomeTableSection from "../home-table-section/HomeTableSection";
 import ConverterPage from "../ConverterPage/ConverterPage";
+import PortfolioMain from "../portfolio-page/PortfolioMain";
 
 export default function MainBody() {
-  const { isViewingCoinPage, setIsViewingCoinPage, coinsOrConverterSelector } =
-    useContext(AppContext);
+  const { isViewingCoinPage } = useContext(AppContext);
+  const { currentPage } = useContext(AppContext);
 
-  if (coinsOrConverterSelector === "converter") {
+  if (currentPage === "portfolio") {
+    return (
+      <>
+        <MarketDataNav />
+        <NavBar />
+        <PortfolioMain />
+      </>
+    );
+  } else if (currentPage === "converter") {
     return (
       <>
         <MarketDataNav />
@@ -22,26 +31,25 @@ export default function MainBody() {
         <ConverterPage />
       </>
     );
+  } else if (currentPage === "home") {
+    return (
+      <>
+        {isViewingCoinPage === true ? (
+          <>
+            <MarketDataNav />
+            <NavBar />
+            <CoinPage />
+          </>
+        ) : (
+          <>
+            <MarketDataNav />
+            <NavBar />
+            <CoinOrConverterSelector />
+            <ChartAndCarouselContainer />
+            <HomeTableSection />
+          </>
+        )}
+      </>
+    );
   }
-
-  return (
-    <>
-      {isViewingCoinPage === true ? (
-        <>
-          s
-          <MarketDataNav />
-          <NavBar />
-          <CoinPage />
-        </>
-      ) : (
-        <>
-          <MarketDataNav />
-          <NavBar />
-          <CoinOrConverterSelector />
-          <ChartAndCarouselContainer />
-          <HomeTableSection />
-        </>
-      )}
-    </>
-  );
 }
