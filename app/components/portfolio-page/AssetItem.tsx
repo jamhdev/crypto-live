@@ -35,36 +35,43 @@ export default function AssetItem({
   const coinCurrentData = currentAssetData[value.coinData.id];
   const assetVisualGridItemStyles = `h-full w-full border-2 border-[#2D2D51] rounded-lg p-2 min-w-[218px]`;
   const datePurchased = new Date(value.dataDate);
-  const datePurchasedFormatted =
-    "Purchased " +
-    datePurchased.getDate() +
-    "." +
-    (datePurchased.getMonth() + 1) +
-    "." +
-    datePurchased.getFullYear();
-  const coinNameFormatted =
-    value.coinData.id.charAt(0).toUpperCase() +
-    value.coinData.id.slice(1) +
-    " (" +
-    value.coinData.symbol.toUpperCase() +
-    ")";
+
+  const dateFormatted = (date: Date) => {
+    return (
+      date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear()
+    );
+  };
+
+  const formatCoinNameAndSymbol = (coin: string, symbol: string) => {
+    return (
+      coin.charAt(0).toUpperCase() +
+      coin.slice(1) +
+      " (" +
+      symbol.toUpperCase() +
+      ")"
+    );
+  };
+
+  const calculatePercentageCirculatingSupplyVsMaxSupply = (
+    circulatingSupply: number,
+    totalSupply: number
+  ) => {
+    return (circulatingSupply / totalSupply) * 100;
+  };
+
+  const volume = coinCurrentData?.market_data?.total_volume?.usd;
+  const marketCap = coinCurrentData?.market_data?.market_cap?.usd;
+  const calculateMarketCapVsVolumePercentage = (
+    volume: number,
+    marketCap: number
+  ) => {
+    return (volume / marketCap) * 100;
+  };
 
   const currentCoinPrice = coinCurrentData?.market_data?.current_price?.usd;
   const coinImage = value.coinData.image.small;
   const coin24HourChangePercentage =
     coinCurrentData?.market_data?.price_change_percentage_24h;
-
-  const circulatingSupply = coinCurrentData?.market_data?.circulating_supply;
-  const totalSupply = coinCurrentData?.market_data?.total_supply;
-  const percentageCirculatingSupplyVsMaxSupply = `${
-    (circulatingSupply / totalSupply) * 100
-  }`;
-
-  const volume = coinCurrentData?.market_data?.total_volume?.usd;
-  const marketCap = coinCurrentData?.market_data?.market_cap?.usd;
-  const marketCapVsVolumePercentage = `${
-    (Number(volume) / Number(marketCap)) * 100
-  }`;
 
   const originalAmountValue =
     value?.coinData?.market_data?.current_price?.usd * value.amount;
@@ -77,15 +84,18 @@ export default function AssetItem({
   const increasedValueColor = "#00f5e4";
   const decreasedValueColor = "#ff0061";
 
+  const circulatingSupply = coinCurrentData?.market_data?.circulating_supply;
+  const totalSupply = coinCurrentData?.market_data?.total_supply;
+
   const deleteAssetSection = (
     <>
       {deleteScreenVisible === true ? (
-        <div className="absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-[#fe0202] z-10">
+        <div className="absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-gray-300 z-10">
           <div className="text-black text-lg flex justify-center items-center text-center w-3/4 m-auto mt-6 font-semibold">
             Are you sure you want to PERMANETLY DELETE this asset?
           </div>
           <div
-            className="bg-black rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-[#fe0202] hover:scale-110 transition-all cursor-pointer"
+            className="bg-black rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-white hover:scale-110 transition-all cursor-pointer"
             onClick={() =>
               handleDeleteAssetConfirm(
                 value.id,
@@ -99,7 +109,7 @@ export default function AssetItem({
         </div>
       ) : null}
 
-      <div className="absolute bottom-2 left-[351px] z-10">
+      <div className="absolute top-3 left-[351px] z-10">
         {deleteScreenVisible === false ? (
           <Image
             src={trashcan}
@@ -129,7 +139,7 @@ export default function AssetItem({
       <div className="h-full w-[380px] bg-chartBackground rounded-bl-lg rounded-tl-lg flex flex-col p-4 gap-1 relative">
         <div className="text-3xl flex gap-2 items-center mb-6">
           <img src={coinImage} alt="Coin Image" width={48} />
-          {coinNameFormatted}
+          {formatCoinNameAndSymbol(value.coinData.id, value.coinData.symbol)}
         </div>
         <div className="opacity-50 ml-2">Total Value</div>
         <div className="flex items-center ml-2">
@@ -158,7 +168,7 @@ export default function AssetItem({
           </div>
         </div>
         <div className="flex text-themeTextColor opacity-50 ml-2">
-          <div>{datePurchasedFormatted}</div>
+          <div>{dateFormatted(datePurchased)}</div>
         </div>
       </div>
       <div
@@ -212,7 +222,9 @@ export default function AssetItem({
                   color: increasedValueColor,
                 }}
               >
-                {formatPercentage(Number(marketCapVsVolumePercentage))}
+                {formatPercentage(
+                  calculateMarketCapVsVolumePercentage(volume, marketCap)
+                )}
               </div>
               <div className="bg-[rgb(0,0,0,0.25)] h-[6px] rounded-full flex flex-col w-full">
                 <div
@@ -220,7 +232,7 @@ export default function AssetItem({
                   style={{
                     maxWidth: "100%",
                     width: formatPercentage(
-                      Number(marketCapVsVolumePercentage)
+                      calculateMarketCapVsVolumePercentage(volume, marketCap)
                     ),
                     backgroundColor: increasedValueColor,
                   }}
@@ -239,7 +251,10 @@ export default function AssetItem({
               }}
             >
               {percentageBarFormat.format(
-                Number(percentageCirculatingSupplyVsMaxSupply)
+                calculatePercentageCirculatingSupplyVsMaxSupply(
+                  circulatingSupply,
+                  totalSupply
+                )
               )}
               %
             </div>

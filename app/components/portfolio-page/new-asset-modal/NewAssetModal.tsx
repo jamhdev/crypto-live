@@ -69,6 +69,34 @@ export default function NewAssetModal({
     }
   };
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewAssetModalData((prev) => {
+      return {
+        ...prev,
+        purchasedAmount: Number(e.target.value),
+      };
+    });
+  };
+
+  const handleDateChange = (date: Date) => {
+    setNewAssetModalData((prev) => ({
+      ...prev,
+      purchasedDate: date,
+    }));
+  };
+
+  const handleAddingAsset = () => {
+    handleSaveAndContinue(
+      newAssetModalData.purchasedDate as Date,
+      newAssetModalData.coinName,
+      newAssetModalData.purchasedAmount as number
+    );
+    setAddingAsset(false);
+  };
+
+  const oneYearAgo = new Date();
+  oneYearAgo.setDate(new Date().getDate() - 365);
+
   return (
     <>
       <div className="fixed inset-0 w-screen h-screen flex justify-center items-center z-50">
@@ -110,43 +138,30 @@ export default function NewAssetModal({
                   className="h-full w-full bg-inherit outline-none"
                   placeholder="Purchased amount"
                   value={newAssetModalData.purchasedAmount as number}
-                  onChange={(e) => {
-                    setNewAssetModalData((prev) => {
-                      return {
-                        ...prev,
-                        purchasedAmount: Number(e.target.value),
-                      };
-                    });
-                  }}
+                  onChange={handleAmountChange}
                 />
               </div>
               <div className="bg-primary rounded-lg p-2 flex gap-2">
                 <DatePicker
                   className="bg-inherit text-themeTextColor outline-none w-full"
                   selected={newAssetModalData.purchasedDate}
-                  onChange={(date) => {
-                    setNewAssetModalData((prev) => ({
-                      ...prev,
-                      purchasedDate: date,
-                    }));
-                  }}
+                  onChange={handleDateChange}
                   maxDate={new Date()}
+                  minDate={oneYearAgo}
                 />
               </div>
               <div className="flex justify-center items-center gap-2">
-                <div className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-accent hover:scale-105 transition-all cursor-pointer text-sm">
+                <div
+                  className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-accent hover:scale-105 transition-all cursor-pointer text-sm"
+                  onClick={() => {
+                    setAddingAsset(false);
+                  }}
+                >
                   Cancel
                 </div>
                 <div
                   className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-accent hover:scale-105 transition-all cursor-pointer text-sm"
-                  onClick={() => {
-                    handleSaveAndContinue(
-                      newAssetModalData.purchasedDate as Date,
-                      newAssetModalData.coinName,
-                      newAssetModalData.purchasedAmount as number
-                    );
-                    setAddingAsset(false);
-                  }}
+                  onClick={handleAddingAsset}
                 >
                   Save and Continue
                 </div>
