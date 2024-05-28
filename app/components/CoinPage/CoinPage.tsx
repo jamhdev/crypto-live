@@ -111,9 +111,9 @@ export default function CoinPage() {
       <>
         <button
           onClick={() => setIsViewingCoinPage((prev) => !prev)}
-          className="p-4 m-4 bg-accent"
+          className="p-6 bg-highlightColor text-themeTextColorThird font-bold max-w-[250px] m-auto rounded-lg"
         >
-          EXIT
+          Back Home
         </button>
         <div className="text-themeTextColor w-full text-center">Loading...</div>
       </>
@@ -124,15 +124,9 @@ export default function CoinPage() {
     return (
       <>
         <div className="text-themeTextColor w-full text-center p-20">
-          <div className="flex flex-col gap-2 bg-chartBackground max-w-xl m-auto p-20 rounded-3xl">
+          <div className="flex flex-col gap-2 bg-chartBackground max-w-xl m-auto p-20 rounded-lg">
             <div className="text-5xl font-bold">OOPS!</div>
             <div className="text-2xl">There is no data for this coin.</div>
-            <button
-              onClick={() => setIsViewingCoinPage((prev) => !prev)}
-              className="p-6 bg-highlightColor text-themeTextColorThird font-bold max-w-[250px] m-auto rounded-3xl"
-            >
-              Back Home
-            </button>
           </div>
         </div>
       </>
