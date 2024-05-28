@@ -205,6 +205,7 @@ export default function NavBar() {
                 >
                   {currencyCodes.map((code) => (
                     <div
+                      key={code}
                       className="text-center font-medium border-b-[1px] border-chartBackground hover:bg-chartBackground"
                       onClick={() => {
                         setCurrencyOption(code.toUpperCase());
