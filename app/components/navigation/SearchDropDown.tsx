@@ -49,6 +49,9 @@ export default function SearchDropDown() {
         const selectedCoin = filteredData[currentSelectedDropdownItem];
         if (selectedCoin) {
           handleSelectCoin(selectedCoin.name);
+          setTimeout(() => {
+            setIsFocused(false);
+          }, 200);
         }
       }
     };
@@ -72,7 +75,6 @@ export default function SearchDropDown() {
     if (!isViewingCoinPage) {
       setIsViewingCoinPage(true);
     }
-    setIsFocused(false);
   };
 
   const listItemStyles = (id: number) => {
@@ -111,7 +113,12 @@ export default function SearchDropDown() {
               tabIndex={0}
               className={listItemStyles(index)}
               key={value.id}
-              onClick={() => handleSelectCoin(value.name)}
+              onClick={() => {
+                handleSelectCoin(value.name);
+                setTimeout(() => {
+                  setIsFocused(false);
+                }, 200);
+              }}
             >
               {value.name}
             </div>
