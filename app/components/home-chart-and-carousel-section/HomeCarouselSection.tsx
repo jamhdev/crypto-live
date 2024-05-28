@@ -37,27 +37,27 @@ export default function HomeCarouselSection({
 
   return (
     <>
-      <div className="w-full flex flex-col gap-2 px-10">
-        <div className="flex justify-between p-2">
-          <button
-            className="embla__prev w-14 h-14 bg-highlightColor text-white shadow-sm rounded-full flex justify-center items-center transition-all hover:scale-110 hover:shadow-lg"
-            onClick={scrollPrev}
-          >
-            &lt;
-          </button>
-          <button
-            className="embla__next w-14 h-14 bg-highlightColor text-white shadow-sm rounded-full justify-center items-center transition-all hover:scale-110 hover:shadow-lg"
-            onClick={scrollNext}
-          >
-            &gt;
-          </button>
-        </div>
-        <div
-          ref={emblaRef}
-          className="flex text-themeTextColor embla"
-          //overflow-x-scroll no-scrollbar
+      <div className="w-full relative">
+        <button
+          className="embla__prev w-14 h-14 bg-highlightColor text-white shadow-sm rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background"
+          onClick={scrollPrev}
         >
-          <div className="embla__container">{slideData}</div>
+          &lt;
+        </button>
+        <button
+          className="embla__next w-14 h-14 bg-highlightColor text-white shadow-sm rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background"
+          onClick={scrollNext}
+        >
+          &gt;
+        </button>
+        <div className="w-full flex flex-col gap-2 px-10">
+          <div
+            ref={emblaRef}
+            className="flex text-themeTextColor embla"
+            //overflow-x-scroll no-scrollbar
+          >
+            <div className="embla__container">{slideData}</div>
+          </div>
         </div>
       </div>
     </>

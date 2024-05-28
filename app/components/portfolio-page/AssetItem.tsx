@@ -98,12 +98,28 @@ export default function AssetItem({
   const deleteAssetSection = (
     <>
       {deleteScreenVisible === true ? (
-        <div className="absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-gray-300 z-10">
-          <div className="text-black text-lg flex justify-center items-center text-center w-3/4 m-auto mt-6 font-semibold">
+        <div
+          className={
+            theme === "dark"
+              ? "absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-chartBackground z-10"
+              : "absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-white z-10"
+          }
+        >
+          <div
+            className={
+              theme === "dark"
+                ? "text-white text-lg flex justify-center items-center text-center w-3/4 m-auto mt-6 font-semibold"
+                : "text-black text-lg flex justify-center items-center text-center w-3/4 m-auto mt-6 font-semibold"
+            }
+          >
             Are you sure you want to PERMANETLY DELETE this asset?
           </div>
           <div
-            className="bg-black rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-white hover:scale-110 transition-all cursor-pointer"
+            className={
+              theme === "dark"
+                ? "bg-white rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-black hover:scale-110 transition-all cursor-pointer font-bold"
+                : "bg-black rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-white hover:scale-110 transition-all cursor-pointer font-bold"
+            }
             onClick={() =>
               handleDeleteAssetConfirm(
                 value.id,
