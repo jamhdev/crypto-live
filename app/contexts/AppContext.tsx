@@ -1,12 +1,13 @@
 "use client";
 import { createContext, useEffect, useState } from "react";
+import useLocalStorage from "../components/custom-hooks/useLocalStorage";
 
 export default function AppContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [theme, setTheme] = useState<themeOption>("dark");
+  const [theme, setTheme] = useLocalStorage("theme", "dark");
   const [coinsOrConverterSelector, setCoinsOrConverterSelector] =
     useState<CoinOrConverterSelectorOption>("coins");
   const isProd = process.env.NODE_ENV === "production";
