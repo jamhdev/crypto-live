@@ -132,7 +132,7 @@ export default function PortfolioMain() {
       <div className="flex justify-between items-center w-full">
         <div className="text-3xl">Portfolio</div>
         <div
-          className="bg-accent w-[244px] h-[45px] rounded-lg flex justify-center items-center cursor-pointer hover:scale-105 transition-all"
+          className="bg-highlightColor w-[244px] h-[45px] rounded-lg flex justify-center items-center cursor-pointer hover:scale-105 transition-all font-bold"
           onClick={() => {
             setAddingAsset((prev) => !prev);
           }}

@@ -19,7 +19,7 @@ export default function HomeVolumeChart({
   currentSelectedCoinData: any;
   durationFilteredCoinData: any;
 }) {
-  const { currencyFormat } = useContext(AppContext);
+  const { currencyFormat, theme } = useContext(AppContext);
 
   const coinVolume = durationFilteredCoinData?.map(
     (value: number[]) => value[1]
@@ -52,11 +52,18 @@ export default function HomeVolumeChart({
 
   return (
     <>
-      <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
+      <div
+        className="pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col"
+        style={
+          theme === "dark"
+            ? { backgroundColor: "#1e1932" }
+            : { backgroundColor: "white" }
+        }
+      >
         {durationFilteredCoinData ? (
           <>
-            <div className="text-accent">volume</div>
-            <div className="text-accent font-extrabold text-2xl">
+            <div className="text-themeTextColorThird ">volume</div>
+            <div className="font-bold text-themeTextColorThird text-2xl">
               {currencyFormat.format(
                 currentSelectedCoinData?.market_data?.total_volume?.usd
               )}
@@ -92,7 +99,7 @@ const createGradient = (ctx: any, chartArea: any) => {
   );
 
   gradient.addColorStop(0, "rgba(190, 113, 250, 0)");
-  gradient.addColorStop(0.3, "rgba(190, 113, 250, 0.5)");
+  gradient.addColorStop(0.3, "rgba(190, 113, 250, 0.6)");
   gradient.addColorStop(1, "rgba(190, 113, 250, 1)");
 
   return gradient;

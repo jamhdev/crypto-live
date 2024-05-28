@@ -65,7 +65,10 @@ export default function NewAssetSelectCoinDropDown({
       } else if (event.key === "Enter") {
         const selectedCoin = filteredData[currentSelectedDropdownItem];
         setNewAssetModalData((prev) => {
-          return { ...prev, coinName: selectedCoin.name };
+          return {
+            ...prev,
+            coinName: selectedCoin.name.replace(" ", "-").trim(),
+          };
         });
         setIsFocused(false);
       }
@@ -109,7 +112,10 @@ export default function NewAssetSelectCoinDropDown({
           }}
           onChange={(e) => {
             setNewAssetModalData((prev) => {
-              return { ...prev, coinName: e.target.value };
+              return {
+                ...prev,
+                coinName: e.target.value.replace(" ", "-").trim(),
+              };
             });
           }}
         />

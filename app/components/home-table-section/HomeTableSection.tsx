@@ -181,7 +181,7 @@ export default function HomeTableSection() {
         style={{ width: table.getTotalSize() }}
       >
         {table.getHeaderGroups().map((headerGroup) => (
-          <div key={headerGroup.id} className="flex py-4">
+          <div key={headerGroup.id} className="flex p-3 pb-6">
             {headerGroup.headers.map((header) => (
               <div
                 key={header.id}
@@ -196,7 +196,7 @@ export default function HomeTableSection() {
                         ? "cursor-pointer"
                         : "cursor-default"
                     }
-                      flex justify-center items-center border-b-4 border-t-4 border-primary py-4 rounded-lg`}
+                      flex items-center text-themeTextColor`}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -219,7 +219,7 @@ export default function HomeTableSection() {
         {table.getRowModel().rows.map((row, index) => (
           <div
             key={row.id}
-            className="flex bg-primary py-4 rounded-lg mb-2 items-center"
+            className="flex bg-primary py-4 rounded-lg mb-2 items-center h-[76px]"
           >
             {row.getVisibleCells().map((cell) => (
               <div key={cell.id} style={{ width: cell.column.getSize() }}>

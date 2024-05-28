@@ -54,9 +54,9 @@ export default function ConverterPage() {
   }, [firstCoinData.amount, firstCoinData.data, secondCoinData.data]);
 
   return (
-    <div className="text-themeTextColor w-full px-10 flex flex-col justify-center items-center">
+    <div className="text-themeTextColorSecondary w-full px-10 flex flex-col justify-center items-center">
       <div className="flex w-full justify-center items-center relative">
-        <div className="basis-1/2 bg-chartBackground rounded-2xl text-themeTextColor flex flex-col items-center p-4 gap-4">
+        <div className="basis-1/2 bg-chartBackground rounded-2xl text-themeTextColorSecondary flex flex-col items-center p-4 gap-4">
           <div className="w-full opacity-50 text-sm">You sell</div>
           <ConverterCoinSelector
             coinData={firstCoinData}
@@ -69,12 +69,19 @@ export default function ConverterPage() {
         <div className="w-[15px] h-[15px]"></div>
         <div className="min-w-[46px] min-h-[46px] max-w-[46px] max-h-[46px] bg-background rounded-full flex justify-center items-center absolute"></div>
         <div
-          className="min-w-[40px] min-h-[40px] max-w-[40px] max-h-[40px] bg-themeTextColor rounded-full flex justify-center items-center absolute cursor-pointer transition-all hover:scale-110 z-10"
+          className="min-w-[40px] min-h-[40px] max-w-[40px] max-h-[40px] bg-themeTextColorSecondary rounded-full flex justify-center items-center absolute cursor-pointer transition-all hover:scale-110 z-10"
           onClick={onSwitchButtonClick}
         >
           {switchIcon}
         </div>
-        <div className="basis-1/2 bg-chartBackground rounded-2xl text-themeTextColor flex flex-col items-center p-4 gap-4">
+        <div
+          className="basis-1/2 rounded-2xl text-themeTextColorSecondary flex flex-col items-center p-4 gap-4"
+          style={
+            theme === "dark"
+              ? { backgroundColor: "#1e1932" }
+              : { backgroundColor: "white" }
+          }
+        >
           <div className="w-full opacity-50 text-sm">You buy</div>
           <ConverterCoinSelector
             coinData={secondCoinData}

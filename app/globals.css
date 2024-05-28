@@ -6,12 +6,19 @@
   --color-background: #13121b;
   --color-background-secondary: rgb(25, 25, 36);
   --color-primary: #191926;
-  --color-accent: rgba(97, 97, 222, 0.5);
+  --color-accent: #1e1932;
   --color-chart-background: #191934;
-  --color-chart-background-secondary: #191934;
+  --color-chart-background-secondary: #ffffff;
   --color-themeTextColor: #424286;
-  --color-green-main: #00f58f;
-  --color-red-main: #ff0015;
+  --color-theme-text-color-secondary: #ffffff;
+  --color-theme-text-color-third: #ffffff;
+  --color-highlight-color: #3d3d7e;
+  --color-green-main: #01f1e3;
+  --color-green-secondary: #00b1a7;
+  --color-red-main: #fe2264;
+  --color-nav-bar-color: #13121a;
+  --color-coins-or-converter-background-color: #232336;
+  --color-chart-duration-background-color: #232336;
 }
 
 @layer utilities {

@@ -7,12 +7,17 @@ import {
   percentFormat,
 } from "@/app/utils/numberFormatting";
 import ArrowDownLargeRedIconSvg from "./ArrowDownLargeRedIconSvg.svg";
-import ArrowDownSmallRedIconSvg from "./ArrowDownSmallRedIconSvg.svg";
 import ArrowUpLargeGreenIconSvg from "./ArrowUpLargeGreenIconSvg.svg";
+import ArrowUpLargeGreenIconSecondarySvg from "./ArrowUpLargeGreenIconSecondarySvg.svg";
 import ArrowUpSmallGreenIconSvg from "./ArrowUpSmallGreenIconSvg.svg";
+import ArrowDownSmallRedIconSvg from "./ArrowDownSmallRedIconSvg.svg";
+import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
+import IncreaseValueIconDarker from "../market-data-nav/IncreaseValueIconDarker.svg";
+import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
 import { AppContext } from "@/app/contexts/AppContext";
 import trashcan from "./trashcan.png";
 import exitIcon from "./exitIcon.png";
+import exitIconWhite from "./exitIconWhite.png";
 import Image from "next/image";
 
 export default function AssetItem({
@@ -30,10 +35,13 @@ export default function AssetItem({
   ) => void;
   personalAssetData: PersonalAssetData[];
 }) {
-  const { theme } = useContext(AppContext);
+  const { theme, colors } = useContext(AppContext);
   const [deleteScreenVisible, setDeleteScreenVisible] = useState(false);
   const coinCurrentData = currentAssetData[value.coinData.id];
-  const assetVisualGridItemStyles = `h-full w-full border-2 border-[#2D2D51] rounded-lg p-2 min-w-[218px]`;
+  const assetVisualGridItemStyles =
+    theme === "dark"
+      ? `h-full w-full border-2 border-[#2D2D51] rounded-lg p-2 min-w-[218px]`
+      : `h-full w-full border-2 border-white rounded-lg p-2 min-w-[218px]`;
   const datePurchased = new Date(value.dataDate);
 
   const dateFormatted = (date: Date) => {
@@ -81,8 +89,9 @@ export default function AssetItem({
   const percentageDifferenceInValue =
     ((currentAmountValue - originalAmountValue) / originalAmountValue) * 100;
 
-  const increasedValueColor = "#00f5e4";
-  const decreasedValueColor = "#ff0061";
+  const increasedValueColor =
+    theme === "dark" ? colors.greenMain : colors.greenSecondary;
+  const decreasedValueColor = colors.redMain;
 
   const circulatingSupply = coinCurrentData?.market_data?.circulating_supply;
   const totalSupply = coinCurrentData?.market_data?.total_supply;
@@ -90,12 +99,28 @@ export default function AssetItem({
   const deleteAssetSection = (
     <>
       {deleteScreenVisible === true ? (
-        <div className="absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-gray-300 z-10">
-          <div className="text-black text-lg flex justify-center items-center text-center w-3/4 m-auto mt-6 font-semibold">
+        <div
+          className={
+            theme === "dark"
+              ? "absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-chartBackground z-10"
+              : "absolute w-[380px] h-[216px] rounded-tl-lg rounded-bl-lg bg-white z-10"
+          }
+        >
+          <div
+            className={
+              theme === "dark"
+                ? "text-white text-lg flex justify-center items-center text-center w-3/4 m-auto mt-6 font-semibold"
+                : "text-black text-lg flex justify-center items-center text-center w-3/4 m-auto mt-6 font-semibold"
+            }
+          >
             Are you sure you want to PERMANETLY DELETE this asset?
           </div>
           <div
-            className="bg-black rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-white hover:scale-110 transition-all cursor-pointer"
+            className={
+              theme === "dark"
+                ? "bg-white rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-black hover:scale-110 transition-all cursor-pointer font-bold"
+                : "bg-black rounded-2xl w-40 p-2 m-auto flex justify-center items-center mt-5 text-white hover:scale-110 transition-all cursor-pointer font-bold"
+            }
             onClick={() =>
               handleDeleteAssetConfirm(
                 value.id,
@@ -121,7 +146,7 @@ export default function AssetItem({
           />
         ) : (
           <Image
-            src={exitIcon}
+            src={theme === "dark" ? exitIconWhite : exitIcon}
             width={20}
             height={20}
             alt="trashcan"
@@ -134,18 +159,20 @@ export default function AssetItem({
   );
 
   return (
-    <div className="text-themeTextColor w-full h-[216px] rounded-lg flex items-center min-w-[840px] relative">
+    <div className="text-themeTextColorThird w-full h-[216px] rounded-lg flex items-center min-w-[840px] relative">
       {deleteAssetSection}
       <div className="h-full w-[380px] bg-chartBackground rounded-bl-lg rounded-tl-lg flex flex-col p-4 gap-1 relative">
         <div className="text-3xl flex gap-2 items-center mb-6">
           <img src={coinImage} alt="Coin Image" width={48} />
-          {formatCoinNameAndSymbol(value.coinData.id, value.coinData.symbol)}
+          <div className="font-bold text-[24px]">
+            {formatCoinNameAndSymbol(value.coinData.id, value.coinData.symbol)}
+          </div>
         </div>
-        <div className="opacity-50 ml-2">Total Value</div>
+        <div className="ml-2">Total Value</div>
         <div className="flex items-center ml-2">
           <div className="flex gap-2">
-            <div className="text-3xl">
-              {currencyFormat.format(currentAmountValue)}$
+            <div className="text-[28px] font-bold">
+              ${currencyFormat.format(currentAmountValue)} USD
             </div>
             <div
               className="flex justify-center items-center gap-2"
@@ -158,7 +185,11 @@ export default function AssetItem({
             >
               <div>
                 {percentageDifferenceInValue > 0 ? (
-                  <ArrowUpLargeGreenIconSvg />
+                  theme === "dark" ? (
+                    <ArrowUpLargeGreenIconSvg />
+                  ) : (
+                    <ArrowUpLargeGreenIconSecondarySvg />
+                  )
                 ) : (
                   <ArrowDownLargeRedIconSvg />
                 )}
@@ -167,19 +198,19 @@ export default function AssetItem({
             </div>
           </div>
         </div>
-        <div className="flex text-themeTextColor opacity-50 ml-2">
-          <div>{dateFormatted(datePurchased)}</div>
+        <div className="flex text-themeTextColorThird opacity-50 ml-2">
+          <div>Purchased {dateFormatted(datePurchased)}</div>
         </div>
       </div>
       <div
         className={
           theme === "dark"
             ? "h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-backgroundSecondary"
-            : "h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-background border-4 border-primary"
+            : "h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-chartDurationBackgroundColor"
         }
       >
         <div className={assetVisualGridItemStyles}>
-          <div className="flex flex-col text-themeTextColor justify-center">
+          <div className="flex flex-col text-themeTextColorThird justify-center">
             <div className=" text-2xl">
               ${currencyFormat.format(currentCoinPrice)}
             </div>
@@ -187,7 +218,7 @@ export default function AssetItem({
           </div>
         </div>
         <div className={assetVisualGridItemStyles}>
-          <div className="flex flex-col text-themeTextColor justify-center">
+          <div className="flex flex-col text-themeTextColorThird justify-center">
             <div
               className=" text-2xl"
               style={{
@@ -200,9 +231,13 @@ export default function AssetItem({
               <div className="flex gap-2 items-center">
                 <div>
                   {coin24HourChangePercentage > 0 ? (
-                    <ArrowUpSmallGreenIconSvg />
+                    theme === "dark" ? (
+                      <IncreaseValueIcon />
+                    ) : (
+                      <IncreaseValueIconDarker />
+                    )
                   ) : (
-                    <ArrowDownSmallRedIconSvg />
+                    <DecreaseValueIcon />
                   )}
                 </div>
                 <div>
@@ -214,7 +249,7 @@ export default function AssetItem({
           </div>
         </div>
         <div className={assetVisualGridItemStyles}>
-          <div className="flex flex-col text-themeTextColor justify-center">
+          <div className="flex flex-col text-themeTextColorThird justify-center">
             <div className="flex items-center gap-2">
               <div
                 className=" text-2xl"
@@ -243,7 +278,7 @@ export default function AssetItem({
           </div>
         </div>
         <div className={assetVisualGridItemStyles}>
-          <div className="flex flex-col text-themeTextColor justify-center">
+          <div className="flex flex-col text-themeTextColorThird justify-center">
             <div
               className=" text-2xl"
               style={{

@@ -94,7 +94,7 @@ export default function ConverterCoinSelector({
               autoComplete="off"
               type="text"
               name="coin-text-input"
-              className="appearance-none bg-transparent w-full p-2"
+              className="appearance-none bg-transparent w-full p-2 outline-none"
               value={coinData.name}
               onChange={(e) => {
                 setCoinData((prev: ConverterInputData) => {
@@ -236,7 +236,9 @@ function CoinSearchSelector({
         });
       } else if (event.key === "Enter") {
         const selectedCoin = filteredData[currentSelectedDropdownItem];
-        updateDataFetch(selectedCoin.name.toLowerCase());
+        updateDataFetch(
+          selectedCoin.name.toLowerCase().replace(" ", "-").trim()
+        );
       }
     };
 
@@ -265,7 +267,7 @@ function CoinSearchSelector({
           className={listItemStyles(index)}
           key={value.id}
           onClick={() => {
-            updateDataFetch(value.name.toLowerCase());
+            updateDataFetch(value.name.toLowerCase().replace(" ", "-").trim());
           }}
         >
           {value.name}

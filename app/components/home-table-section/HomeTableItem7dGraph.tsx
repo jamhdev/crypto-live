@@ -1,4 +1,5 @@
 "use client";
+import { AppContext } from "@/app/contexts/AppContext";
 import {
   Chart as ChartJS,
   LineElement,
@@ -8,6 +9,7 @@ import {
   Legend,
   Tooltip,
 } from "chart.js";
+import { useContext } from "react";
 import { Line } from "react-chartjs-2";
 
 export default function HomeTableItem7dGraph({ prices }: { prices: number[] }) {
@@ -19,12 +21,14 @@ export default function HomeTableItem7dGraph({ prices }: { prices: number[] }) {
     Legend,
     Tooltip
   );
+  const { theme, colors } = useContext(AppContext);
 
   const firstPrice = prices[0];
   const secondPrice = prices[prices.length - 1];
 
-  const increasedValueColor = "#00f5e4";
-  const decreasedValueColor = "#ff0061";
+  const increasedValueColor =
+    theme === "dark" ? colors.greenMain : colors.greenSecondary;
+  const decreasedValueColor = colors.redMain;
 
   const data = {
     labels: Array.from({ length: prices.length }, (_, i) => `Day ${i + 1}`),

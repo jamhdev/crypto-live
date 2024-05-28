@@ -117,13 +117,14 @@ export default function NewAssetModal({
             </div>
           </div>
           <div className="flex">
-            <div className="w-1/3 flex justify-center items-center">
+            <div className="w-1/3 flex flex-col gap-2 justify-center items-center bg-chartBackground mr-6 rounded-lg">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/800px-Bitcoin.svg.png"
                 alt="Example coin image"
                 width={64}
                 className="opacity-50"
               />
+              <div className="font-semibold text-2xl">Bitcoin (BTC)</div>
             </div>
             <div className="w-2/3 flex flex-col gap-2">
               <div className="bg-primary rounded-lg p-2 flex gap-2 ">
@@ -152,7 +153,7 @@ export default function NewAssetModal({
               </div>
               <div className="flex justify-center items-center gap-2">
                 <div
-                  className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-accent hover:scale-105 transition-all cursor-pointer text-sm"
+                  className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-highlightColor hover:scale-105 transition-all cursor-pointer text-sm"
                   onClick={() => {
                     setAddingAsset(false);
                   }}
@@ -160,7 +161,7 @@ export default function NewAssetModal({
                   Cancel
                 </div>
                 <div
-                  className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-accent hover:scale-105 transition-all cursor-pointer text-sm"
+                  className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-highlightColor hover:scale-105 transition-all cursor-pointer text-sm"
                   onClick={handleAddingAsset}
                 >
                   Save and Continue
