@@ -219,7 +219,7 @@ export default function HomeTableSection() {
         {table.getRowModel().rows.map((row, index) => (
           <div
             key={row.id}
-            className="flex bg-primary py-4 rounded-lg mb-2 items-center"
+            className="flex bg-primary py-4 rounded-lg mb-2 items-center h-[76px]"
           >
             {row.getVisibleCells().map((cell) => (
               <div key={cell.id} style={{ width: cell.column.getSize() }}>
