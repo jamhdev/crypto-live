@@ -39,13 +39,13 @@ export default function HomeCarouselSection({
     <>
       <div className="w-full relative">
         <button
-          className="embla__prev w-14 h-14 bg-highlightColor text-white shadow-sm rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background"
+          className="embla__prev w-14 h-14 bg-highlightColor text-white rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0"
           onClick={scrollPrev}
         >
           &lt;
         </button>
         <button
-          className="embla__next w-14 h-14 bg-highlightColor text-white shadow-sm rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background"
+          className="embla__next w-14 h-14 bg-highlightColor text-white rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background hover:border-0"
           onClick={scrollNext}
         >
           &gt;
