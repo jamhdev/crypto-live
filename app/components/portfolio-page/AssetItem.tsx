@@ -17,6 +17,7 @@ import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
 import { AppContext } from "@/app/contexts/AppContext";
 import trashcan from "./trashcan.png";
 import exitIcon from "./exitIcon.png";
+import exitIconWhite from "./exitIconWhite.png";
 import Image from "next/image";
 
 export default function AssetItem({
@@ -145,7 +146,7 @@ export default function AssetItem({
           />
         ) : (
           <Image
-            src={exitIcon}
+            src={theme === "dark" ? exitIconWhite : exitIcon}
             width={20}
             height={20}
             alt="trashcan"
