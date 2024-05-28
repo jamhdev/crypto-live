@@ -107,14 +107,14 @@ export default function ConverterCoinsChart({
           <>
             <div className="flex gap-4">
               <div>
-                <div className="text-accent">
+                <div className="text-themeTextColorSecondary flex gap-2">
                   {firstCoinData?.name}({firstCoinData?.symbol?.toUpperCase()})
-                  and {secondCoinData?.name}(
+                  <div className="opacity-60">to</div> {secondCoinData?.name}(
                   {secondCoinData?.symbol?.toUpperCase()})
                 </div>
               </div>
               <div>
-                <div className="text-accent"></div>
+                <div className="text-themeTextColorSecondary"></div>
               </div>
             </div>
 

@@ -1,5 +1,7 @@
+import { AppContext } from "@/app/contexts/AppContext";
 import { formatLargeNumber } from "@/app/utils/numberFormatting";
-import React from "react";
+import React, { useContext } from "react";
+import ColoredDot from "../ColoredDot";
 
 export default function Column24HourVolumeItem({
   volume,
@@ -12,27 +14,69 @@ export default function Column24HourVolumeItem({
   percentageBar24HVolume: string;
   prices: number[];
 }) {
+  const { theme, colors } = useContext(AppContext);
+  const increaseColor =
+    theme === "dark" ? colors.greenMain : colors.greenSecondary;
+  const decreaseColor = colors.redMain;
+
   const firstPrice = prices[0];
   const secondPrice = prices[prices.length - 1];
+  const firstDot =
+    firstPrice < secondPrice ? (
+      <ColoredDot
+        color={theme === "dark" ? colors.greenMain : colors.greenSecondary}
+      />
+    ) : (
+      <ColoredDot color={colors.redMain} />
+    );
 
-  const increasedValueColor = "#00f5e4";
-  const decreasedValueColor = "#ff0061";
+  const secondDot =
+    firstPrice < secondPrice ? (
+      <ColoredDot color={"#afe5e5"} />
+    ) : (
+      <ColoredDot color={"#fbbad1"} />
+    );
+
   return (
     <div>
-      <div className="flex justify-between w-[200px]">
-        <div>{formatLargeNumber(volume)}</div>
-        <div>{formatLargeNumber(marketCap)}</div>
+      <div
+        className="flex justify-between w-[200px]"
+        style={{
+          color: firstPrice < secondPrice ? increaseColor : decreaseColor,
+        }}
+      >
+        <div className="flex gap-1 justify-center items-center">
+          <div>{firstDot}</div>
+          <div>${formatLargeNumber(volume)}</div>
+        </div>
+        <div className="text-themeTextColorThird flex gap-1 justify-center items-center">
+          <div>{secondDot}</div>
+          <div>${formatLargeNumber(marketCap)}</div>
+        </div>
       </div>
-      <div className="bg-[rgb(0,0,0,0.25)] w-[200px] h-[6px] rounded-full relative flex flex-col">
+      <div
+        className="w-[200px] h-[6px] rounded-full relative flex flex-col"
+        style={
+          theme === "dark"
+            ? {
+                backgroundColor:
+                  firstPrice < secondPrice
+                    ? "rgb(175, 229, 229,0.5)"
+                    : "rgb(138, 106, 124,0.7)",
+              }
+            : {
+                backgroundColor:
+                  firstPrice < secondPrice ? "#AFE5E5" : "#FBBAD1",
+              }
+        }
+      >
         <div
           className={`h-full rounded-full absolute`}
           style={{
             maxWidth: "100%",
             width: percentageBar24HVolume,
             backgroundColor:
-              firstPrice < secondPrice
-                ? increasedValueColor
-                : decreasedValueColor,
+              firstPrice < secondPrice ? increaseColor : decreaseColor,
           }}
         ></div>
       </div>

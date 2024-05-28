@@ -98,10 +98,10 @@ export default function NavBar() {
 
   return (
     <>
-      <div className="w-full flex justify-between pl-10 pr-10 pt-5">
+      <div className="w-full flex justify-between pl-10 pr-10 bg-navBarColor h-[80px] py-4">
         <div className="flex text-xl justify-center items-center gap-2">
           <NavLogoSvg />
-          <div className="text-accent">Logoipsm</div>
+          <div className="text-themeTextColorSecondary font-bold">Logoipsm</div>
         </div>
 
         <div className="flex">
@@ -115,7 +115,7 @@ export default function NavBar() {
             onChange={(e) => {
               setCurrencyOption(e.target.value);
             }}
-            className="p-2 bg-backgroundSecondary rounded-lg text-accent"
+            className="p-2 bg-backgroundSecondary rounded-lg text-themeTextColor"
           >
             <option value="USD">USD</option>
             <option value="BITCOIN">BITCOIN</option>

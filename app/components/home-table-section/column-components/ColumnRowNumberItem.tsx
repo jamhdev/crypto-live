@@ -7,7 +7,9 @@ export default function ColumnRowNumberItem({
 }) {
   return (
     <>
-      <div className="flex items-center gap-4 p-4">{rowIndex}</div>
+      <div className="flex items-center gap-4 p-4 text-themeTextColor font-medium">
+        {rowIndex}
+      </div>
     </>
   );
 }

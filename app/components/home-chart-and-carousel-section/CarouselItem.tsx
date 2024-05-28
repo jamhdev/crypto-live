@@ -26,7 +26,7 @@ export default function CarouselItem({
 
   const selectedStyles =
     coinSelected === id
-      ? "min-w-[287px] h-[78px] bg-accent flex justify-center items-center rounded-lg cursor-pointer p-4 mx-1"
+      ? "min-w-[287px] h-[78px] bg-highlightColor flex justify-center items-center rounded-lg cursor-pointer p-4 mx-1 text-white"
       : "min-w-[287px] h-[78px] bg-primary flex justify-center items-center rounded-lg cursor-pointer p-4 mx-1";
   return (
     <div
@@ -40,7 +40,7 @@ export default function CarouselItem({
       <img src={image} alt="Coin Image" width={32} height={32} />
       <div className="flex flex-col flex-grow items-center justify-center">
         <div>
-          <div className="flex gap-1">
+          <div className="flex gap-1 font-medium">
             <div>{id.charAt(0).toUpperCase() + id.slice(1)}</div>
             <div>({symbol.toUpperCase()})</div>
           </div>

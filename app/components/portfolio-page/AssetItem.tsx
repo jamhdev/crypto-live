@@ -30,10 +30,13 @@ export default function AssetItem({
   ) => void;
   personalAssetData: PersonalAssetData[];
 }) {
-  const { theme } = useContext(AppContext);
+  const { theme, colors } = useContext(AppContext);
   const [deleteScreenVisible, setDeleteScreenVisible] = useState(false);
   const coinCurrentData = currentAssetData[value.coinData.id];
-  const assetVisualGridItemStyles = `h-full w-full border-2 border-[#2D2D51] rounded-lg p-2 min-w-[218px]`;
+  const assetVisualGridItemStyles =
+    theme === "dark"
+      ? `h-full w-full border-2 border-[#2D2D51] rounded-lg p-2 min-w-[218px]`
+      : `h-full w-full border-2 border-white rounded-lg p-2 min-w-[218px]`;
   const datePurchased = new Date(value.dataDate);
 
   const dateFormatted = (date: Date) => {
@@ -81,8 +84,8 @@ export default function AssetItem({
   const percentageDifferenceInValue =
     ((currentAmountValue - originalAmountValue) / originalAmountValue) * 100;
 
-  const increasedValueColor = "#00f5e4";
-  const decreasedValueColor = "#ff0061";
+  const increasedValueColor = colors.greenMain;
+  const decreasedValueColor = colors.redMain;
 
   const circulatingSupply = coinCurrentData?.market_data?.circulating_supply;
   const totalSupply = coinCurrentData?.market_data?.total_supply;
@@ -134,18 +137,20 @@ export default function AssetItem({
   );
 
   return (
-    <div className="text-themeTextColor w-full h-[216px] rounded-lg flex items-center min-w-[840px] relative">
+    <div className="text-themeTextColorThird w-full h-[216px] rounded-lg flex items-center min-w-[840px] relative">
       {deleteAssetSection}
       <div className="h-full w-[380px] bg-chartBackground rounded-bl-lg rounded-tl-lg flex flex-col p-4 gap-1 relative">
         <div className="text-3xl flex gap-2 items-center mb-6">
           <img src={coinImage} alt="Coin Image" width={48} />
-          {formatCoinNameAndSymbol(value.coinData.id, value.coinData.symbol)}
+          <div className="font-bold text-[24px]">
+            {formatCoinNameAndSymbol(value.coinData.id, value.coinData.symbol)}
+          </div>
         </div>
-        <div className="opacity-50 ml-2">Total Value</div>
+        <div className="ml-2">Total Value</div>
         <div className="flex items-center ml-2">
           <div className="flex gap-2">
-            <div className="text-3xl">
-              {currencyFormat.format(currentAmountValue)}$
+            <div className="text-[28px] font-bold">
+              ${currencyFormat.format(currentAmountValue)} USD
             </div>
             <div
               className="flex justify-center items-center gap-2"
@@ -167,19 +172,19 @@ export default function AssetItem({
             </div>
           </div>
         </div>
-        <div className="flex text-themeTextColor opacity-50 ml-2">
-          <div>{dateFormatted(datePurchased)}</div>
+        <div className="flex text-themeTextColorThird opacity-50 ml-2">
+          <div>Purchased {dateFormatted(datePurchased)}</div>
         </div>
       </div>
       <div
         className={
           theme === "dark"
             ? "h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-backgroundSecondary"
-            : "h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-background border-4 border-primary"
+            : "h-full grid grid-rows-2 grid-cols-2 gap-4 flex-1 place-items-center px-4 py-4 bg-chartDurationBackgroundColor"
         }
       >
         <div className={assetVisualGridItemStyles}>
-          <div className="flex flex-col text-themeTextColor justify-center">
+          <div className="flex flex-col text-themeTextColorThird justify-center">
             <div className=" text-2xl">
               ${currencyFormat.format(currentCoinPrice)}
             </div>
@@ -187,7 +192,7 @@ export default function AssetItem({
           </div>
         </div>
         <div className={assetVisualGridItemStyles}>
-          <div className="flex flex-col text-themeTextColor justify-center">
+          <div className="flex flex-col text-themeTextColorThird justify-center">
             <div
               className=" text-2xl"
               style={{
@@ -214,7 +219,7 @@ export default function AssetItem({
           </div>
         </div>
         <div className={assetVisualGridItemStyles}>
-          <div className="flex flex-col text-themeTextColor justify-center">
+          <div className="flex flex-col text-themeTextColorThird justify-center">
             <div className="flex items-center gap-2">
               <div
                 className=" text-2xl"
@@ -243,7 +248,7 @@ export default function AssetItem({
           </div>
         </div>
         <div className={assetVisualGridItemStyles}>
-          <div className="flex flex-col text-themeTextColor justify-center">
+          <div className="flex flex-col text-themeTextColorThird justify-center">
             <div
               className=" text-2xl"
               style={{

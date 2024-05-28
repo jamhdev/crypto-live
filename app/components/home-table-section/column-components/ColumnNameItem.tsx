@@ -17,7 +17,7 @@ export default function ColumnNameItem({
   return (
     <>
       <div
-        className="flex items-center gap-4 p-4 cursor-pointer"
+        className="flex items-center gap-4 p-4 cursor-pointer text-themeTextColorThird font-medium"
         onClick={() => {
           dispatch(setSelectedCoinName(name));
           setIsViewingCoinPage((prev) => !prev);
