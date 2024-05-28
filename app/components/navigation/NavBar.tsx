@@ -116,7 +116,7 @@ export default function NavBar() {
         </div>
       </div>
     ) : (
-      <div className="text-white flex justify-center items-center cursor-pointer gap-0 md:gap-10">
+      <div className="text-themeTextColorThird flex justify-center items-center cursor-pointer gap-0 md:gap-10">
         <div
           className="flex gap-1"
           onClick={() => {
@@ -124,11 +124,11 @@ export default function NavBar() {
           }}
         >
           <DarkNavHomeIcon />
-          <div>Home</div>
+          <div className="text-themeTextColorThird">Home</div>
         </div>
         <div className="flex gap-1">
           <DarkPortfolioNavIconSelected />
-          <div>Portfolio</div>
+          <div className="text-themeTextColorThird">Portfolio</div>
         </div>
       </div>
     );
@@ -206,7 +206,7 @@ export default function NavBar() {
                   {currencyCodes.map((code) => (
                     <div
                       key={code}
-                      className="text-center font-medium border-b-[1px] border-chartBackground hover:bg-chartBackground"
+                      className="text-center text-themeTextColor font-medium border-b-[1px] border-chartBackground hover:bg-chartBackground"
                       onClick={() => {
                         setCurrencyOption(code.toUpperCase());
                       }}
