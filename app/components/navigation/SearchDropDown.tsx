@@ -95,7 +95,7 @@ export default function SearchDropDown() {
         name="search"
         id="search"
         placeholder="Search..."
-        className="bg-transparent min-w-[300px] text-themeTextColor"
+        className="bg-transparent min-w-[300px] text-themeTextColor outline-none"
         onFocus={() => {
           setIsFocused(true);
         }}

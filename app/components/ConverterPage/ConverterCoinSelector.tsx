@@ -94,7 +94,7 @@ export default function ConverterCoinSelector({
               autoComplete="off"
               type="text"
               name="coin-text-input"
-              className="appearance-none bg-transparent w-full p-2"
+              className="appearance-none bg-transparent w-full p-2 outline-none"
               value={coinData.name}
               onChange={(e) => {
                 setCoinData((prev: ConverterInputData) => {
