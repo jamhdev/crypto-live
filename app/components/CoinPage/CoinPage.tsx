@@ -13,9 +13,18 @@ import {
 } from "@/app/utils/numberFormatting";
 import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
 import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
+import IncreaseValueIconDarker from "../market-data-nav/IncreaseValueIconDarker.svg";
+import ArrowDownLargeRedIconSvg from "../portfolio-page/ArrowDownLargeRedIconSvg.svg";
+import ArrowUpLargeGreenIconSvg from "../portfolio-page/ArrowUpLargeGreenIconSvg.svg";
+import ArrowUpLargeGreenIconSecondarySvg from "../portfolio-page/ArrowUpLargeGreenIconSecondarySvg.svg";
+import useLocalStorage from "../custom-hooks/useLocalStorage";
+import { PersonalAssetData } from "../portfolio-page/PortfolioInterfaces";
+import { CoinData } from "../../store/chartDataSlice";
+import { coindData } from "@/mock-api/mock-db";
 
 export default function CoinPage() {
-  const { isViewingCoinPage, setIsViewingCoinPage } = useContext(AppContext);
+  const { isViewingCoinPage, setIsViewingCoinPage, theme, colors } =
+    useContext(AppContext);
   const { coinData, isLoading, error } = useSelector(
     (state: RootState) => state.coinPageData
   );
@@ -24,11 +33,78 @@ export default function CoinPage() {
     dispatch(getCoinPageData());
   }, []);
 
+  const [personalAssetData] = useLocalStorage("personalAssetData", []);
+  const [currentAssetData] = useLocalStorage("currentAssetData", {});
+  const increaseColor =
+    theme === "dark" ? colors.greenMain : colors.greenSecondary;
+  const decreaseColor = colors.redMain;
   const circlePlusIcon = (
-    <div className="bg-accent rounded-full min-w-[24px] min-h-[24px] flex items-center justify-center shadow-[0px_0px_10px_1px_rgb(107,106,222,0.5)]">
+    <div className="bg-highlightColor rounded-full min-w-[24px] min-h-[24px] flex items-center justify-center shadow-[0px_0px_10px_1px_rgb(107,106,222,0.5)]">
       <CirclePlusIcon />
     </div>
   );
+
+  const profitSectionCaluclation = () => {
+    const value = personalAssetData.filter(
+      (val: PersonalAssetData) => coinData.id === val.coinData.id
+    );
+    const coinCurrentData = currentAssetData[coinData.id];
+
+    let finalAmount = 0;
+
+    const accumalativeCoinsValue = personalAssetData
+      .filter(
+        (val: PersonalAssetData) => val.coinData.id === value[0].coinData.id
+      )
+      .reduce((acc: number, val: PersonalAssetData) => {
+        console.log("ITERATION");
+        console.log(acc);
+        const amount = val.amount;
+        finalAmount += amount;
+        const coinPrice = val.coinData.market_data.current_price.usd;
+        return acc + amount * coinPrice;
+      }, 0);
+    console.log(accumalativeCoinsValue);
+    const currentAmountValue = coinCurrentData?.market_data?.current_price?.usd;
+
+    const amountLostOrGained =
+      currentAmountValue * finalAmount - accumalativeCoinsValue;
+    console.log("AMOUNT LOST: ", amountLostOrGained);
+
+    const portfolioCoinNamesArray = personalAssetData.map(
+      (val: PersonalAssetData) => {
+        return val.coinData.id;
+      }
+    );
+    return (
+      <>
+        {portfolioCoinNamesArray.includes(coinData.id) && (
+          <div className="text-xl flex gap-2 items-center">
+            <div>Profit:</div>
+            <div
+              className="font-medium text-2xl flex items-center"
+              style={
+                amountLostOrGained > 0
+                  ? { color: increaseColor }
+                  : { color: decreaseColor }
+              }
+            >
+              {amountLostOrGained > 0 ? (
+                theme === "dark" ? (
+                  <IncreaseValueIcon />
+                ) : (
+                  <IncreaseValueIconDarker />
+                )
+              ) : (
+                <DecreaseValueIcon />
+              )}
+              ${currencyFormat.format(amountLostOrGained)}
+            </div>
+          </div>
+        )}
+      </>
+    );
+  };
 
   if (isLoading) {
     return (
@@ -49,11 +125,11 @@ export default function CoinPage() {
       <>
         <div className="text-themeTextColor w-full text-center p-20">
           <div className="flex flex-col gap-2 bg-chartBackground max-w-xl m-auto p-20 rounded-3xl">
-            <div className="text-5xl">OOPS!</div>
+            <div className="text-5xl font-bold">OOPS!</div>
             <div className="text-2xl">There is no data for this coin.</div>
             <button
               onClick={() => setIsViewingCoinPage((prev) => !prev)}
-              className="p-6 bg-accent max-w-[250px] m-auto rounded-3xl"
+              className="p-6 bg-highlightColor text-themeTextColorThird font-bold max-w-[250px] m-auto rounded-3xl"
             >
               Back Home
             </button>
@@ -80,9 +156,9 @@ export default function CoinPage() {
       <div className="text-themeTextColor w-full px-10">
         <button
           onClick={() => setIsViewingCoinPage((prev) => !prev)}
-          className="p-4 m-4 bg-accent"
+          className="p-4 m-4 ml-0 bg-highlightColor text-themeTextColorThird font-medium rounded-lg"
         >
-          EXIT
+          Back
         </button>
         <div>
           <div className="grid grid-cols-2">
@@ -113,21 +189,39 @@ export default function CoinPage() {
                   )}
                 </div>
                 <div className="text-xl flex gap-1 justify-center items-center">
-                  {coinData?.market_data?.current_price?.usd > 0 ? (
-                    <IncreaseValueIcon />
+                  {coinData?.market_data?.price_change_percentage_24h > 0 ? (
+                    theme === "dark" ? (
+                      <IncreaseValueIcon />
+                    ) : (
+                      <IncreaseValueIconDarker />
+                    )
                   ) : (
                     <DecreaseValueIcon />
                   )}
-                  {formatPercentage(
-                    coinData?.market_data?.price_change_percentage_24h
-                  )}
+                  <div
+                    style={
+                      coinData?.market_data?.price_change_percentage_24h > 0
+                        ? { color: increaseColor }
+                        : { color: decreaseColor }
+                    }
+                  >
+                    {formatPercentage(
+                      Math.abs(
+                        coinData?.market_data?.price_change_percentage_24h
+                      )
+                    )}
+                  </div>
                 </div>
               </div>
-              <div>Profit: N/A</div>
+              {profitSectionCaluclation()}
               <div className="w-full h-[1px] bg-themeTextColor"></div>
               <div className="flex justify-between items-center">
                 <div className="flex justify-center items-center gap-1">
-                  <IncreaseValueIcon />
+                  {theme === "dark" ? (
+                    <ArrowUpLargeGreenIconSvg />
+                  ) : (
+                    <ArrowUpLargeGreenIconSecondarySvg />
+                  )}
                   All Time High -{" "}
                   <div>
                     {new Date(
@@ -141,7 +235,7 @@ export default function CoinPage() {
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex justify-center items-center gap-1">
-                  <DecreaseValueIcon />
+                  <ArrowDownLargeRedIconSvg />
                   All Time Low -{" "}
                   {new Date(
                     coinData?.market_data?.atl_date?.usd
@@ -164,7 +258,7 @@ export default function CoinPage() {
           <div className="w-full h-[1px] bg-themeTextColor mt-10"></div>
 
           <div className="grid grid-cols-2 gap-4 mt-10">
-            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-4">
+            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8">
               <div className="flex gap-2">
                 {circlePlusIcon}
                 <div>
@@ -175,7 +269,7 @@ export default function CoinPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-4">
+            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8">
               <div className="flex gap-2">
                 {circlePlusIcon}
                 <div className="flex gap-2">
@@ -219,7 +313,7 @@ export default function CoinPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-4">
+            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8">
               <div className="flex gap-2">
                 {circlePlusIcon}
                 <div>
@@ -237,7 +331,7 @@ export default function CoinPage() {
                 )}
               </div>
             </div>
-            <div className="bg-chartBackground rounded-lg flex flex-wrap gap-[2px] items-start justify-center p-4">
+            <div className="bg-chartBackground rounded-lg flex flex-wrap gap-[4px] items-start justify-center p-8">
               {coinData?.links?.blockchain_site.map((link) => {
                 if (link.length < 1) {
                   return false;
@@ -245,7 +339,7 @@ export default function CoinPage() {
                 return (
                   <div
                     key={crypto.randomUUID()}
-                    className=" border-2 p-2 border-accent rounded-lg max-w-[300px]"
+                    className=" border-2 p-2 border-highlightColor rounded-lg max-w-[300px]"
                   >
                     <a href={link} target="_blank" className="flex gap-2">
                       <div className="truncate max-w-[254px]">{link}</div>

@@ -7,17 +7,17 @@ import {
   percentFormat,
 } from "@/app/utils/numberFormatting";
 import ArrowDownLargeRedIconSvg from "./ArrowDownLargeRedIconSvg.svg";
-import ArrowDownSmallRedIconSvg from "./ArrowDownSmallRedIconSvg.svg";
 import ArrowUpLargeGreenIconSvg from "./ArrowUpLargeGreenIconSvg.svg";
 import ArrowUpLargeGreenIconSecondarySvg from "./ArrowUpLargeGreenIconSecondarySvg.svg";
 import ArrowUpSmallGreenIconSvg from "./ArrowUpSmallGreenIconSvg.svg";
+import ArrowDownSmallRedIconSvg from "./ArrowDownSmallRedIconSvg.svg";
+import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
+import IncreaseValueIconDarker from "../market-data-nav/IncreaseValueIconDarker.svg";
+import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
 import { AppContext } from "@/app/contexts/AppContext";
 import trashcan from "./trashcan.png";
 import exitIcon from "./exitIcon.png";
 import Image from "next/image";
-import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
-import IncreaseValueIconDarker from "../market-data-nav/IncreaseValueIconDarker.svg";
-import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
 
 export default function AssetItem({
   value,
