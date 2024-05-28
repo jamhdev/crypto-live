@@ -20,7 +20,7 @@ export default function ChartDurationSelector() {
     theme === "dark"
       ? "text-[#A7A7CC] px-4 py-2 rounded-lg cursor-pointer"
       : "px-4 py-2 rounded-lg cursor-pointer";
-  const selectedStyles = `px-4 py-2 rounded-lg cursor-pointer bg-highlightColor shadow-[inset_0_0_5px_rgb(0,0,0,0.3)] font-medium text-themeTextColorThird`;
+  const selectedStyles = `px-4 py-2 rounded-lg cursor-pointer bg-highlightColor font-medium text-themeTextColorThird`;
 
   return (
     <div className="flex justify-start px-10 self-start text-themeTextColor m-auto md:m-0">

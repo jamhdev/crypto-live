@@ -9,11 +9,15 @@ import {
 import ArrowDownLargeRedIconSvg from "./ArrowDownLargeRedIconSvg.svg";
 import ArrowDownSmallRedIconSvg from "./ArrowDownSmallRedIconSvg.svg";
 import ArrowUpLargeGreenIconSvg from "./ArrowUpLargeGreenIconSvg.svg";
+import ArrowUpLargeGreenIconSecondarySvg from "./ArrowUpLargeGreenIconSecondarySvg.svg";
 import ArrowUpSmallGreenIconSvg from "./ArrowUpSmallGreenIconSvg.svg";
 import { AppContext } from "@/app/contexts/AppContext";
 import trashcan from "./trashcan.png";
 import exitIcon from "./exitIcon.png";
 import Image from "next/image";
+import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
+import IncreaseValueIconDarker from "../market-data-nav/IncreaseValueIconDarker.svg";
+import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
 
 export default function AssetItem({
   value,
@@ -84,7 +88,8 @@ export default function AssetItem({
   const percentageDifferenceInValue =
     ((currentAmountValue - originalAmountValue) / originalAmountValue) * 100;
 
-  const increasedValueColor = colors.greenMain;
+  const increasedValueColor =
+    theme === "dark" ? colors.greenMain : colors.greenSecondary;
   const decreasedValueColor = colors.redMain;
 
   const circulatingSupply = coinCurrentData?.market_data?.circulating_supply;
@@ -163,7 +168,11 @@ export default function AssetItem({
             >
               <div>
                 {percentageDifferenceInValue > 0 ? (
-                  <ArrowUpLargeGreenIconSvg />
+                  theme === "dark" ? (
+                    <ArrowUpLargeGreenIconSvg />
+                  ) : (
+                    <ArrowUpLargeGreenIconSecondarySvg />
+                  )
                 ) : (
                   <ArrowDownLargeRedIconSvg />
                 )}
@@ -205,9 +214,13 @@ export default function AssetItem({
               <div className="flex gap-2 items-center">
                 <div>
                   {coin24HourChangePercentage > 0 ? (
-                    <ArrowUpSmallGreenIconSvg />
+                    theme === "dark" ? (
+                      <IncreaseValueIcon />
+                    ) : (
+                      <IncreaseValueIconDarker />
+                    )
                   ) : (
-                    <ArrowDownSmallRedIconSvg />
+                    <DecreaseValueIcon />
                   )}
                 </div>
                 <div>

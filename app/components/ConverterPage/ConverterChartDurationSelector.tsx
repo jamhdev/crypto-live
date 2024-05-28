@@ -17,7 +17,7 @@ export default function ConverterChartDurationSelector({
     theme === "dark"
       ? "text-[#A7A7CC] px-4 py-2 rounded-lg cursor-pointer"
       : "px-4 py-2 rounded-lg cursor-pointer";
-  const selectedStyles = `px-4 py-2 rounded-lg cursor-pointer bg-highlightColor shadow-[inset_0_0_5px_rgb(0,0,0,0.3)] font-medium text-themeTextColorThird`;
+  const selectedStyles = `px-4 py-2 rounded-lg cursor-pointer bg-highlightColor font-medium text-themeTextColorThird`;
   return (
     <div className="flex justify-start self-end text-themeTextColor m-auto md:m-0 absolute top-0">
       <div className="bg-chartBackground flex gap-10 rounded-lg p-1 ">

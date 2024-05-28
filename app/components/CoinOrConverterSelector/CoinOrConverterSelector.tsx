@@ -8,7 +8,7 @@ export default function CoinOrConverterSelector() {
     "flex-grow h-full rounded-lg flex justify-center items-center text-themeTextColor bg-coinsOrConverterBackgroundColor";
 
   const selectedStyles =
-    "flex-grow h-full rounded-lg flex justify-center items-center text-themeTextColor bg-highlightColor shadow-[inset_0_0_5px_rgb(0,0,0,0.3)] text-white font-medium";
+    "flex-grow h-full rounded-lg flex justify-center items-center text-themeTextColor bg-highlightColor text-white font-medium";
 
   return (
     <>
