@@ -86,7 +86,7 @@ export default function SearchDropDown() {
   };
 
   return (
-    <div className="bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1 relative rounded-br-none rounded-bl-none">
+    <div className="bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1 relative">
       {theme === "dark" ? <DarkNavSearchIcon /> : <LightNavSearchIcon />}
       <input
         value={searchInputValue}
