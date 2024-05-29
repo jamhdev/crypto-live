@@ -104,7 +104,7 @@ export default function ConverterCoinsChart({
   return (
     <>
       <div className="flex flex-col w-full h-[300px] p-4 pb-7 mt-2 justify-center">
-        {!firstCoinChartData ? (
+        {firstCoinChartData ? (
           <>
             <div className="text-themeTextColorSecondary flex gap-2">
               {firstCoinData?.name}({firstCoinData?.symbol?.toUpperCase()})
