@@ -95,7 +95,6 @@ export default function MarketDataNav() {
   return (
     <>
       <div className="flex text-white justify-center items-center gap-10 bg-accent w-screen p-4 relative">
-        {isDevOrProd()}
         <div className="flex justify-center items-center gap-2">
           <AmountOfCoinsIcon />
           <span>Coins</span>
