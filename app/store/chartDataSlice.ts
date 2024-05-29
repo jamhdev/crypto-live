@@ -106,7 +106,7 @@ interface ChartDataState {
 }
 
 const initialState: ChartDataState = {
-  isLoading: false,
+  isLoading: true,
   chartData: { prices: [], total_volumes: [], market_caps: [] },
   coinData: { id: "" },
   error: false,

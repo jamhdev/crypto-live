@@ -13,6 +13,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
 
 export default function HomePriceChart({
   currentSelectedCoinData,
@@ -31,6 +33,7 @@ export default function HomePriceChart({
     Filler
   );
   const { currencyFormat, theme } = useContext(AppContext);
+  const { isLoading } = useSelector((state: RootState) => state.homeChartData);
 
   const coinPrice = durationFilteredCoinData?.map(
     (value: number[]) => value[1]
@@ -70,7 +73,7 @@ export default function HomePriceChart({
 
   return (
     <>
-      <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
+      <div className="bg-chartBackground p-6 rounded-xl flex flex-col">
         {durationFilteredCoinData ? (
           <>
             <div className="text-themeTextColorSecondary">
@@ -101,13 +104,35 @@ const options = {
     },
   },
   scales: {
-    y: {
-      display: false,
-    },
     x: {
       grid: {
         display: false,
       },
+      ticks: {
+        display: true,
+        color: "#8D8DB1",
+        maxTicksLimit: 8,
+        align: "inner" as const,
+      },
+      border: {
+        display: true,
+      },
+      afterBuildTicks: function (axis: any) {
+        const ticks = axis.ticks;
+        if (ticks.length > 8) {
+          const newTicks = [];
+          const tickCount = 8;
+          const step = Math.floor(ticks.length / (tickCount - 1));
+          for (let i = 0; i < tickCount; i++) {
+            const index = i === tickCount - 1 ? ticks.length - 1 : i * step;
+            newTicks.push(ticks[index]);
+          }
+          axis.ticks = newTicks;
+        }
+      },
+    },
+    y: {
+      display: false,
     },
   },
 };

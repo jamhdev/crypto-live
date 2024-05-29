@@ -81,7 +81,7 @@ interface Roi {
 }
 
 const initialState: TableDataState = {
-  isLoading: false,
+  isLoading: true,
   data: [],
   error: false,
   lastFetched: null,
