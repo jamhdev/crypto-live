@@ -15,6 +15,7 @@ import {
 import { Line } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
 import { currencyFormat } from "@/app/utils/numberFormatting";
+import LoadingCircleLine from "../../../public/LoadingCircleLineSvg.svg";
 
 export default function ConverterCoinsChart({
   firstCoinData,
@@ -102,26 +103,20 @@ export default function ConverterCoinsChart({
 
   return (
     <>
-      <div className="flex flex-col w-full h-[300px] p-4 pb-10 mt-2">
+      <div className="flex flex-col w-full h-[300px] p-4 pb-7 mt-2 justify-center">
         {firstCoinChartData ? (
           <>
-            <div className="flex gap-4">
-              <div>
-                <div className="text-themeTextColorSecondary flex gap-2">
-                  {firstCoinData?.name}({firstCoinData?.symbol?.toUpperCase()})
-                  <div className="opacity-60">to</div> {secondCoinData?.name}(
-                  {secondCoinData?.symbol?.toUpperCase()})
-                </div>
-              </div>
-              <div>
-                <div className="text-themeTextColorSecondary"></div>
-              </div>
+            <div className="text-themeTextColorSecondary flex gap-2">
+              {firstCoinData?.name}({firstCoinData?.symbol?.toUpperCase()})
+              <div className="opacity-60">to</div> {secondCoinData?.name}(
+              {secondCoinData?.symbol?.toUpperCase()})
             </div>
-
-            <Line data={data} options={options} />
+            <Line data={data} options={options} className="z-10" />
           </>
         ) : (
-          <div>Loading...</div>
+          <div className="flex justify-center items-center gap-10 bg-none w-full p-4 rounded-bl-md rounded-br-md relative px-10 text-themeTextColorThird text-2xl font-medium">
+            <LoadingCircleLine />
+          </div>
         )}
       </div>
     </>

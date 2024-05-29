@@ -67,7 +67,7 @@ export default function NewAssetSelectCoinDropDown({
         setNewAssetModalData((prev) => {
           return {
             ...prev,
-            coinName: selectedCoin.name.replace(" ", "-").trim(),
+            coinName: selectedCoin.id.replace(" ", "-").trim(),
           };
         });
         setIsFocused(false);
@@ -83,17 +83,23 @@ export default function NewAssetSelectCoinDropDown({
     };
   }, [isfocused, currentSelectedDropdownItem]);
 
-  const listItemStyles = (id: any) => {
+  const listItemStyles = (id: number) => {
     if (id === currentSelectedDropdownItem) {
-      return "p-2 cursor-pointer bg-chartBackground border-2 border-accent";
+      return "p-2 cursor-pointer bg-highlightColor";
     } else {
-      return "p-2 cursor-pointer hover:bg-chartBackground hover:border-2 hover:border-accent";
+      return "p-2 cursor-pointer bg-primary hover:bg-highlightColor";
     }
   };
 
   return (
     <>
-      <div className="rounded-lg flex justify-center items-center gap-1 relative rounded-br-none rounded-bl-none w-full bg-inherit">
+      <div
+        className={
+          isfocused === true
+            ? "rounded-lg rounded-br-none rounded-bl-none flex justify-center items-center gap-1 relative w-full bg-inherit"
+            : "rounded-lg flex justify-center items-center gap-1 relative w-full bg-inherit"
+        }
+      >
         <input
           value={newAssetModalData.coinName}
           autoComplete="off"
@@ -101,14 +107,14 @@ export default function NewAssetSelectCoinDropDown({
           name="search"
           id="search"
           placeholder="Select Coin"
-          className="bg-inherit w-full text-themeTextColor outline-none"
+          className="bg-inherit w-full text-themeTextColor outline-none m-2"
           onFocus={() => {
             setIsFocused(true);
           }}
           onBlur={() => {
             setTimeout(() => {
               setIsFocused(false);
-            }, 400);
+            }, 200);
           }}
           onChange={(e) => {
             setNewAssetModalData((prev) => {
@@ -131,7 +137,7 @@ export default function NewAssetSelectCoinDropDown({
                       onClick={() => {
                         setNewAssetModalData((prev) => {
                           setIsFocused(false);
-                          return { ...prev, coinName: value.name };
+                          return { ...prev, coinName: value.id };
                         });
                       }}
                     >

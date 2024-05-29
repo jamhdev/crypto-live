@@ -127,7 +127,7 @@ export default function NewAssetModal({
               <div className="font-semibold text-2xl">Bitcoin (BTC)</div>
             </div>
             <div className="w-2/3 flex flex-col gap-2">
-              <div className="bg-primary rounded-lg p-2 flex gap-2 ">
+              <div className="bg-primary rounded-lg flex gap-2">
                 <NewAssetSelectCoinDropDown
                   newAssetModalData={newAssetModalData}
                   setNewAssetModalData={setNewAssetModalData}

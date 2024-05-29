@@ -27,8 +27,13 @@ import DropDownArrowIconLightDown from "./DropDownArrowIconLightDown.svg";
 import DropDownArrowIconLightUp from "./DropDownArrowIconLightUp.svg";
 
 export default function NavBar() {
-  const { theme, toggleTheme, currentPage, setCurrentPage } =
-    useContext(AppContext);
+  const {
+    theme,
+    toggleTheme,
+    currentPage,
+    setCurrentPage,
+    setIsViewingCoinPage,
+  } = useContext(AppContext);
   const [currencyOption, setCurrencyOption] = useState("USD");
 
   const [dropDownArrow, setDropDownArrow] = useState(false);
@@ -101,7 +106,13 @@ export default function NavBar() {
   const currentPageDarkMode =
     currentPage === "home" || currentPage === "converter" ? (
       <div className="text-white flex justify-center items-center cursor-pointer gap-0 md:gap-10">
-        <div className="flex gap-1">
+        <div
+          className="flex gap-1"
+          onClick={() => {
+            setIsViewingCoinPage(false);
+            setCurrentPage("home");
+          }}
+        >
           <DarkNavHomeIconSelected />
           <div>Home</div>
         </div>
@@ -120,6 +131,7 @@ export default function NavBar() {
         <div
           className="flex gap-1"
           onClick={() => {
+            setIsViewingCoinPage(false);
             setCurrentPage("home");
           }}
         >
@@ -136,7 +148,13 @@ export default function NavBar() {
   const currentPageLightMode =
     currentPage === "home" || currentPage === "converter" ? (
       <div className="flex justify-center items-center cursor-pointer gap-0 md:gap-10">
-        <div className="flex gap-1">
+        <div
+          className="flex gap-1"
+          onClick={() => {
+            setIsViewingCoinPage(false);
+            setCurrentPage("home");
+          }}
+        >
           <LightNavHomeIconSelected />
           <div>Home</div>
         </div>
@@ -155,6 +173,7 @@ export default function NavBar() {
         <div
           className="flex gap-1"
           onClick={() => {
+            setIsViewingCoinPage(false);
             setCurrentPage("home");
           }}
         >
@@ -170,64 +189,74 @@ export default function NavBar() {
 
   return (
     <>
-      <div className="w-full flex justify-between pl-10 pr-10 bg-navBarColor h-[80px] py-4">
-        <div className="flex text-xl justify-center items-center gap-2">
-          <NavLogoSvg />
-          <div className="text-themeTextColorSecondary font-bold">Logoipsm</div>
-        </div>
-
-        <div className="flex">
-          {theme === "dark" ? currentPageDarkMode : currentPageLightMode}
-        </div>
-
-        <div className="flex gap-2">
-          <SearchDropDown />
+      <div className="w-screen h-[80px] bg-navBarColor z-20">
+        <div className="max-w-[1440px] flex justify-between pl-10 pr-10 h-[80px] py-4 m-auto">
           <div
-            className={
-              dropDownArrow === false
-                ? "flex justify-center items-center bg-backgroundSecondary rounded-lg w-[104px] text-themeTextColor relative cursor-pointer gap-2"
-                : "flex justify-center items-center bg-highlightColor rounded-lg rounded-bl-none rounded-br-none w-[104px] text-themeTextColor relative cursor-pointer gap-2"
-            }
+            className="flex text-xl justify-center items-center gap-2 cursor-pointer"
             onClick={() => {
-              setDropDownArrow((prev) => !prev);
+              setIsViewingCoinPage(false);
+              setCurrentPage("home");
             }}
           >
-            <div>{currencyOption}</div>
-            <div>{currentDropDownArrow}</div>
-            {dropDownArrow && (
-              <>
-                <div
-                  className="top-[48px] w-[104px] h-[295px] overflow-y-scroll bg-highlightColor absolute z-10 cursor-pointer"
-                  style={{
-                    scrollbarWidth: "none",
-                    msOverflowStyle: "none",
-                  }}
-                >
-                  {currencyCodes.map((code) => (
-                    <div
-                      key={code}
-                      className="text-center text-themeTextColor font-medium border-b-[1px] border-chartBackground hover:bg-chartBackground"
-                      onClick={() => {
-                        setCurrencyOption(code.toUpperCase());
-                      }}
-                    >
-                      {code.toUpperCase()}
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
+            <NavLogoSvg />
+            <div className="text-themeTextColorSecondary font-bold">
+              Logoipsm
+            </div>
           </div>
-          <button
-            className="p-2 bg-backgroundSecondary w-[48px] rounded-lg flex justify-center items-center"
-            onClick={toggleTheme}
-          >
-            {theme === "dark" ? (
-              <NavDarkmodeButtonSvg />
-            ) : (
-              <NavLightmodeButtonSvg />
-            )}
-          </button>
+
+          <div className="flex">
+            {theme === "dark" ? currentPageDarkMode : currentPageLightMode}
+          </div>
+
+          <div className="flex gap-2">
+            <SearchDropDown />
+            <div
+              className={
+                dropDownArrow === false
+                  ? "flex justify-center items-center bg-backgroundSecondary rounded-lg w-[104px] text-themeTextColor relative cursor-pointer gap-2"
+                  : "flex justify-center items-center bg-highlightColor rounded-lg rounded-bl-none rounded-br-none w-[104px] text-themeTextColor relative cursor-pointer gap-2"
+              }
+              onClick={() => {
+                setDropDownArrow((prev) => !prev);
+              }}
+            >
+              <div>{currencyOption}</div>
+              <div>{currentDropDownArrow}</div>
+              {dropDownArrow && (
+                <>
+                  <div
+                    className="top-[48px] w-[104px] h-[295px] overflow-y-scroll bg-highlightColor absolute z-10 cursor-pointer"
+                    style={{
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                    }}
+                  >
+                    {currencyCodes.map((code) => (
+                      <div
+                        key={code}
+                        className="text-center text-themeTextColor font-medium border-b-[1px] border-chartBackground hover:bg-chartBackground"
+                        onClick={() => {
+                          setCurrencyOption(code.toUpperCase());
+                        }}
+                      >
+                        {code.toUpperCase()}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <button
+              className="p-2 bg-backgroundSecondary w-[48px] rounded-lg flex justify-center items-center"
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? (
+                <NavDarkmodeButtonSvg />
+              ) : (
+                <NavLightmodeButtonSvg />
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </>

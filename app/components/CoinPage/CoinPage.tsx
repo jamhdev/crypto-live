@@ -54,7 +54,7 @@ export default function CoinPage() {
 
     const accumalativeCoinsValue = personalAssetData
       .filter(
-        (val: PersonalAssetData) => val.coinData.id === value[0].coinData.id
+        (val: PersonalAssetData) => val.coinData.id === value[0]?.coinData?.id
       )
       .reduce((acc: number, val: PersonalAssetData) => {
         console.log("ITERATION");
@@ -64,12 +64,10 @@ export default function CoinPage() {
         const coinPrice = val.coinData.market_data.current_price.usd;
         return acc + amount * coinPrice;
       }, 0);
-    console.log(accumalativeCoinsValue);
     const currentAmountValue = coinCurrentData?.market_data?.current_price?.usd;
 
     const amountLostOrGained =
       currentAmountValue * finalAmount - accumalativeCoinsValue;
-    console.log("AMOUNT LOST: ", amountLostOrGained);
 
     const portfolioCoinNamesArray = personalAssetData.map(
       (val: PersonalAssetData) => {

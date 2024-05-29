@@ -133,7 +133,7 @@ export default function ConverterCoinSelector({
           onBlur={() => {
             setTimeout(() => {
               setIsCoinAmountFocused(false);
-            }, 400);
+            }, 200);
           }}
         />
       </div>
@@ -236,9 +236,7 @@ function CoinSearchSelector({
         });
       } else if (event.key === "Enter") {
         const selectedCoin = filteredData[currentSelectedDropdownItem];
-        updateDataFetch(
-          selectedCoin.name.toLowerCase().replace(" ", "-").trim()
-        );
+        updateDataFetch(selectedCoin.id.toLowerCase().replace(" ", "-").trim());
       }
     };
 
@@ -253,9 +251,9 @@ function CoinSearchSelector({
 
   const listItemStyles = (id: number) => {
     if (id === currentSelectedDropdownItem) {
-      return "p-2 cursor-pointer bg-chartBackground border-2 border-accent";
+      return "p-2 cursor-pointer bg-highlightColor";
     } else {
-      return "p-2 cursor-pointer hover:bg-chartBackground hover:border-2 hover:border-accent";
+      return "p-2 cursor-pointer hover:bg-highlightColor";
     }
   };
 
@@ -267,7 +265,7 @@ function CoinSearchSelector({
           className={listItemStyles(index)}
           key={value.id}
           onClick={() => {
-            updateDataFetch(value.name.toLowerCase().replace(" ", "-").trim());
+            updateDataFetch(value.id.toLowerCase().replace(" ", "-").trim());
           }}
         >
           {value.name}

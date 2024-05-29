@@ -48,10 +48,8 @@ export default function SearchDropDown() {
       } else if (event.key === "Enter") {
         const selectedCoin = filteredData[currentSelectedDropdownItem];
         if (selectedCoin) {
-          handleSelectCoin(selectedCoin.name);
-          setTimeout(() => {
-            setIsFocused(false);
-          }, 200);
+          handleSelectCoin(selectedCoin.id);
+          setIsFocused(false);
         }
       }
     };
@@ -75,13 +73,14 @@ export default function SearchDropDown() {
     if (!isViewingCoinPage) {
       setIsViewingCoinPage(true);
     }
+    setSearchInputValue("");
   };
 
   const listItemStyles = (id: number) => {
     if (id === currentSelectedDropdownItem) {
-      return "p-2 cursor-pointer bg-chartBackground border-2 border-highlightColor";
+      return "p-2 cursor-pointer bg-highlightColor";
     } else {
-      return "p-2 cursor-pointer hover:bg-chartBackground hover:border-2 hover:border-highlightColor";
+      return "p-2 cursor-pointer hover:bg-highlightColor";
     }
   };
 
@@ -100,7 +99,7 @@ export default function SearchDropDown() {
           setIsFocused(true);
         }}
         onBlur={() => {
-          setTimeout(() => setIsFocused(false), 100);
+          setIsFocused(false);
         }}
         onChange={(e) => {
           setSearchInputValue(e.target.value);
@@ -113,11 +112,10 @@ export default function SearchDropDown() {
               tabIndex={0}
               className={listItemStyles(index)}
               key={value.id}
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
-                handleSelectCoin(value.name);
-                setTimeout(() => {
-                  setIsFocused(false);
-                }, 200);
+                handleSelectCoin(value.id);
+                setIsFocused(false);
               }}
             >
               {value.name}

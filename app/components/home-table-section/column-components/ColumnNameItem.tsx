@@ -7,10 +7,12 @@ export default function ColumnNameItem({
   image,
   name,
   symbol = "loading",
+  id,
 }: {
   image: string;
   name: string;
   symbol: string;
+  id: string;
 }) {
   const dispatch = useDispatch();
   const { isViewingCoinPage, setIsViewingCoinPage } = useContext(AppContext);
@@ -19,7 +21,7 @@ export default function ColumnNameItem({
       <div
         className="flex items-center gap-4 p-4 cursor-pointer text-themeTextColorThird font-medium"
         onClick={() => {
-          dispatch(setSelectedCoinName(name));
+          dispatch(setSelectedCoinName(id));
           setIsViewingCoinPage((prev) => !prev);
         }}
       >
