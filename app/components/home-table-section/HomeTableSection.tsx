@@ -53,8 +53,10 @@ export default function HomeTableSection() {
       maxWidth: 300,
       size: 250,
       cell: (props: any) => {
-        const { image, name, symbol } = props.row.original;
-        return <ColumnNameItem image={image} name={name} symbol={symbol} />;
+        const { image, name, symbol, id } = props.row.original;
+        return (
+          <ColumnNameItem image={image} name={name} symbol={symbol} id={id} />
+        );
       },
     },
     {
