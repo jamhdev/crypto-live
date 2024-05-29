@@ -49,9 +49,7 @@ export default function SearchDropDown() {
         const selectedCoin = filteredData[currentSelectedDropdownItem];
         if (selectedCoin) {
           handleSelectCoin(selectedCoin.id);
-          setTimeout(() => {
-            setIsFocused(false);
-          }, 200);
+          setIsFocused(false);
         }
       }
     };
@@ -100,7 +98,7 @@ export default function SearchDropDown() {
           setIsFocused(true);
         }}
         onBlur={() => {
-          setTimeout(() => setIsFocused(false), 100);
+          setIsFocused(false);
         }}
         onChange={(e) => {
           setSearchInputValue(e.target.value);
@@ -113,11 +111,10 @@ export default function SearchDropDown() {
               tabIndex={0}
               className={listItemStyles(index)}
               key={value.id}
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 handleSelectCoin(value.id);
-                setTimeout(() => {
-                  setIsFocused(false);
-                }, 200);
+                setIsFocused(false);
               }}
             >
               {value.name}
