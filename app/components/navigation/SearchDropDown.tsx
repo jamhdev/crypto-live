@@ -48,7 +48,7 @@ export default function SearchDropDown() {
       } else if (event.key === "Enter") {
         const selectedCoin = filteredData[currentSelectedDropdownItem];
         if (selectedCoin) {
-          handleSelectCoin(selectedCoin.name);
+          handleSelectCoin(selectedCoin.id);
           setTimeout(() => {
             setIsFocused(false);
           }, 200);
@@ -114,7 +114,7 @@ export default function SearchDropDown() {
               className={listItemStyles(index)}
               key={value.id}
               onClick={() => {
-                handleSelectCoin(value.name);
+                handleSelectCoin(value.id);
                 setTimeout(() => {
                   setIsFocused(false);
                 }, 200);

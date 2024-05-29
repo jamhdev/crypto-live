@@ -5,14 +5,28 @@ export const getCoinList = createAsyncThunk(
   "getCoinList",
   async (_, thunkApi) => {
     const state = thunkApi.getState() as RootState;
+    const localStorageKey = "coinList";
+
+    const storedCoinList = localStorage.getItem(localStorageKey);
+    if (storedCoinList) {
+      try {
+        const parsedCoinList = JSON.parse(storedCoinList);
+        return parsedCoinList;
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
     const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = `https://api.coingecko.com/api/v3/coins/list`;
+    const targetUrl = "https://api.coingecko.com/api/v3/coins/list";
     const response = await fetch(proxyUrl + targetUrl);
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`);
     }
     const data = await response.json();
+
+    localStorage.setItem(localStorageKey, JSON.stringify(data));
+
     return data;
   }
 );

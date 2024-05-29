@@ -67,7 +67,7 @@ export default function NewAssetSelectCoinDropDown({
         setNewAssetModalData((prev) => {
           return {
             ...prev,
-            coinName: selectedCoin.name.replace(" ", "-").trim(),
+            coinName: selectedCoin.id.replace(" ", "-").trim(),
           };
         });
         setIsFocused(false);
@@ -131,7 +131,7 @@ export default function NewAssetSelectCoinDropDown({
                       onClick={() => {
                         setNewAssetModalData((prev) => {
                           setIsFocused(false);
-                          return { ...prev, coinName: value.name };
+                          return { ...prev, coinName: value.id };
                         });
                       }}
                     >
