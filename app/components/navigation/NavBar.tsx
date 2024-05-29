@@ -191,7 +191,13 @@ export default function NavBar() {
     <>
       <div className="w-screen h-[80px] bg-navBarColor z-20">
         <div className="max-w-[1440px] flex justify-between pl-10 pr-10 h-[80px] py-4 m-auto">
-          <div className="flex text-xl justify-center items-center gap-2">
+          <div
+            className="flex text-xl justify-center items-center gap-2 cursor-pointer"
+            onClick={() => {
+              setIsViewingCoinPage(false);
+              setCurrentPage("home");
+            }}
+          >
             <NavLogoSvg />
             <div className="text-themeTextColorSecondary font-bold">
               Logoipsm
