@@ -73,13 +73,14 @@ export default function SearchDropDown() {
     if (!isViewingCoinPage) {
       setIsViewingCoinPage(true);
     }
+    setSearchInputValue("");
   };
 
   const listItemStyles = (id: number) => {
     if (id === currentSelectedDropdownItem) {
-      return "p-2 cursor-pointer bg-chartBackground border-2 border-highlightColor";
+      return "p-2 cursor-pointer bg-highlightColor";
     } else {
-      return "p-2 cursor-pointer hover:bg-chartBackground hover:border-2 hover:border-highlightColor";
+      return "p-2 cursor-pointer hover:bg-highlightColor";
     }
   };
 

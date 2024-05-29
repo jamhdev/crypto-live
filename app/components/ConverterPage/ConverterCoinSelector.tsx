@@ -251,9 +251,9 @@ function CoinSearchSelector({
 
   const listItemStyles = (id: number) => {
     if (id === currentSelectedDropdownItem) {
-      return "p-2 cursor-pointer bg-chartBackground border-2 border-accent";
+      return "p-2 cursor-pointer bg-highlightColor";
     } else {
-      return "p-2 cursor-pointer hover:bg-chartBackground hover:border-2 hover:border-accent";
+      return "p-2 cursor-pointer hover:bg-highlightColor";
     }
   };
 

@@ -164,7 +164,7 @@ export default function AssetItem({
       <div className="h-full w-[380px] bg-chartBackground rounded-bl-lg rounded-tl-lg flex flex-col p-4 gap-1 relative">
         <div className="text-3xl flex gap-2 items-center mb-6">
           <img src={coinImage} alt="Coin Image" width={48} />
-          <div className="font-bold text-[24px]">
+          <div className="font-bold text-[24px] whitespace-nowrap overflow-hidden text-ellipsis">
             {formatCoinNameAndSymbol(value.coinData.id, value.coinData.symbol)}
           </div>
         </div>
