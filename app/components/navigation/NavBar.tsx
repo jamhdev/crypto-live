@@ -27,8 +27,13 @@ import DropDownArrowIconLightDown from "./DropDownArrowIconLightDown.svg";
 import DropDownArrowIconLightUp from "./DropDownArrowIconLightUp.svg";
 
 export default function NavBar() {
-  const { theme, toggleTheme, currentPage, setCurrentPage } =
-    useContext(AppContext);
+  const {
+    theme,
+    toggleTheme,
+    currentPage,
+    setCurrentPage,
+    setIsViewingCoinPage,
+  } = useContext(AppContext);
   const [currencyOption, setCurrencyOption] = useState("USD");
 
   const [dropDownArrow, setDropDownArrow] = useState(false);
@@ -101,7 +106,13 @@ export default function NavBar() {
   const currentPageDarkMode =
     currentPage === "home" || currentPage === "converter" ? (
       <div className="text-white flex justify-center items-center cursor-pointer gap-0 md:gap-10">
-        <div className="flex gap-1">
+        <div
+          className="flex gap-1"
+          onClick={() => {
+            setIsViewingCoinPage(false);
+            setCurrentPage("home");
+          }}
+        >
           <DarkNavHomeIconSelected />
           <div>Home</div>
         </div>
@@ -120,6 +131,7 @@ export default function NavBar() {
         <div
           className="flex gap-1"
           onClick={() => {
+            setIsViewingCoinPage(false);
             setCurrentPage("home");
           }}
         >
@@ -136,7 +148,13 @@ export default function NavBar() {
   const currentPageLightMode =
     currentPage === "home" || currentPage === "converter" ? (
       <div className="flex justify-center items-center cursor-pointer gap-0 md:gap-10">
-        <div className="flex gap-1">
+        <div
+          className="flex gap-1"
+          onClick={() => {
+            setIsViewingCoinPage(false);
+            setCurrentPage("home");
+          }}
+        >
           <LightNavHomeIconSelected />
           <div>Home</div>
         </div>
@@ -155,6 +173,7 @@ export default function NavBar() {
         <div
           className="flex gap-1"
           onClick={() => {
+            setIsViewingCoinPage(false);
             setCurrentPage("home");
           }}
         >
