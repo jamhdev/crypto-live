@@ -165,14 +165,53 @@ export default function HomeTableSection() {
 
   if (isLoading)
     return (
-      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
-        <LoadingCircleLine />
+      <div className="flex flex-col min-w-full p-10 relative mt-10">
+        <div className="flex flex-col text-themeTextColor w-full items-center rounded-lg">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <div
+              key={headerGroup.id}
+              className="flex p-3 pb-6 absolute top-0 left-10"
+            >
+              {headerGroup.headers.map((header) => (
+                <div
+                  key={header.id}
+                  style={{ width: header.getSize() }}
+                  className="px-1"
+                >
+                  <div className={`flex items-center text-themeTextColor`}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+          <div className="flex justify-center items-center border-4 border-highlightColor w-full py-4 rounded-lg mb-2 h-[76px] mt-6">
+            <LoadingCircleLine />
+          </div>
+          <div className="flex justify-center items-center border-4 border-highlightColor w-full py-4 rounded-lg mb-2 h-[76px]">
+            <LoadingCircleLine />
+          </div>
+          <div className="flex justify-center items-center border-4 border-highlightColor w-full py-4 rounded-lg mb-2 h-[76px]">
+            <LoadingCircleLine />
+          </div>
+          <div className="flex justify-center items-center border-4 border-highlightColor w-full py-4 rounded-lg mb-2 h-[76px]">
+            <LoadingCircleLine />
+          </div>
+          <div className="flex justify-center items-center border-4 border-highlightColor w-full py-4 rounded-lg mb-2 h-[76px]">
+            <LoadingCircleLine />
+          </div>
+        </div>
       </div>
     );
   if (error)
     return (
-      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
-        <div>Error loading table data</div>
+      <div className="flex flex-col min-w-full p-10 relative mt-10">
+        <div className="flex justify-center items-center border-4 border-highlightColor w-full py-40 rounded-lg mb-2 h-[76px] mt-6">
+          Error loading table data
+        </div>
       </div>
     );
 
