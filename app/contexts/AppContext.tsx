@@ -13,7 +13,7 @@ export default function AppContextProvider({
   const isProd = process.env.NODE_ENV === "production";
   const [isViewingCoinPage, setIsViewingCoinPage] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<pageOption>("home");
-  const [currency, setCurrency] = useState<string>("usd");
+  const [currency, setCurrency] = useLocalStorage("currency", "usd");
   const currencyCodes = [
     "usd", // United States Dollar
     "eur", // Euro
