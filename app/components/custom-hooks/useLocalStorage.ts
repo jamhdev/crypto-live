@@ -6,7 +6,7 @@ export default function useLocalStorage(key: string, initialValue: any) {
       const storedValue = localStorage.getItem(key);
       return storedValue ? JSON.parse(storedValue) : initialValue;
     } else {
-      return "dark";
+      return initialValue;
     }
   });
 

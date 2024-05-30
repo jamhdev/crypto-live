@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import useLocalStorage from "../components/custom-hooks/useLocalStorage";
 
 export default function AppContextProvider({
@@ -14,6 +14,7 @@ export default function AppContextProvider({
   const [isViewingCoinPage, setIsViewingCoinPage] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<pageOption>("home");
   const [currency, setCurrency] = useLocalStorage("currency", "usd");
+
   const currencyCodes = [
     "usd", // United States Dollar
     "eur", // Euro
@@ -59,23 +60,26 @@ export default function AppContextProvider({
     });
   };
 
-  const colors = {
-    background: theme === "dark" ? "#13121B" : "#F3F5F9",
-    backgroundSecondary: theme === "dark" ? "#191925" : "#ebebfd",
-    primary: theme === "dark" ? "#191926" : "#FFF",
-    accent: theme === "dark" ? "#1e1932" : "#353570",
-    chartBackground: theme === "dark" ? "#191934" : "#FFF",
-    themeTextColor: theme === "dark" ? "#ffffff" : "#424286",
-    themeTextColorSecondary: theme === "dark" ? "#ffffff" : "#353570",
-    themeTextColorThird: theme === "dark" ? "#ffffff" : "#181825",
-    highlightColor: theme === "dark" ? "#3d3d7e" : "#a9aae7",
-    greenMain: theme === "dark" ? "#01f1e3" : "#01f1e3",
-    greenSecondary: theme === "dark" ? "#00b1a7" : "#00b1a7",
-    redMain: theme === "dark" ? "#FE2264" : "#FE2264",
-    navBarColor: theme === "dark" ? "#13121a" : "#ffffff",
-    coinsOrConverterBackgroundColor: theme === "dark" ? "#232336" : "#ffffff",
-    chartDurationBackgroundColor: theme === "dark" ? "#232336" : "#e3e5f9",
-  };
+  const colors = useMemo(
+    () => ({
+      background: theme === "dark" ? "#13121B" : "#F3F5F9",
+      backgroundSecondary: theme === "dark" ? "#191925" : "#ebebfd",
+      primary: theme === "dark" ? "#191926" : "#FFF",
+      accent: theme === "dark" ? "#1e1932" : "#353570",
+      chartBackground: theme === "dark" ? "#191934" : "#FFF",
+      themeTextColor: theme === "dark" ? "#ffffff" : "#424286",
+      themeTextColorSecondary: theme === "dark" ? "#ffffff" : "#353570",
+      themeTextColorThird: theme === "dark" ? "#ffffff" : "#181825",
+      highlightColor: theme === "dark" ? "#3d3d7e" : "#a9aae7",
+      greenMain: theme === "dark" ? "#01f1e3" : "#01f1e3",
+      greenSecondary: theme === "dark" ? "#00b1a7" : "#00b1a7",
+      redMain: theme === "dark" ? "#FE2264" : "#FE2264",
+      navBarColor: theme === "dark" ? "#13121a" : "#ffffff",
+      coinsOrConverterBackgroundColor: theme === "dark" ? "#232336" : "#ffffff",
+      chartDurationBackgroundColor: theme === "dark" ? "#232336" : "#e3e5f9",
+    }),
+    [theme]
+  );
 
   useEffect(() => {
     const root = document.documentElement;
@@ -109,7 +113,7 @@ export default function AppContextProvider({
       "--color-chart-duration-background-color",
       colors.chartDurationBackgroundColor
     );
-  }, [theme, colors]);
+  }, [colors]);
 
   const marketCapCurrencyFormat = new Intl.NumberFormat(undefined, {
     maximumSignificantDigits: 3,
