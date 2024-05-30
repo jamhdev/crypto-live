@@ -33,6 +33,7 @@ export default function NavBar() {
     currentPage,
     setCurrentPage,
     setIsViewingCoinPage,
+    currencyCodes,
   } = useContext(AppContext);
   const [currencyOption, setCurrencyOption] = useState("USD");
 
@@ -70,23 +71,6 @@ export default function NavBar() {
 
   const currentDropDownArrow =
     dropDownArrow === false ? dropDownArrowIcon : activeDropDownArrowIcon;
-
-  const currencyCodes = [
-    "usd", // United States Dollar
-    "eur", // Euro
-    "jpy", // Japanese Yen
-    "gbp", // British Pound Sterling
-    "aud", // Australian Dollar
-    "cad", // Canadian Dollar
-    "chf", // Swiss Franc
-    "cny", // Chinese Yuan
-    "hkd", // Hong Kong Dollar
-    "sgd", // Singapore Dollar
-    "krw", // South Korean Won
-    "inr", // Indian Rupee
-    "brl", // Brazilian Real
-    "mxn", // Mexican Peso
-  ];
 
   const currentPageDarkMode =
     currentPage === "home" || currentPage === "converter" ? (

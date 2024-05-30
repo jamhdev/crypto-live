@@ -13,6 +13,43 @@ export default function AppContextProvider({
   const isProd = process.env.NODE_ENV === "production";
   const [isViewingCoinPage, setIsViewingCoinPage] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<pageOption>("home");
+  const [currency, setCurrency] = useState<string>("usd");
+  const currencyCodes = [
+    "usd", // United States Dollar
+    "eur", // Euro
+    "jpy", // Japanese Yen
+    "gbp", // British Pound Sterling
+    "aud", // Australian Dollar
+    "cad", // Canadian Dollar
+    "chf", // Swiss Franc
+    "cny", // Chinese Yuan
+    "hkd", // Hong Kong Dollar
+    "sgd", // Singapore Dollar
+    "krw", // South Korean Won
+    "inr", // Indian Rupee
+    "brl", // Brazilian Real
+    "mxn", // Mexican Peso
+  ];
+
+  const currencySymbols = {
+    usd: "$",
+    eur: "€",
+    jpy: "¥",
+    gbp: "£",
+    aud: "A$",
+    cad: "C$",
+    chf: "CHF",
+    cny: "¥",
+    hkd: "HK$",
+    sgd: "S$",
+    krw: "₩",
+    inr: "₹",
+    brl: "R$",
+    mxn: "$",
+  };
+
+  const currencySymbol =
+    currencySymbols[currency as keyof typeof currencySymbols];
 
   const toggleTheme = () => {
     setTheme((prev: themeOption) => {
@@ -95,6 +132,11 @@ export default function AppContextProvider({
           setIsViewingCoinPage,
           currentPage,
           setCurrentPage,
+          currency,
+          setCurrency,
+          currencyCodes,
+          currencySymbols,
+          currencySymbol,
         }}
       >
         {children}
@@ -135,4 +177,39 @@ export const AppContext = createContext<CreateContextType>({
   setIsViewingCoinPage: () => {},
   currentPage: "home",
   setCurrentPage: () => {},
+  currency: "usd",
+  setCurrency: () => {},
+  currencyCodes: [
+    "usd",
+    "eur",
+    "jpy",
+    "gbp",
+    "aud",
+    "cad",
+    "chf",
+    "cny",
+    "hkd",
+    "sgd",
+    "krw",
+    "inr",
+    "brl",
+    "mxn",
+  ],
+  currencySymbols: {
+    usd: "$",
+    eur: "€",
+    jpy: "¥",
+    gbp: "£",
+    aud: "A$",
+    cad: "C$",
+    chf: "CHF",
+    cny: "¥",
+    hkd: "HK$",
+    sgd: "S$",
+    krw: "₩",
+    inr: "₹",
+    brl: "R$",
+    mxn: "$",
+  },
+  currencySymbol: "$",
 });

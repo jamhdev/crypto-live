@@ -20,4 +20,9 @@ interface CreateContextType {
   setIsViewingCoinPage: React.Dispatch<React.SetStateAction<boolean>>;
   currentPage: pageOption;
   setCurrentPage: React.Dispatch<React.SetStateAction<pageOption>>;
+  currency: string;
+  setCurrency: React.Dispatch<React.SetStateAction<string>>;
+  currencyCodes: string[];
+  currencySymbols: { [key: string]: string };
+  currencySymbol: string;
 }
