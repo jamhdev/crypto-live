@@ -77,11 +77,6 @@ export default function AppContextProvider({
     chartDurationBackgroundColor: theme === "dark" ? "#232336" : "#e3e5f9",
   };
 
-  const currencyFormat = new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: "usd",
-  });
-
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty("--color-background", colors.background);
@@ -116,6 +111,38 @@ export default function AppContextProvider({
     );
   }, [theme, colors]);
 
+  const marketCapCurrencyFormat = new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: currency.toUpperCase(),
+  });
+
+  const percentFormat = new Intl.NumberFormat(undefined, {
+    style: "percent",
+    currency: currency.toUpperCase(),
+  });
+
+  const percentFormat4CharMax = new Intl.NumberFormat(undefined, {
+    style: "percent",
+    maximumSignificantDigits: 4,
+    currency: currency.toUpperCase(),
+  });
+
+  const marketCapPercentageFormat = new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: currency.toUpperCase(),
+  });
+
+  const percentageBarFormat = new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: currency.toUpperCase(),
+  });
+
+  const currencyFormat = new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 5,
+    style: "currency",
+    currency: currency.toUpperCase(),
+  });
+
   return (
     <>
       <AppContext.Provider
@@ -127,6 +154,11 @@ export default function AppContextProvider({
           coinsOrConverterSelector,
           setCoinsOrConverterSelector,
           currencyFormat,
+          percentageBarFormat,
+          marketCapPercentageFormat,
+          percentFormat4CharMax,
+          percentFormat,
+          marketCapCurrencyFormat,
           isProd,
           isViewingCoinPage,
           setIsViewingCoinPage,
@@ -170,7 +202,28 @@ export const AppContext = createContext<CreateContextType>({
   },
   currencyFormat: new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: "usd",
+    currency: "USD",
+  }),
+  marketCapCurrencyFormat: new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: "USD",
+  }),
+  percentFormat: new Intl.NumberFormat(undefined, {
+    style: "percent",
+    currency: "USD",
+  }),
+  percentFormat4CharMax: new Intl.NumberFormat(undefined, {
+    style: "percent",
+    maximumSignificantDigits: 4,
+    currency: "USD",
+  }),
+  marketCapPercentageFormat: new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: "USD",
+  }),
+  percentageBarFormat: new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: "USD",
   }),
   isProd: process.env.NODE_ENV === "production",
   isViewingCoinPage: false,

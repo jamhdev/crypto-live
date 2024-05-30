@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import HyperlinkIcon from "./HyperlinkIcon.svg";
 import CirclePlusIcon from "./CirclePlusIcon.svg";
 import {
-  currencyFormat,
   formatPercentage,
   formatLargeNumber,
 } from "@/app/utils/numberFormatting";
@@ -23,8 +22,14 @@ import { CoinData } from "../../store/chartDataSlice";
 import { coindData } from "@/mock-api/mock-db";
 
 export default function CoinPage() {
-  const { isViewingCoinPage, setIsViewingCoinPage, theme, colors } =
-    useContext(AppContext);
+  const {
+    isViewingCoinPage,
+    setIsViewingCoinPage,
+    theme,
+    colors,
+    currencyFormat,
+    currency,
+  } = useContext(AppContext);
   const { coinData, isLoading, error } = useSelector(
     (state: RootState) => state.coinPageData
   );
@@ -61,10 +66,12 @@ export default function CoinPage() {
         console.log(acc);
         const amount = val.amount;
         finalAmount += amount;
-        const coinPrice = val.coinData.market_data.current_price.usd;
+        const coinPrice =
+          val.coinData.market_data.current_price[currency.toLowerCase()];
         return acc + amount * coinPrice;
       }, 0);
-    const currentAmountValue = coinCurrentData?.market_data?.current_price?.usd;
+    const currentAmountValue =
+      coinCurrentData?.market_data?.current_price[currency.toLowerCase()];
 
     const amountLostOrGained =
       currentAmountValue * finalAmount - accumalativeCoinsValue;
@@ -96,7 +103,7 @@ export default function CoinPage() {
               ) : (
                 <DecreaseValueIcon />
               )}
-              ${currencyFormat.format(amountLostOrGained)}
+              {currencyFormat.format(amountLostOrGained)}
             </div>
           </div>
         )}
@@ -175,9 +182,8 @@ export default function CoinPage() {
               </div>
               <div className="text-4xl font-semibold flex gap-4 justify-start items-center">
                 <div>
-                  $
                   {currencyFormat.format(
-                    coinData?.market_data?.current_price?.usd
+                    coinData?.market_data?.current_price[currency.toLowerCase()]
                   )}
                 </div>
                 <div className="text-xl flex gap-1 justify-center items-center">
@@ -217,12 +223,14 @@ export default function CoinPage() {
                   All Time High -{" "}
                   <div>
                     {new Date(
-                      coinData?.market_data?.ath_date?.usd
+                      coinData?.market_data?.ath_date[currency.toLowerCase()]
                     ).toDateString()}
                   </div>
                 </div>
                 <div className="text-2xl">
-                  ${currencyFormat.format(coinData?.market_data?.ath?.usd)}
+                  {currencyFormat.format(
+                    coinData?.market_data?.ath[currency.toLowerCase()]
+                  )}
                 </div>
               </div>
               <div className="flex justify-between items-center">
@@ -230,11 +238,13 @@ export default function CoinPage() {
                   <ArrowDownLargeRedIconSvg />
                   All Time Low -{" "}
                   {new Date(
-                    coinData?.market_data?.atl_date?.usd
+                    coinData?.market_data?.atl_date[currency.toLowerCase()]
                   ).toDateString()}
                 </div>
                 <div className="text-2xl">
-                  ${currencyFormat.format(coinData?.market_data?.atl?.usd)}
+                  {currencyFormat.format(
+                    coinData?.market_data?.atl[currency.toLowerCase()]
+                  )}
                 </div>
               </div>
             </div>
@@ -254,9 +264,9 @@ export default function CoinPage() {
               <div className="flex gap-2">
                 {circlePlusIcon}
                 <div>
-                  Total Volume: $
+                  Total Volume:{" "}
                   {currencyFormat.format(
-                    coinData?.market_data?.total_volume?.usd
+                    coinData?.market_data?.total_volume[currency.toLowerCase()]
                   )}
                 </div>
               </div>
@@ -309,17 +319,19 @@ export default function CoinPage() {
               <div className="flex gap-2">
                 {circlePlusIcon}
                 <div>
-                  Market Cap: $
+                  Market Cap:{" "}
                   {currencyFormat.format(
-                    coinData?.market_data?.market_cap?.usd
+                    coinData?.market_data?.market_cap[currency.toLowerCase()]
                   )}
                 </div>
               </div>
               <div className="flex gap-2">
                 {circlePlusIcon}
-                Fully Diluted Valuation: $
+                Fully Diluted Valuation:{" "}
                 {currencyFormat.format(
-                  coinData?.market_data?.fully_diluted_valuation?.usd
+                  coinData?.market_data?.fully_diluted_valuation[
+                    currency.toLowerCase()
+                  ]
                 )}
               </div>
             </div>

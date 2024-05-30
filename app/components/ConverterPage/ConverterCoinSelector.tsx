@@ -1,8 +1,8 @@
 import { RootState } from "@/app/store/store";
-import { currencyFormat } from "@/app/utils/numberFormatting";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { ConverterCoinData, ConverterInputData } from "./ConverterPage";
+import { AppContext } from "@/app/contexts/AppContext";
 
 export default function ConverterCoinSelector({
   coinData,
@@ -21,6 +21,8 @@ export default function ConverterCoinSelector({
   const [isCoinAmountFocused, setIsCoinAmountFocused] =
     useState<boolean>(false);
 
+  const { currencyFormat, currency } = useContext(AppContext);
+
   const initialFetch = async () => {
     const response = await fetch(
       `https://api.coingecko.com/api/v3/coins/${coinData?.name}`
@@ -36,12 +38,12 @@ export default function ConverterCoinSelector({
   };
 
   const chartDataFetch = async () => {
-    const { name, currency, days, interval } = getFetchDetails(
+    const { name, days, interval } = getFetchDetails(
       coinData?.fetchName,
       converterChartDurationSelector
     );
     const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = `https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
+    const targetUrl = `https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}/market_chart?vs_currency=${currency.toLowerCase()}&days=${days}&interval=${interval}`;
     const response = await fetch(proxyUrl + targetUrl);
     const data = await response.json();
     setCoinData((prev: ConverterInputData) => {
@@ -72,8 +74,8 @@ export default function ConverterCoinSelector({
     }));
 
     if (coinData.data && otherCoinData.data) {
-      const currentPrice = coinData.data.market_data.current_price.usd;
-      const otherPrice = otherCoinData.data.market_data.current_price.usd;
+      const currentPrice = coinData.data.market_data.current_price.currency;
+      const otherPrice = otherCoinData.data.market_data.current_price.currency;
       const newOtherAmount =
         (parseFloat(newAmount) * currentPrice) / otherPrice;
 
@@ -143,9 +145,8 @@ export default function ConverterCoinSelector({
           1 {coinData?.data?.symbol?.toUpperCase()} ={" "}
         </div>
         <div>
-          $
           {currencyFormat
-            .format(coinData?.data.market_data?.current_price?.usd)
+            .format(coinData?.data.market_data?.current_price?.currency)
             .toString()}
         </div>
       </div>
@@ -275,51 +276,45 @@ function CoinSearchSelector({
   );
 }
 
-const getFetchDetails = (
-  coinSelected: string,
-  durationSelector: durationOption
-) => {
-  let name;
-  let currency;
-  let days;
-  let interval = "&interval=daily";
-  switch (durationSelector) {
-    case "1D":
-      name = coinSelected;
-      currency = "usd";
-      days = 1;
-      interval = "";
-      break;
-    case "7D":
-      name = coinSelected;
-      currency = "usd";
-      days = 7;
-      interval = "";
-      break;
-    case "14D":
-      name = coinSelected;
-      currency = "usd";
-      days = 14;
-      interval = "";
-      break;
-    case "1M":
-      name = coinSelected;
-      currency = "usd";
-      days = 30;
-      interval = "";
-      break;
-    case "1Y":
-      name = coinSelected;
-      currency = "usd";
-      days = 360;
-      interval = "";
-      break;
-  }
-  return { name, currency, days, interval };
-};
-
 function getCoinNameFormatted(data: ConverterCoinData) {
   return `${data?.id?.charAt(0)?.toUpperCase()}${data?.id?.slice(
     1
   )} (${data?.symbol?.toUpperCase()})`;
 }
+
+const getFetchDetails = (
+  coinSelected: string,
+  durationSelector: durationOption
+) => {
+  let name;
+  let days;
+  let interval = "&interval=daily";
+  switch (durationSelector) {
+    case "1D":
+      name = coinSelected;
+      days = 1;
+      interval = "";
+      break;
+    case "7D":
+      name = coinSelected;
+      days = 7;
+      interval = "";
+      break;
+    case "14D":
+      name = coinSelected;
+      days = 14;
+      interval = "";
+      break;
+    case "1M":
+      name = coinSelected;
+      days = 30;
+      interval = "";
+      break;
+    case "1Y":
+      name = coinSelected;
+      days = 360;
+      interval = "";
+      break;
+  }
+  return { name, days, interval };
+};

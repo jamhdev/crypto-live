@@ -15,6 +15,11 @@ interface CreateContextType {
     [key: string]: string;
   };
   currencyFormat: Intl.NumberFormat;
+  marketCapCurrencyFormat: Intl.NumberFormat;
+  percentFormat: Intl.NumberFormat;
+  percentFormat4CharMax: Intl.NumberFormat;
+  marketCapPercentageFormat: Intl.NumberFormat;
+  percentageBarFormat: Intl.NumberFormat;
   isProd: boolean;
   isViewingCoinPage: boolean;
   setIsViewingCoinPage: React.Dispatch<React.SetStateAction<boolean>>;

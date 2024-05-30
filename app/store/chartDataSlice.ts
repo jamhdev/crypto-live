@@ -8,7 +8,7 @@ import { RootState } from "./store";
 
 export const getChartData = createAsyncThunk(
   "getChartData",
-  async (_, thunkApi) => {
+  async (currency: string, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const isFetchedYet = state.chartData.lastFetchedChartData === null;
     const moreThan5MinutesSinceLastFetch =
@@ -17,9 +17,16 @@ export const getChartData = createAsyncThunk(
     const isNewCoinSelected =
       state.chartData.coinSelected !== state.chartData.coinData.id;
 
-    if (isFetchedYet || moreThan5MinutesSinceLastFetch || isNewCoinSelected) {
+    const isDifferentCurrency = state.chartData.currentCurrency !== currency;
+
+    if (
+      isFetchedYet ||
+      moreThan5MinutesSinceLastFetch ||
+      isNewCoinSelected ||
+      isDifferentCurrency
+    ) {
       const { coinSelected, durationSelector } = state.chartData;
-      const { name, currency, days, interval } = getFetchDetails(
+      const { name, days, interval } = getFetchDetails(
         coinSelected,
         durationSelector
       );
@@ -31,23 +38,26 @@ export const getChartData = createAsyncThunk(
         throw new Error(`API request failed with status ${response.status}`);
       }
       const data = await response.json();
-      return data;
+      return { data, currency };
     } else {
-      return state.chartData.chartData;
+      return {
+        data: state.chartData.chartData,
+        currency: state.chartData.currentCurrency,
+      };
     }
   }
 );
 
 export const getChartDataOnDurationChange = createAsyncThunk(
   "getChartDataOnDurationChange",
-  async (_, thunkApi) => {
+  async (currency: string, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const isNewDuration =
       state.chartData.durationSelector !== state.chartData.prevDurationSelector;
 
     if (isNewDuration) {
       const { coinSelected, durationSelector } = state.chartData;
-      const { name, currency, days, interval } = getFetchDetails(
+      const { name, days, interval } = getFetchDetails(
         coinSelected,
         durationSelector
       );
@@ -58,9 +68,12 @@ export const getChartDataOnDurationChange = createAsyncThunk(
         throw new Error(`API request failed with status ${response.status}`);
       }
       const data = await response.json();
-      return data;
+      return { data, currency };
     } else {
-      return state.chartData.chartData;
+      return {
+        data: state.chartData.chartData,
+        currency: state.chartData.currentCurrency,
+      };
     }
   }
 );
@@ -103,6 +116,7 @@ interface ChartDataState {
   durationSelector: durationOption;
   prevCoinSelected: string;
   prevDurationSelector: durationOption;
+  currentCurrency: string | null;
 }
 
 const initialState: ChartDataState = {
@@ -116,6 +130,7 @@ const initialState: ChartDataState = {
   durationSelector: "1M",
   prevCoinSelected: "bitcoin",
   prevDurationSelector: "1M",
+  currentCurrency: null,
 };
 
 export interface CoinData {
@@ -145,6 +160,9 @@ export const homeChartDataSlice = createSlice({
       state.prevDurationSelector = state.durationSelector;
       state.durationSelector = action.payload;
     },
+    setCurrentCurrency: (state, action: PayloadAction<string>) => {
+      state.currentCurrency = action.payload;
+    },
   },
   extraReducers(builder) {
     builder.addCase(getChartData.pending, (state, action) => {
@@ -152,7 +170,8 @@ export const homeChartDataSlice = createSlice({
     });
     builder.addCase(getChartData.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.chartData = action.payload;
+      state.chartData = action.payload.data;
+      state.currentCurrency = action.payload.currency;
       state.lastFetchedChartData = Date.now();
     });
     builder.addCase(getChartData.rejected, (state, action) => {
@@ -164,7 +183,8 @@ export const homeChartDataSlice = createSlice({
     });
     builder.addCase(getChartDataOnDurationChange.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.chartData = action.payload;
+      state.chartData = action.payload.data;
+      state.currentCurrency = action.payload.currency;
       state.lastFetchedChartData = Date.now();
     });
     builder.addCase(getChartDataOnDurationChange.rejected, (state, action) => {
@@ -186,7 +206,7 @@ export const homeChartDataSlice = createSlice({
   },
 });
 
-export const { setDurationSelector, setCoinSelected } =
+export const { setDurationSelector, setCoinSelected, setCurrentCurrency } =
   homeChartDataSlice.actions;
 
 export default homeChartDataSlice.reducer;
@@ -233,40 +253,34 @@ const getFetchDetails = (
   durationSelector: durationOption
 ) => {
   let name;
-  let currency;
   let days;
   let interval = "&interval=daily";
   switch (durationSelector) {
     case "1D":
       name = coinSelected;
-      currency = "usd";
       days = 1;
       interval = "";
       break;
     case "7D":
       name = coinSelected;
-      currency = "usd";
       days = 7;
       interval = "";
       break;
     case "14D":
       name = coinSelected;
-      currency = "usd";
       days = 14;
       interval = "";
       break;
     case "1M":
       name = coinSelected;
-      currency = "usd";
       days = 30;
       interval = "";
       break;
     case "1Y":
       name = coinSelected;
-      currency = "usd";
       days = 360;
       interval = "";
       break;
   }
-  return { name, currency, days, interval };
+  return { name, days, interval };
 };

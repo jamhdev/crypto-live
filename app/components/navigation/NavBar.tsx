@@ -34,8 +34,9 @@ export default function NavBar() {
     setCurrentPage,
     setIsViewingCoinPage,
     currencyCodes,
+    currency,
+    setCurrency,
   } = useContext(AppContext);
-  const [currencyOption, setCurrencyOption] = useState("USD");
 
   const [dropDownArrow, setDropDownArrow] = useState(false);
   const currencySelectionRef = useRef<HTMLDivElement>(null);
@@ -190,7 +191,7 @@ export default function NavBar() {
                 setDropDownArrow((prev) => !prev);
               }}
             >
-              <div>{currencyOption}</div>
+              <div>{currency.toUpperCase()}</div>
               <div>{currentDropDownArrow}</div>
               {dropDownArrow && (
                 <>
@@ -206,7 +207,7 @@ export default function NavBar() {
                         key={code}
                         className="text-center text-themeTextColor font-medium p-[2px] hover:bg-chartBackground"
                         onClick={() => {
-                          setCurrencyOption(code.toUpperCase());
+                          setCurrency(code.toUpperCase());
                         }}
                       >
                         {code.toUpperCase()}

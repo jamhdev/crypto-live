@@ -1,11 +1,6 @@
 import React, { SetStateAction, useContext, useState } from "react";
 import { PersonalAssetData, CurrentCoinData } from "./PortfolioInterfaces";
-import {
-  currencyFormat,
-  formatPercentage,
-  percentageBarFormat,
-  percentFormat,
-} from "@/app/utils/numberFormatting";
+import { formatPercentage } from "@/app/utils/numberFormatting";
 import ArrowDownLargeRedIconSvg from "./ArrowDownLargeRedIconSvg.svg";
 import ArrowUpLargeGreenIconSvg from "./ArrowUpLargeGreenIconSvg.svg";
 import ArrowUpLargeGreenIconSecondarySvg from "./ArrowUpLargeGreenIconSecondarySvg.svg";
@@ -35,7 +30,14 @@ export default function AssetItem({
   ) => void;
   personalAssetData: PersonalAssetData[];
 }) {
-  const { theme, colors } = useContext(AppContext);
+  const {
+    theme,
+    colors,
+    currencyFormat,
+    percentageBarFormat,
+    percentFormat,
+    currency,
+  } = useContext(AppContext);
   const [deleteScreenVisible, setDeleteScreenVisible] = useState(false);
   const coinCurrentData = currentAssetData[value.coinData.id];
   const assetVisualGridItemStyles =
@@ -67,8 +69,10 @@ export default function AssetItem({
     return (circulatingSupply / totalSupply) * 100;
   };
 
-  const volume = coinCurrentData?.market_data?.total_volume?.usd;
-  const marketCap = coinCurrentData?.market_data?.market_cap?.usd;
+  const volume =
+    coinCurrentData?.market_data?.total_volume[currency.toLowerCase()];
+  const marketCap =
+    coinCurrentData?.market_data?.market_cap[currency.toLowerCase()];
   const calculateMarketCapVsVolumePercentage = (
     volume: number,
     marketCap: number
@@ -76,15 +80,18 @@ export default function AssetItem({
     return (volume / marketCap) * 100;
   };
 
-  const currentCoinPrice = coinCurrentData?.market_data?.current_price?.usd;
+  const currentCoinPrice =
+    coinCurrentData?.market_data?.current_price[currency.toLowerCase()];
   const coinImage = value.coinData.image.small;
   const coin24HourChangePercentage =
     coinCurrentData?.market_data?.price_change_percentage_24h;
 
   const originalAmountValue =
-    value?.coinData?.market_data?.current_price?.usd * value.amount;
+    value?.coinData?.market_data?.current_price[currency.toLowerCase()] *
+    value.amount;
   const currentAmountValue =
-    coinCurrentData?.market_data?.current_price?.usd * value.amount;
+    coinCurrentData?.market_data?.current_price[currency.toLowerCase()] *
+    value.amount;
 
   const percentageDifferenceInValue =
     ((currentAmountValue - originalAmountValue) / originalAmountValue) * 100;
@@ -172,7 +179,7 @@ export default function AssetItem({
         <div className="flex items-center ml-2">
           <div className="flex gap-2">
             <div className="text-[28px] font-bold">
-              ${currencyFormat.format(currentAmountValue)} USD
+              {currencyFormat.format(currentAmountValue)}
             </div>
             <div
               className="flex justify-center items-center gap-2"
@@ -212,7 +219,7 @@ export default function AssetItem({
         <div className={assetVisualGridItemStyles}>
           <div className="flex flex-col text-themeTextColorThird justify-center">
             <div className=" text-2xl">
-              ${currencyFormat.format(currentCoinPrice)}
+              {currencyFormat.format(currentCoinPrice)}
             </div>
             <div className="opacity-50">Current price</div>
           </div>

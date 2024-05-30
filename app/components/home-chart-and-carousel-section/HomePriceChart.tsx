@@ -13,8 +13,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
 
 export default function HomePriceChart({
   currentSelectedCoinData,
@@ -33,7 +31,6 @@ export default function HomePriceChart({
     Filler
   );
   const { currencyFormat, theme } = useContext(AppContext);
-  const { isLoading } = useSelector((state: RootState) => state.homeChartData);
 
   const coinPrice = durationFilteredCoinData?.map(
     (value: number[]) => value[1]
@@ -77,7 +74,8 @@ export default function HomePriceChart({
         {durationFilteredCoinData ? (
           <>
             <div className="text-themeTextColorSecondary">
-              {currentSelectedCoinData?.name}({currentSelectedCoinData?.symbol})
+              {currentSelectedCoinData?.name}(
+              {currentSelectedCoinData?.symbol?.toUpperCase()})
             </div>
             <div className="font-bold text-themeTextColorThird text-2xl">
               {currencyFormat.format(

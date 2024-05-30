@@ -1,27 +1,28 @@
 "use client";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import AmountOfCoinsIcon from "./AmountOfCoinsIcon.svg";
 import ExchangeMarketsIcon from "./ExchangeMarketsIcon.svg";
 import BitcoinIcon from "./BitcoinIcon.svg";
 import EthereumIcon from "./EthereumIcon.svg";
 import IncreaseValueIcon from "./IncreaseValueIcon.svg";
 import DecreaseValueIcon from "./DecreaseValueIcon.svg";
-import {
-  marketCapCurrencyFormat,
-  percentFormat,
-  marketCapPercentageFormat,
-  percentageBarFormat,
-} from "@/app/utils/numberFormatting";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { getMarketData } from "@/app/store/marketDataNavSlice";
 import LoadingCircleLine from "@/public/LoadingCircleLineSvg.svg";
+import { AppContext } from "@/app/contexts/AppContext";
 
 export default function MarketDataNav() {
   const dispatch = useDispatch<AppDispatch>();
   const { data, isLoading, error } = useSelector(
     (state: RootState) => state.marketData
   );
+  const {
+    marketCapCurrencyFormat,
+    percentFormat,
+    marketCapPercentageFormat,
+    percentageBarFormat,
+  } = useContext(AppContext);
 
   useEffect(() => {
     dispatch(getMarketData());

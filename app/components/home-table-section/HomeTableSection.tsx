@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -23,9 +23,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { getTableData } from "@/app/store/tableDataSlice";
 import LoadingCircleLine from "@/public/LoadingCircleLineSvg.svg";
+import { AppContext } from "@/app/contexts/AppContext";
 
 export default function HomeTableSection() {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const { currency } = useContext(AppContext);
 
   const dispatch = useDispatch<AppDispatch>();
   const { data, isLoading, error } = useSelector(
@@ -33,8 +35,8 @@ export default function HomeTableSection() {
   );
 
   useEffect(() => {
-    dispatch(getTableData());
-  }, [dispatch]);
+    dispatch(getTableData(currency));
+  }, [dispatch, currency]);
 
   const columns = [
     {
