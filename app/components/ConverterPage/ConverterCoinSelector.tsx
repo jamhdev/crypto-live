@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { ConverterCoinData, ConverterInputData } from "./ConverterPage";
 import { AppContext } from "@/app/contexts/AppContext";
+import LoadingCircleLine from "@/public/LoadingCircleLineSvg.svg";
 
 export default function ConverterCoinSelector({
   coinData,
@@ -159,7 +160,9 @@ export default function ConverterCoinSelector({
       </div>
     </div>
   ) : (
-    false
+    <div className="flex justify-center items-center w-full h-[109px]">
+      <LoadingCircleLine />
+    </div>
   );
 }
 
