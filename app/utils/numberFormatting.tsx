@@ -20,3 +20,5 @@ export function formatPercentage(value: number) {
   // as a decimal and convert to percentage
   return `${(value * 100).toFixed(2)}%`;
 }
+
+export const plainCurrencyFormat = new Intl.NumberFormat(undefined, {});

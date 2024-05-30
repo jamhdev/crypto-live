@@ -9,6 +9,7 @@ import CirclePlusIcon from "./CirclePlusIcon.svg";
 import {
   formatPercentage,
   formatLargeNumber,
+  plainCurrencyFormat,
 } from "@/app/utils/numberFormatting";
 import IncreaseValueIcon from "../market-data-nav/IncreaseValueIcon.svg";
 import DecreaseValueIcon from "../market-data-nav/DecreaseValueIcon.svg";
@@ -277,7 +278,11 @@ export default function CoinPage() {
                 <div className="flex gap-2">
                   Max Supply:{" "}
                   {coinData?.market_data?.max_supply ? (
-                    <div>{coinData?.market_data?.max_supply}</div>
+                    <div>
+                      {plainCurrencyFormat.format(
+                        coinData?.market_data?.max_supply
+                      )}
+                    </div>
                   ) : (
                     <div>&#8734;</div>
                   )}{" "}
@@ -288,7 +293,7 @@ export default function CoinPage() {
               <div className="flex gap-2">
                 {circlePlusIcon}
                 Circulating Supply:{" "}
-                {currencyFormat.format(
+                {plainCurrencyFormat.format(
                   coinData?.market_data?.circulating_supply
                 )}{" "}
                 {coinData?.symbol ? coinData.symbol.toUpperCase() : ""}
