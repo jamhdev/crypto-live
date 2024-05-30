@@ -30,7 +30,7 @@ export default function HomePriceChart({
     Tooltip,
     Filler
   );
-  const { currencyFormat, theme } = useContext(AppContext);
+  const { currencyFormat, theme, currency } = useContext(AppContext);
 
   const coinPrice = durationFilteredCoinData?.map(
     (value: number[]) => value[1]
@@ -79,7 +79,9 @@ export default function HomePriceChart({
             </div>
             <div className="font-bold text-themeTextColorThird text-2xl">
               {currencyFormat.format(
-                currentSelectedCoinData?.market_data?.current_price?.usd
+                currentSelectedCoinData?.market_data?.current_price[
+                  currency.toLowerCase()
+                ]
               )}
             </div>
             <Line data={data} options={options} />

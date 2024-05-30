@@ -19,7 +19,7 @@ export default function HomeVolumeChart({
   currentSelectedCoinData: any;
   durationFilteredCoinData: any;
 }) {
-  const { currencyFormat, theme } = useContext(AppContext);
+  const { currencyFormat, theme, currency } = useContext(AppContext);
 
   const coinVolume = durationFilteredCoinData?.map(
     (value: number[]) => value[1]
@@ -65,7 +65,9 @@ export default function HomeVolumeChart({
             <div className="text-themeTextColorThird ">volume</div>
             <div className="font-bold text-themeTextColorThird text-2xl">
               {currencyFormat.format(
-                currentSelectedCoinData?.market_data?.total_volume?.usd
+                currentSelectedCoinData?.market_data?.total_volume[
+                  currency.toLowerCase()
+                ]
               )}
             </div>
             <Bar data={data} options={options} />
