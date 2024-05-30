@@ -89,7 +89,12 @@ export default function ConverterCoinSelector({
   return coinData.data !== null ? (
     <div className="flex flex-col w-full">
       <div className="flex w-full mt-2 items-center justify-center">
-        <img src={coinData.data?.image?.small} alt="coin image" />
+        <img
+          src={coinData.data?.image?.small}
+          alt="coin image"
+          width={24}
+          height={24}
+        />
         <div className="relative w-full">
           <div className="flex gap-2">
             <input
