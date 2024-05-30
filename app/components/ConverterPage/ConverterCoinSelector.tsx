@@ -146,7 +146,9 @@ export default function ConverterCoinSelector({
         </div>
         <div>
           {currencyFormat
-            .format(coinData?.data.market_data?.current_price?.currency)
+            .format(
+              coinData?.data.market_data?.current_price[currency.toLowerCase()]
+            )
             .toString()}
         </div>
       </div>
