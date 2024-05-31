@@ -16,12 +16,24 @@ export default function AppContextProvider({
   const [currency, setCurrency] = useLocalStorage("currency", "usd");
   const [screenWidth, setScreenWidth] = useState(0);
 
+  function debounce(func: any, wait: number) {
+    let timeout: any;
+    return function (...args: any) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setScreenWidth(window.innerWidth);
-      const handleResize = () => {
+      const handleResize = debounce(() => {
         setScreenWidth(window.innerWidth);
-      };
+      }, 150);
 
       window.addEventListener("resize", handleResize);
       return () => {
