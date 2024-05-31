@@ -30,7 +30,7 @@ function BodyWapper({ children }: { children: ReactNode }) {
   return (
     <>
       <body
-        className={`${inter.className} bg-background max-w-[1440px] flex justify-center items-center flex-col m-auto`}
+        className={`${inter.className} bg-background max-w-[1440px] flex justify-center items-center flex-col m-auto overflow-x-hidden`}
       >
         {children}
       </body>
