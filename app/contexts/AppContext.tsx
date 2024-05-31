@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import useLocalStorage from "../components/custom-hooks/useLocalStorage";
 
 export default function AppContextProvider({
@@ -14,6 +14,18 @@ export default function AppContextProvider({
   const [isViewingCoinPage, setIsViewingCoinPage] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<pageOption>("home");
   const [currency, setCurrency] = useLocalStorage("currency", "usd");
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const currencyCodes = [
     "usd", // United States Dollar
@@ -173,6 +185,7 @@ export default function AppContextProvider({
           currencyCodes,
           currencySymbols,
           currencySymbol,
+          screenWidth,
         }}
       >
         {children}
@@ -269,4 +282,5 @@ export const AppContext = createContext<CreateContextType>({
     mxn: "$",
   },
   currencySymbol: "$",
+  screenWidth: null,
 });

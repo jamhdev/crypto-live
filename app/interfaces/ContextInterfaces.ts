@@ -30,4 +30,5 @@ interface CreateContextType {
   currencyCodes: string[];
   currencySymbols: { [key: string]: string };
   currencySymbol: string;
+  screenWidth: any;
 }

@@ -1,7 +1,8 @@
+"use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AppContextProvider from "./contexts/AppContext";
-import { ReactNode } from "react";
+import AppContextProvider, { AppContext } from "./contexts/AppContext";
+import { ReactNode, useContext, useEffect } from "react";
 import { StoreProvider } from "./store/StoreProvider";
 import MainBody from "./components/MainBody/MainBody";
 
@@ -13,27 +14,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AppContextProvider>
-      <StoreProvider>
-        <html lang="en">
-          <BodyWapper>
+    <html lang="en">
+      <AppContextProvider>
+        <StoreProvider>
+          <BodyWrapper>
             <MainBody />
             {children}
-          </BodyWapper>
-        </html>
-      </StoreProvider>
-    </AppContextProvider>
+          </BodyWrapper>
+        </StoreProvider>
+      </AppContextProvider>
+    </html>
   );
 }
 
-function BodyWapper({ children }: { children: ReactNode }) {
+function BodyWrapper({ children }: { children: ReactNode }) {
   return (
-    <>
-      <body
-        className={`${inter.className} bg-background max-w-[1440px] flex justify-center items-center flex-col m-auto overflow-x-hidden`}
-      >
-        {children}
-      </body>
-    </>
+    <body
+      className={`${inter.className} bg-background max-w-[1440px] flex justify-center items-center flex-col m-auto overflow-x-hidden`}
+    >
+      {children}
+    </body>
   );
 }
