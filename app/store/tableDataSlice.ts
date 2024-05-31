@@ -4,28 +4,32 @@ import { RootState } from "./store";
 
 export const getTableData = createAsyncThunk(
   "getTableData",
-  async (_, thunkApi) => {
+  async (currency: string = "usd", thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const isFetchedYet = state.tableData.lastFetched === null;
     const moreThan5MinutesSinceLastFetch =
       state.tableData.lastFetched !== null &&
       Date.now() - state.tableData.lastFetched > 300000;
+    const isDifferentCurrency = state.tableData.currentCurrency !== currency;
 
-    if (isFetchedYet || moreThan5MinutesSinceLastFetch) {
+    if (isFetchedYet || moreThan5MinutesSinceLastFetch || isDifferentCurrency) {
       if (process.env.NODE_ENV === "development") {
-        return tableData;
+        return { data: tableData, currency };
       } else {
         const proxyUrl = "https://corsproxy.io/?";
-        const targetUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
+        const targetUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.toLowerCase()}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
         const response = await fetch(proxyUrl + targetUrl);
         if (!response.ok) {
           throw new Error(`API request failed with status ${response.status}`);
         }
         const data = await response.json();
-        return data;
+        return { data, currency };
       }
     } else {
-      return state.tableData.data;
+      return {
+        data: state.tableData.data,
+        currency: state.tableData.currentCurrency,
+      };
     }
   }
 );
@@ -35,6 +39,7 @@ interface TableDataState {
   data: TableDataType[];
   error: boolean;
   lastFetched: number | null;
+  currentCurrency: string | null;
 }
 
 interface TableDataType {
@@ -81,23 +86,29 @@ interface Roi {
 }
 
 const initialState: TableDataState = {
-  isLoading: false,
+  isLoading: true,
   data: [],
   error: false,
   lastFetched: null,
+  currentCurrency: null,
 };
 
 export const tableDataSlice = createSlice({
   name: "tableData",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setCurrentCurrency: (state, action) => {
+      state.currentCurrency = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(getTableData.pending, (state, action) => {
       state.isLoading = true;
     });
     builder.addCase(getTableData.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.data = action.payload;
+      state.data = action.payload.data;
+      state.currentCurrency = action.payload.currency;
       state.lastFetched = Date.now();
     });
     builder.addCase(getTableData.rejected, (state, action) => {
@@ -107,6 +118,6 @@ export const tableDataSlice = createSlice({
   },
 });
 
-export const {} = tableDataSlice.actions;
+export const { setCurrentCurrency } = tableDataSlice.actions;
 
 export default tableDataSlice.reducer;

@@ -1,18 +1,18 @@
 "use client";
 import { useContext, useEffect } from "react";
-import AmountOfCoinsIcon from "./AmountOfCoinsIcon.svg";
-import ExchangeMarketsIcon from "./ExchangeMarketsIcon.svg";
-import BitcoinIcon from "./BitcoinIcon.svg";
-import EthereumIcon from "./EthereumIcon.svg";
-import IncreaseValueIcon from "./IncreaseValueIcon.svg";
-import DecreaseValueIcon from "./DecreaseValueIcon.svg";
+import AmountOfCoinsIcon from "../AmountOfCoinsIcon.svg";
+import ExchangeMarketsIcon from "../ExchangeMarketsIcon.svg";
+import BitcoinIcon from "../BitcoinIcon.svg";
+import EthereumIcon from "../EthereumIcon.svg";
+import IncreaseValueIcon from "../IncreaseValueIcon.svg";
+import DecreaseValueIcon from "../DecreaseValueIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { getMarketData } from "@/app/store/marketDataNavSlice";
 import LoadingCircleLine from "@/public/LoadingCircleLineSvg.svg";
 import { AppContext } from "@/app/contexts/AppContext";
 
-export default function MarketDataNav() {
+export default function MarketDataNavMobile() {
   const dispatch = useDispatch<AppDispatch>();
   const { data, isLoading, error } = useSelector(
     (state: RootState) => state.marketData
@@ -96,7 +96,7 @@ export default function MarketDataNav() {
   return (
     <>
       <div className="flex text-white justify-center items-center gap-10 bg-accent w-screen p-4 relative">
-        <div className="flex justify-center items-center gap-2">
+        <div className="justify-center items-center gap-2 hidden lg:flex">
           <AmountOfCoinsIcon />
           <span>Coins</span>
           <span>{data ? data?.active_cryptocurrencies : "..."}</span>
@@ -107,7 +107,7 @@ export default function MarketDataNav() {
           <span>Exchange</span>
           {data ? data?.markets : "..."}
         </div>
-        <div className="flex justify-center items-center gap-2">
+        <div className="justify-center items-center gap-2 hidden md:flex">
           {valueChanged()}
           {data
             ? marketCapCurrencyFormat.format(

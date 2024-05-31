@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { currencyFormat, formatPercentage } from "@/app/utils/numberFormatting";
+import { formatPercentage } from "@/app/utils/numberFormatting";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getChartData,
@@ -30,7 +30,7 @@ export default function CarouselItem({
     (state: RootState) => state.chartData.coinSelected
   );
 
-  const { theme, colors } = useContext(AppContext);
+  const { theme, colors, currencyFormat, currency } = useContext(AppContext);
 
   const increaseColor =
     theme === "dark" ? colors.greenMain : colors.greenSecondary;
@@ -47,7 +47,7 @@ export default function CarouselItem({
       onClick={() => {
         dispatch(setCoinSelected(id));
         dispatch(getCoinData());
-        dispatch(getChartData());
+        dispatch(getChartData(currency));
       }}
     >
       <img src={image} alt="Coin Image" width={32} height={32} />
@@ -58,7 +58,9 @@ export default function CarouselItem({
             <div>({symbol.toUpperCase()})</div>
           </div>
           <div className="text-xs flex gap-1">
-            <div>{currencyFormat.format(current_price)} USD</div>
+            <div>
+              {currencyFormat.format(current_price)} {currency}
+            </div>
             <div
               className="flex"
               style={

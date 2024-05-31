@@ -14,7 +14,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
-import { currencyFormat } from "@/app/utils/numberFormatting";
 import LoadingCircleLine from "../../../public/LoadingCircleLineSvg.svg";
 
 export default function ConverterCoinsChart({
@@ -101,6 +100,45 @@ export default function ConverterCoinsChart({
     ],
   };
 
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: true,
+        mode: "index" as const,
+        intersect: false,
+        callbacks: {
+          label: function (tooltipItem: TooltipItem<"line">) {
+            return `${tooltipItem.dataset.label}: ${currencyFormat.format(
+              tooltipItem.parsed.y
+            )}`;
+          },
+        },
+      },
+    },
+    scales: {
+      y: {
+        display: false,
+        beginAtZero: false,
+      },
+      y1: { display: false, beginAtZero: false },
+      x: {
+        display: false,
+        grid: {
+          display: false,
+        },
+      },
+    },
+    elements: {
+      line: {
+        tension: 0.4,
+      },
+    },
+  };
   return (
     <>
       <div className="flex flex-col w-full h-[300px] p-4 pb-7 mt-2 justify-center">
@@ -122,46 +160,6 @@ export default function ConverterCoinsChart({
     </>
   );
 }
-
-const options = {
-  maintainAspectRatio: false,
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      enabled: true,
-      mode: "index" as const,
-      intersect: false,
-      callbacks: {
-        label: function (tooltipItem: TooltipItem<"line">) {
-          return `${tooltipItem.dataset.label}: ${currencyFormat.format(
-            tooltipItem.parsed.y
-          )}`;
-        },
-      },
-    },
-  },
-  scales: {
-    y: {
-      display: false,
-      beginAtZero: false,
-    },
-    y1: { display: false, beginAtZero: false },
-    x: {
-      display: false,
-      grid: {
-        display: false,
-      },
-    },
-  },
-  elements: {
-    line: {
-      tension: 0.4,
-    },
-  },
-};
 
 const createGradientBlue = (ctx: any, chartArea: any) => {
   const gradientBlue = ctx.createLinearGradient(

@@ -1,28 +1,3 @@
-export const marketCapCurrencyFormat = new Intl.NumberFormat(undefined, {
-  maximumSignificantDigits: 3,
-});
-
-export const percentFormat = new Intl.NumberFormat(undefined, {
-  style: "percent",
-});
-
-export const percentFormat4CharMax = new Intl.NumberFormat(undefined, {
-  style: "percent",
-  maximumSignificantDigits: 4,
-});
-
-export const marketCapPercentageFormat = new Intl.NumberFormat(undefined, {
-  maximumSignificantDigits: 3,
-});
-
-export const percentageBarFormat = new Intl.NumberFormat(undefined, {
-  maximumSignificantDigits: 3,
-});
-
-export const currencyFormat = new Intl.NumberFormat(undefined, {
-  maximumSignificantDigits: 5,
-});
-
 export function formatLargeNumber(value: number) {
   if (value >= 1_000_000_000_000) {
     return `${(value / 1_000_000_000_000).toFixed(1)} t`;
@@ -45,3 +20,5 @@ export function formatPercentage(value: number) {
   // as a decimal and convert to percentage
   return `${(value * 100).toFixed(2)}%`;
 }
+
+export const plainCurrencyFormat = new Intl.NumberFormat(undefined, {});

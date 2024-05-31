@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import useLocalStorage from "../components/custom-hooks/useLocalStorage";
 
 export default function AppContextProvider({
@@ -13,6 +13,71 @@ export default function AppContextProvider({
   const isProd = process.env.NODE_ENV === "production";
   const [isViewingCoinPage, setIsViewingCoinPage] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<pageOption>("home");
+  const [currency, setCurrency] = useLocalStorage("currency", "usd");
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  function debounce(func: any, wait: number) {
+    let timeout: any;
+    return function (...args: any) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setScreenWidth(window.innerWidth);
+      const handleResize = debounce(() => {
+        setScreenWidth(window.innerWidth);
+      }, 150);
+
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
+
+  const currencyCodes = [
+    "usd", // United States Dollar
+    "eur", // Euro
+    "jpy", // Japanese Yen
+    "gbp", // British Pound Sterling
+    "aud", // Australian Dollar
+    "cad", // Canadian Dollar
+    "chf", // Swiss Franc
+    "cny", // Chinese Yuan
+    "hkd", // Hong Kong Dollar
+    "sgd", // Singapore Dollar
+    "krw", // South Korean Won
+    "inr", // Indian Rupee
+    "brl", // Brazilian Real
+    "mxn", // Mexican Peso
+  ];
+
+  const currencySymbols = {
+    usd: "$",
+    eur: "€",
+    jpy: "¥",
+    gbp: "£",
+    aud: "A$",
+    cad: "C$",
+    chf: "CHF",
+    cny: "¥",
+    hkd: "HK$",
+    sgd: "S$",
+    krw: "₩",
+    inr: "₹",
+    brl: "R$",
+    mxn: "$",
+  };
+
+  const currencySymbol =
+    currencySymbols[currency as keyof typeof currencySymbols];
 
   const toggleTheme = () => {
     setTheme((prev: themeOption) => {
@@ -22,28 +87,26 @@ export default function AppContextProvider({
     });
   };
 
-  const colors = {
-    background: theme === "dark" ? "#13121B" : "#F3F5F9",
-    backgroundSecondary: theme === "dark" ? "#191925" : "#ebebfd",
-    primary: theme === "dark" ? "#191926" : "#FFF",
-    accent: theme === "dark" ? "#1e1932" : "#353570",
-    chartBackground: theme === "dark" ? "#191934" : "#FFF",
-    themeTextColor: theme === "dark" ? "#ffffff" : "#424286",
-    themeTextColorSecondary: theme === "dark" ? "#ffffff" : "#353570",
-    themeTextColorThird: theme === "dark" ? "#ffffff" : "#181825",
-    highlightColor: theme === "dark" ? "#3d3d7e" : "#a9aae7",
-    greenMain: theme === "dark" ? "#01f1e3" : "#01f1e3",
-    greenSecondary: theme === "dark" ? "#00b1a7" : "#00b1a7",
-    redMain: theme === "dark" ? "#FE2264" : "#FE2264",
-    navBarColor: theme === "dark" ? "#13121a" : "#ffffff",
-    coinsOrConverterBackgroundColor: theme === "dark" ? "#232336" : "#ffffff",
-    chartDurationBackgroundColor: theme === "dark" ? "#232336" : "#e3e5f9",
-  };
-
-  const currencyFormat = new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: "usd",
-  });
+  const colors = useMemo(
+    () => ({
+      background: theme === "dark" ? "#13121B" : "#F3F5F9",
+      backgroundSecondary: theme === "dark" ? "#191925" : "#ebebfd",
+      primary: theme === "dark" ? "#191926" : "#FFF",
+      accent: theme === "dark" ? "#1e1932" : "#353570",
+      chartBackground: theme === "dark" ? "#191934" : "#FFF",
+      themeTextColor: theme === "dark" ? "#ffffff" : "#424286",
+      themeTextColorSecondary: theme === "dark" ? "#ffffff" : "#353570",
+      themeTextColorThird: theme === "dark" ? "#ffffff" : "#181825",
+      highlightColor: theme === "dark" ? "#3d3d7e" : "#a9aae7",
+      greenMain: theme === "dark" ? "#01f1e3" : "#01f1e3",
+      greenSecondary: theme === "dark" ? "#00b1a7" : "#00b1a7",
+      redMain: theme === "dark" ? "#FE2264" : "#FE2264",
+      navBarColor: theme === "dark" ? "#13121a" : "#ffffff",
+      coinsOrConverterBackgroundColor: theme === "dark" ? "#232336" : "#ffffff",
+      chartDurationBackgroundColor: theme === "dark" ? "#232336" : "#e3e5f9",
+    }),
+    [theme]
+  );
 
   useEffect(() => {
     const root = document.documentElement;
@@ -77,7 +140,39 @@ export default function AppContextProvider({
       "--color-chart-duration-background-color",
       colors.chartDurationBackgroundColor
     );
-  }, [theme, colors]);
+  }, [colors]);
+
+  const marketCapCurrencyFormat = new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: currency.toUpperCase(),
+  });
+
+  const percentFormat = new Intl.NumberFormat(undefined, {
+    style: "percent",
+    currency: currency.toUpperCase(),
+  });
+
+  const percentFormat4CharMax = new Intl.NumberFormat(undefined, {
+    style: "percent",
+    maximumSignificantDigits: 4,
+    currency: currency.toUpperCase(),
+  });
+
+  const marketCapPercentageFormat = new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: currency.toUpperCase(),
+  });
+
+  const percentageBarFormat = new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: currency.toUpperCase(),
+  });
+
+  const currencyFormat = new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 5,
+    style: "currency",
+    currency: currency.toUpperCase(),
+  });
 
   return (
     <>
@@ -90,11 +185,22 @@ export default function AppContextProvider({
           coinsOrConverterSelector,
           setCoinsOrConverterSelector,
           currencyFormat,
+          percentageBarFormat,
+          marketCapPercentageFormat,
+          percentFormat4CharMax,
+          percentFormat,
+          marketCapCurrencyFormat,
           isProd,
           isViewingCoinPage,
           setIsViewingCoinPage,
           currentPage,
           setCurrentPage,
+          currency,
+          setCurrency,
+          currencyCodes,
+          currencySymbols,
+          currencySymbol,
+          screenWidth,
         }}
       >
         {children}
@@ -128,11 +234,68 @@ export const AppContext = createContext<CreateContextType>({
   },
   currencyFormat: new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: "usd",
+    currency: "USD",
+  }),
+  marketCapCurrencyFormat: new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: "USD",
+  }),
+  percentFormat: new Intl.NumberFormat(undefined, {
+    style: "percent",
+    currency: "USD",
+  }),
+  percentFormat4CharMax: new Intl.NumberFormat(undefined, {
+    style: "percent",
+    maximumSignificantDigits: 4,
+    currency: "USD",
+  }),
+  marketCapPercentageFormat: new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: "USD",
+  }),
+  percentageBarFormat: new Intl.NumberFormat(undefined, {
+    maximumSignificantDigits: 3,
+    currency: "USD",
   }),
   isProd: process.env.NODE_ENV === "production",
   isViewingCoinPage: false,
   setIsViewingCoinPage: () => {},
   currentPage: "home",
   setCurrentPage: () => {},
+  currency: "usd",
+  setCurrency: () => {},
+  currencyCodes: [
+    "usd",
+    "eur",
+    "jpy",
+    "gbp",
+    "aud",
+    "cad",
+    "chf",
+    "cny",
+    "hkd",
+    "sgd",
+    "krw",
+    "inr",
+    "brl",
+    "mxn",
+  ],
+  currencySymbols: {
+    usd: "$",
+    eur: "€",
+    jpy: "¥",
+    gbp: "£",
+    aud: "A$",
+    cad: "C$",
+    chf: "CHF",
+    cny: "¥",
+    hkd: "HK$",
+    sgd: "S$",
+    krw: "₩",
+    inr: "₹",
+    brl: "R$",
+    mxn: "$",
+  },
+  currencySymbol: "$",
+  screenWidth: null,
 });

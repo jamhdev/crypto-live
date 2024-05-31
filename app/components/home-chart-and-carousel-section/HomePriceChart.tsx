@@ -30,7 +30,7 @@ export default function HomePriceChart({
     Tooltip,
     Filler
   );
-  const { currencyFormat, theme } = useContext(AppContext);
+  const { currencyFormat, theme, currency } = useContext(AppContext);
 
   const coinPrice = durationFilteredCoinData?.map(
     (value: number[]) => value[1]
@@ -70,15 +70,18 @@ export default function HomePriceChart({
 
   return (
     <>
-      <div className="bg-chartBackground pt-2 pb-2 pl-4 pr-4 rounded-xl flex flex-col">
+      <div className="bg-chartBackground p-6 rounded-xl flex flex-col">
         {durationFilteredCoinData ? (
           <>
             <div className="text-themeTextColorSecondary">
-              {currentSelectedCoinData?.name}({currentSelectedCoinData?.symbol})
+              {currentSelectedCoinData?.name}(
+              {currentSelectedCoinData?.symbol?.toUpperCase()})
             </div>
             <div className="font-bold text-themeTextColorThird text-2xl">
               {currencyFormat.format(
-                currentSelectedCoinData?.market_data?.current_price?.usd
+                currentSelectedCoinData?.market_data?.current_price[
+                  currency.toLowerCase()
+                ]
               )}
             </div>
             <Line data={data} options={options} />
@@ -101,13 +104,35 @@ const options = {
     },
   },
   scales: {
-    y: {
-      display: false,
-    },
     x: {
       grid: {
         display: false,
       },
+      ticks: {
+        display: true,
+        color: "#8D8DB1",
+        maxTicksLimit: 8,
+        align: "inner" as const,
+      },
+      border: {
+        display: true,
+      },
+      afterBuildTicks: function (axis: any) {
+        const ticks = axis.ticks;
+        if (ticks.length > 8) {
+          const newTicks = [];
+          const tickCount = 8;
+          const step = Math.floor(ticks.length / (tickCount - 1));
+          for (let i = 0; i < tickCount; i++) {
+            const index = i === tickCount - 1 ? ticks.length - 1 : i * step;
+            newTicks.push(ticks[index]);
+          }
+          axis.ticks = newTicks;
+        }
+      },
+    },
+    y: {
+      display: false,
     },
   },
 };

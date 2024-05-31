@@ -1,6 +1,6 @@
 "use client";
 import { AppContext } from "@/app/contexts/AppContext";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 //
 import NavDarkmodeButtonSvg from "./NavDarkmodeButtonSvg.svg";
 import NavLightmodeButtonSvg from "./NavLightmodeButtonSvg.svg";
@@ -33,10 +33,28 @@ export default function NavBar() {
     currentPage,
     setCurrentPage,
     setIsViewingCoinPage,
+    currencyCodes,
+    currency,
+    setCurrency,
   } = useContext(AppContext);
-  const [currencyOption, setCurrencyOption] = useState("USD");
 
   const [dropDownArrow, setDropDownArrow] = useState(false);
+  const currencySelectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (
+        currencySelectionRef.current !== null &&
+        !currencySelectionRef.current.contains(e.target as Node)
+      ) {
+        setDropDownArrow(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
 
   const dropDownArrowIcon =
     theme === "dark" ? (
@@ -54,54 +72,6 @@ export default function NavBar() {
 
   const currentDropDownArrow =
     dropDownArrow === false ? dropDownArrowIcon : activeDropDownArrowIcon;
-
-  const currencyCodes = [
-    "usd",
-    "aed",
-    "ars",
-    "aud",
-    "bdt",
-    "bhd",
-    "brl",
-    "cad",
-    "chf",
-    "clp",
-    "cny",
-    "czk",
-    "dkk",
-    "eur",
-    "gbp",
-    "gel",
-    "hkd",
-    "huf",
-    "idr",
-    "ils",
-    "inr",
-    "jpy",
-    "krw",
-    "kwd",
-    "lkr",
-    "mmk",
-    "mxn",
-    "myr",
-    "ngn",
-    "nok",
-    "nzd",
-    "php",
-    "pkr",
-    "pln",
-    "rub",
-    "sar",
-    "sek",
-    "sgd",
-    "thb",
-    "try",
-    "twd",
-    "uah",
-    "vef",
-    "vnd",
-    "zar",
-  ];
 
   const currentPageDarkMode =
     currentPage === "home" || currentPage === "converter" ? (
@@ -211,6 +181,7 @@ export default function NavBar() {
           <div className="flex gap-2">
             <SearchDropDown />
             <div
+              ref={currencySelectionRef}
               className={
                 dropDownArrow === false
                   ? "flex justify-center items-center bg-backgroundSecondary rounded-lg w-[104px] text-themeTextColor relative cursor-pointer gap-2"
@@ -220,23 +191,23 @@ export default function NavBar() {
                 setDropDownArrow((prev) => !prev);
               }}
             >
-              <div>{currencyOption}</div>
+              <div>{currency.toUpperCase()}</div>
               <div>{currentDropDownArrow}</div>
               {dropDownArrow && (
                 <>
                   <div
-                    className="top-[48px] w-[104px] h-[295px] overflow-y-scroll bg-highlightColor absolute z-10 cursor-pointer"
+                    className="top-[48px] w-[104px] bg-highlightColor absolute z-10 cursor-pointer rounded-b-lg"
                     style={{
                       scrollbarWidth: "none",
                       msOverflowStyle: "none",
                     }}
                   >
-                    {currencyCodes.map((code) => (
+                    {currencyCodes.map((code, arr) => (
                       <div
                         key={code}
-                        className="text-center text-themeTextColor font-medium border-b-[1px] border-chartBackground hover:bg-chartBackground"
+                        className="text-center text-themeTextColor font-medium p-[2px] hover:bg-chartBackground"
                         onClick={() => {
-                          setCurrencyOption(code.toUpperCase());
+                          setCurrency(code.toUpperCase());
                         }}
                       >
                         {code.toUpperCase()}

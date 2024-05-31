@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ChartDurationSelector() {
-  const { theme } = useContext(AppContext);
+  const { theme, currency } = useContext(AppContext);
   const dispatch = useDispatch<AppDispatch>();
   const chartDurationSelector = useSelector(
     (state: RootState) => state.chartData.durationSelector
@@ -33,7 +33,7 @@ export default function ChartDurationSelector() {
             }
             onClick={() => {
               dispatch(setDurationSelector(value));
-              dispatch(getChartDataOnDurationChange());
+              dispatch(getChartDataOnDurationChange(currency));
             }}
           >
             {value}
