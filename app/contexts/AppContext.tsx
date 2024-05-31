@@ -14,12 +14,11 @@ export default function AppContextProvider({
   const [isViewingCoinPage, setIsViewingCoinPage] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<pageOption>("home");
   const [currency, setCurrency] = useLocalStorage("currency", "usd");
-  const [screenWidth, setScreenWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 0
-  );
+  const [screenWidth, setScreenWidth] = useState(0);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      setScreenWidth(window.innerWidth);
       const handleResize = () => {
         setScreenWidth(window.innerWidth);
       };
