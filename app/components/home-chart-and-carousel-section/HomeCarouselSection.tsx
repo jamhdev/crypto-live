@@ -39,7 +39,7 @@ export default function HomeCarouselSection({
   if (isLoading)
     return (
       <>
-        <div className="w-full relative">
+        <div className="w-full relative mt-10">
           <button className="embla__prev w-14 h-14 bg-highlightColor text-white rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0">
             &lt;
           </button>
@@ -70,7 +70,7 @@ export default function HomeCarouselSection({
   if (error)
     return (
       <>
-        <div className="w-full relative">
+        <div className="w-full relative mt-10">
           <button className="embla__prev w-14 h-14 bg-highlightColor text-white rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0">
             &lt;
           </button>
@@ -88,7 +88,7 @@ export default function HomeCarouselSection({
 
   return (
     <>
-      <div className="w-full relative">
+      <div className="w-full relative mt-10">
         <button
           className="embla__prev w-14 h-14 bg-highlightColor text-white rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0"
           onClick={scrollPrev}

@@ -113,7 +113,11 @@ export default function SearchDropDownMobile({
 
   return (
     <div
-      className="bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1 relative"
+      className={
+        isFocused
+          ? "bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1 relative m-auto"
+          : "bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1 relative"
+      }
       ref={searchBarRef}
     >
       {theme === "dark" ? (

@@ -54,7 +54,7 @@ export default function ConverterPage() {
   }, [firstCoinData.amount, firstCoinData.data, secondCoinData.data]);
 
   return (
-    <div className="text-themeTextColorSecondary w-full px-10 flex flex-col justify-center items-center">
+    <div className="text-themeTextColorSecondary w-full px-10 flex flex-col justify-center items-center mt-10">
       <div className="flex w-full justify-center items-center relative">
         <div className="basis-1/2 bg-chartBackground rounded-2xl text-themeTextColorSecondary flex flex-col items-center p-4 gap-4">
           <div className="w-full opacity-50 text-sm">You sell</div>

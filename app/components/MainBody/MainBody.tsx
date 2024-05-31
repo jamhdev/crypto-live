@@ -11,6 +11,7 @@ import ConverterPage from "../ConverterPage/ConverterPage";
 import PortfolioMain from "../portfolio-page/PortfolioMain";
 import MarketDataNavMobile from "../market-data-nav/market-data-nav-mobile/MarketDataNavMobile";
 import NavBarMobile from "../navigation/nav-bar-mobile/NavBarMobile";
+import ThumbNavigation from "../navigation/nav-bar-mobile/ThumbNavigation";
 
 export default function MainBody() {
   const { isViewingCoinPage, currentPage, screenWidth } =
@@ -19,6 +20,9 @@ export default function MainBody() {
   const marketDataNav =
     screenWidth > 830 ? <MarketDataNav /> : <MarketDataNavMobile />;
   const navBar = screenWidth > 934 ? <NavBar /> : <NavBarMobile />;
+  const coinsOrConverterSelector =
+    screenWidth > 934 ? <CoinOrConverterSelector /> : null;
+  const thumbNavigation = screenWidth > 934 ? null : <ThumbNavigation />;
 
   if (currentPage === "portfolio") {
     return (
@@ -26,6 +30,7 @@ export default function MainBody() {
         {marketDataNav}
         {navBar}
         <PortfolioMain />
+        {thumbNavigation}
       </>
     );
   } else if (currentPage === "converter") {
@@ -33,8 +38,9 @@ export default function MainBody() {
       <>
         {marketDataNav}
         {navBar}
-        <CoinOrConverterSelector />
+        {coinsOrConverterSelector}
         <ConverterPage />
+        {thumbNavigation}
       </>
     );
   } else if (currentPage === "home") {
@@ -45,14 +51,16 @@ export default function MainBody() {
             {marketDataNav}
             {navBar}
             <CoinPage />
+            {thumbNavigation}
           </>
         ) : (
           <>
             {marketDataNav}
             {navBar}
-            <CoinOrConverterSelector />
+            {coinsOrConverterSelector}
             <ChartAndCarouselContainer />
             <HomeTableSection />
+            {thumbNavigation}
           </>
         )}
       </>

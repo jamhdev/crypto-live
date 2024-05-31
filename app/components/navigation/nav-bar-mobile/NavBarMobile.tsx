@@ -66,7 +66,11 @@ export default function NavBarMobile() {
       <div className="w-screen h-[80px] bg-navBarColor z-20">
         <div className="max-w-[1440px] flex justify-between pl-10 pr-10 h-[80px] py-4 m-auto">
           <div
-            className="flex text-xl justify-center items-center gap-2 cursor-pointer"
+            className={
+              isFocused
+                ? "text-xl justify-center items-center gap-2 cursor-pointer hidden sm:flex"
+                : "flex text-xl justify-center items-center gap-2 cursor-pointer"
+            }
             onClick={() => {
               setIsViewingCoinPage(false);
               setCurrentPage("home");
@@ -78,7 +82,7 @@ export default function NavBarMobile() {
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className={isFocused ? "flex gap-2 w-full" : "flex gap-2"}>
             <SearchDropDownMobile
               isFocused={isFocused}
               setIsFocused={setIsFocused}

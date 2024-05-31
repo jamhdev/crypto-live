@@ -12,7 +12,7 @@ export default function CoinOrConverterSelector() {
 
   return (
     <>
-      <div className="flex p-10 self-start m-auto md:m-0">
+      <div className="flex p-10 pb-0 self-start m-auto md:m-0">
         <div className="w-[506px] h-[53px] bg-coinsOrConverterBackgroundColor rounded-lg flex justify-between items-center cursor-pointer">
           <div
             className={currentPage === "home" ? selectedStyles : standardStyles}
