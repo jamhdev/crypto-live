@@ -104,6 +104,7 @@ export default function AppContextProvider({
       navBarColor: theme === "dark" ? "#13121a" : "#ffffff",
       coinsOrConverterBackgroundColor: theme === "dark" ? "#232336" : "#ffffff",
       chartDurationBackgroundColor: theme === "dark" ? "#232336" : "#e3e5f9",
+      selectedGradient: theme === "dark" ? "#7878FA" : "#7878FA",
     }),
     [theme]
   );
@@ -139,6 +140,10 @@ export default function AppContextProvider({
     root.style.setProperty(
       "--color-chart-duration-background-color",
       colors.chartDurationBackgroundColor
+    );
+    root.style.setProperty(
+      "--color-selected-gradient",
+      colors.selectedGradient
     );
   }, [colors]);
 
@@ -231,6 +236,7 @@ export const AppContext = createContext<CreateContextType>({
     navBarColor: "#13121a",
     coinsOrConverterBackgroundColor: "#232336",
     chartDurationBackgroundColor: "#232336",
+    selectedGradient: "#7878FA",
   },
   currencyFormat: new Intl.NumberFormat(undefined, {
     style: "currency",

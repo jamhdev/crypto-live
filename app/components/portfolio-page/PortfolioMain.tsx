@@ -131,13 +131,15 @@ export default function PortfolioMain() {
       )}
       <div className="flex justify-between items-center w-full">
         <div className="text-3xl">Portfolio</div>
-        <div
-          className="bg-highlightColor w-[244px] h-[45px] rounded-lg flex justify-center items-center cursor-pointer hover:scale-105 transition-all font-bold"
-          onClick={() => {
-            setAddingAsset((prev) => !prev);
-          }}
-        >
-          Add Asset
+        <div className="bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg hover:scale-105 transition-all">
+          <div
+            className="bg-highlightColor w-[244px] h-[45px] rounded-lg flex justify-center items-center cursor-pointer font-bold"
+            onClick={() => {
+              setAddingAsset((prev) => !prev);
+            }}
+          >
+            Add Asset
+          </div>
         </div>
       </div>
       {personalAssetData.length < 1 ? emptyPortfolioVisual : null}

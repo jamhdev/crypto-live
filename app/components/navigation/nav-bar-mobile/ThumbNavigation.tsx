@@ -15,47 +15,72 @@ export default function ThumbNavigation() {
     theme === "dark" ? <PortfolioLightIcon /> : <PortfolioDarkIcon />;
   const portfolioIcon =
     theme === "dark" ? <ConverterLightIcon /> : <ConverterDarkIcon />;
+  const selectedGradient = "#7878FA";
   return (
     <>
       <div className="fixed bottom-0 w-full h-[81px] bg-chartBackground flex justify-center items-center gap-2 sm:gap-4 md:gap-6 text-themeTextColor border-t-[1px] border-highlightColor">
         <div
-          onClick={() => {
-            setCurrentPage("home");
-          }}
           className={
             currentPage === "home"
-              ? "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base bg-highlightColor cursor-pointer"
-              : "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base cursor-pointer"
+              ? "bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg"
+              : ""
           }
         >
-          {overViewIcon}
-          <div>Overview</div>
+          <div
+            onClick={() => {
+              setCurrentPage("home");
+            }}
+            className={
+              currentPage === "home"
+                ? "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base bg-highlightColor cursor-pointer border-gradient"
+                : "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base cursor-pointer"
+            }
+          >
+            {overViewIcon}
+            <div>Overview</div>
+          </div>
         </div>
         <div
-          onClick={() => {
-            setCurrentPage("converter");
-          }}
           className={
             currentPage === "converter"
-              ? "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base bg-highlightColor cursor-pointer"
-              : "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base cursor-pointer"
+              ? "bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg"
+              : ""
           }
         >
-          {converterIcon}
-          <div>Converter</div>
+          <div
+            onClick={() => {
+              setCurrentPage("converter");
+            }}
+            className={
+              currentPage === "converter"
+                ? "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base bg-highlightColor cursor-pointer"
+                : "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base cursor-pointer"
+            }
+          >
+            {converterIcon}
+            <div>Converter</div>
+          </div>
         </div>
         <div
-          onClick={() => {
-            setCurrentPage("portfolio");
-          }}
           className={
             currentPage === "portfolio"
-              ? "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base bg-highlightColor cursor-pointer"
-              : "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base cursor-pointer"
+              ? "bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg"
+              : ""
           }
         >
-          {portfolioIcon}
-          <div>Portfolio</div>
+          <div
+            onClick={() => {
+              setCurrentPage("portfolio");
+            }}
+            className={
+              currentPage === "portfolio"
+                ? "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base bg-highlightColor cursor-pointer"
+                : "w-[106px] flex justify-center items-center flex-col rounded-lg p-2 text-[10px] font-medium sm:text-sm md:text-base cursor-pointer"
+            }
+          >
+            {portfolioIcon}
+            <div>Portfolio</div>
+          </div>
         </div>
       </div>
     </>

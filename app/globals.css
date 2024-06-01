@@ -25,6 +25,7 @@
   --color-nav-bar-color: #13121a;
   --color-coins-or-converter-background-color: #232336;
   --color-chart-duration-background-color: #232336;
+  --color-selected-gradient: "#7878FA";
 }
 
 @layer utilities {

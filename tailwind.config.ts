@@ -25,6 +25,7 @@ const config: Config = {
         navBarColor: `var(--color-nav-bar-color)`,
         coinsOrConverterBackgroundColor: `var(--color-coins-or-converter-background-color)`,
         chartDurationBackgroundColor: `var(--color-chart-duration-background-color)`,
+        selectedGradient: `var(--color-selected-gradient)`,
       },
       fontSize: {},
     },

@@ -153,18 +153,22 @@ export default function NewAssetModal({
               </div>
               <div className="flex justify-center items-center gap-2">
                 <div
-                  className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-highlightColor hover:scale-105 transition-all cursor-pointer text-sm"
+                  className="bg-gradient-to-b from-transparent to-transparent p-[1px] rounded-lg w-1/2 hover:scale-105 transition-all hover:from-selectedGradient"
                   onClick={() => {
                     setAddingAsset(false);
                   }}
                 >
-                  Cancel
+                  <div className="flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-highlightColor cursor-pointer text-sm">
+                    Cancel
+                  </div>
                 </div>
                 <div
-                  className="w-1/2 flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-highlightColor hover:scale-105 transition-all cursor-pointer text-sm"
+                  className="bg-gradient-to-b from-transparent to-transparent p-[1px] rounded-lg w-1/2 hover:scale-105 transition-all hover:from-selectedGradient"
                   onClick={handleAddingAsset}
                 >
-                  Save and Continue
+                  <div className="flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-highlightColor cursor-pointer text-sm">
+                    Save and Continue
+                  </div>
                 </div>
               </div>
             </div>

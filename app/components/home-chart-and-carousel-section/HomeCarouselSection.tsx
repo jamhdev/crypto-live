@@ -40,11 +40,16 @@ export default function HomeCarouselSection({
     return (
       <>
         <div className="w-full relative mt-10">
-          <button className="embla__prev w-14 h-14 bg-highlightColor text-white rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0">
-            &lt;
+          <button className="embla__prev w-14 h-14 bg-gradient-to-b from-selectedGradient to-highlightColor p-[1px] rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0">
+            <div className="bg-highlightColor w-full h-full rounded-full flex justify-center items-center text-white text-center">
+              &lt;
+            </div>
           </button>
-          <button className="embla__next w-14 h-14 bg-highlightColor text-white rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background hover:border-0">
-            &gt;
+
+          <button className="embla__prev w-14 h-14 bg-gradient-to-b from-selectedGradient to-highlightColor p-[1px] rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background hover:border-0">
+            <div className="bg-highlightColor w-full h-full rounded-full flex justify-center items-center text-white text-center">
+              &gt;
+            </div>
           </button>
           <div className="w-full flex gap-2 px-10 h-[78px] justify-center items-center">
             <div className="w-[264px] h-[78px] border-highlightColor border-4 rounded-lg flex justify-center items-center">
@@ -71,11 +76,16 @@ export default function HomeCarouselSection({
     return (
       <>
         <div className="w-full relative mt-10">
-          <button className="embla__prev w-14 h-14 bg-highlightColor text-white rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0">
-            &lt;
+          <button className="embla__prev w-14 h-14 bg-gradient-to-b from-selectedGradient to-highlightColor p-[1px] rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0">
+            <div className="bg-highlightColor w-full h-full rounded-full flex justify-center items-center text-white text-center">
+              &lt;
+            </div>
           </button>
-          <button className="embla__next w-14 h-14 bg-highlightColor text-white rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background hover:border-0">
-            &gt;
+
+          <button className="embla__prev w-14 h-14 bg-gradient-to-b from-selectedGradient to-highlightColor p-[1px] rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background hover:border-0">
+            <div className="bg-highlightColor w-full h-full rounded-full flex justify-center items-center text-white text-center">
+              &gt;
+            </div>
           </button>
           <div className="w-full flex gap-2 px-10 h-[78px] justify-center items-center">
             <div className="w-full h-[78px] border-highlightColor border-4 rounded-lg flex justify-center items-center text-themeTextColor">
@@ -90,16 +100,21 @@ export default function HomeCarouselSection({
     <>
       <div className="w-full relative mt-10">
         <button
-          className="embla__prev w-14 h-14 bg-highlightColor text-white rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0"
+          className="embla__prev w-14 h-14 bg-gradient-to-b from-selectedGradient to-highlightColor p-[1px] rounded-full flex justify-center items-center transition-all absolute left-2 z-10 top-[10px] border-4 border-background hover:border-0"
           onClick={scrollPrev}
         >
-          &lt;
+          <div className="bg-highlightColor w-full h-full rounded-full flex justify-center items-center text-white text-center">
+            &lt;
+          </div>
         </button>
+
         <button
-          className="embla__next w-14 h-14 bg-highlightColor text-white rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background hover:border-0"
+          className="embla__prev w-14 h-14 bg-gradient-to-b from-selectedGradient to-highlightColor p-[1px] rounded-full justify-center items-center transition-all absolute right-2 z-10 top-[10px] border-4 border-background hover:border-0"
           onClick={scrollNext}
         >
-          &gt;
+          <div className="bg-highlightColor w-full h-full rounded-full flex justify-center items-center text-white text-center">
+            &gt;
+          </div>
         </button>
         <div className="w-full flex flex-col gap-2 px-10">
           <div

@@ -39,51 +39,59 @@ export default function CarouselItem({
 
   const selectedStyles =
     coinSelected === id
-      ? "min-w-[215px] h-[78px] bg-highlightColor flex justify-center items-center rounded-lg cursor-pointer p-4 mx-1 text-white"
-      : "min-w-[215px] h-[78px] bg-primary flex justify-center items-center rounded-lg cursor-pointer p-4 mx-1";
+      ? "min-w-[215px] h-[78px] bg-highlightColor flex justify-center items-center rounded-lg cursor-pointer p-4 text-white"
+      : "min-w-[215px] h-[78px] bg-primary flex justify-center items-center rounded-lg cursor-pointer p-4";
   return (
     <div
-      className={selectedStyles}
-      onClick={() => {
-        dispatch(setCoinSelected(id));
-        dispatch(getCoinData());
-        dispatch(getChartData(currency));
-      }}
+      className={
+        coinSelected === id
+          ? "bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg mx-1"
+          : "mx-1"
+      }
     >
-      <img src={image} alt="Coin Image" width={32} height={32} />
-      <div className="flex flex-col flex-grow items-center justify-center">
-        <div>
-          <div className="flex gap-1 font-medium">
-            <div>{id.charAt(0).toUpperCase() + id.slice(1)}</div>
-            <div>({symbol.toUpperCase()})</div>
-          </div>
-          <div className="text-xs flex gap-1">
-            <div>
-              {currencyFormat.format(current_price)} {currency}
+      <div
+        className={selectedStyles}
+        onClick={() => {
+          dispatch(setCoinSelected(id));
+          dispatch(getCoinData());
+          dispatch(getChartData(currency));
+        }}
+      >
+        <img src={image} alt="Coin Image" width={32} height={32} />
+        <div className="flex flex-col flex-grow items-center justify-center">
+          <div>
+            <div className="flex gap-1 font-medium">
+              <div>{id.charAt(0).toUpperCase() + id.slice(1)}</div>
+              <div>({symbol.toUpperCase()})</div>
             </div>
-            <div
-              className="flex"
-              style={
-                price_change_percentage_1h_in_currency > 0
-                  ? { color: increaseColor }
-                  : { color: decreaseColor }
-              }
-            >
+            <div className="text-xs flex gap-1">
               <div>
-                {price_change_percentage_1h_in_currency > 0 ? (
-                  theme === "dark" ? (
-                    <IncreaseValueIcon />
-                  ) : (
-                    <IncreaseValueIconDarker />
-                  )
-                ) : (
-                  <DecreaseValueIcon />
-                )}
+                {currencyFormat.format(current_price)} {currency}
               </div>
-              <div>
-                {formatPercentage(
-                  Math.abs(price_change_percentage_1h_in_currency)
-                )}
+              <div
+                className="flex"
+                style={
+                  price_change_percentage_1h_in_currency > 0
+                    ? { color: increaseColor }
+                    : { color: decreaseColor }
+                }
+              >
+                <div>
+                  {price_change_percentage_1h_in_currency > 0 ? (
+                    theme === "dark" ? (
+                      <IncreaseValueIcon />
+                    ) : (
+                      <IncreaseValueIconDarker />
+                    )
+                  ) : (
+                    <DecreaseValueIcon />
+                  )}
+                </div>
+                <div>
+                  {formatPercentage(
+                    Math.abs(price_change_percentage_1h_in_currency)
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -29,14 +29,22 @@ export default function ChartDurationSelector() {
           <div
             key={value}
             className={
-              chartDurationSelector === value ? selectedStyles : defaultStyles
+              chartDurationSelector === value
+                ? "bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg"
+                : ""
             }
-            onClick={() => {
-              dispatch(setDurationSelector(value));
-              dispatch(getChartDataOnDurationChange(currency));
-            }}
           >
-            {value}
+            <div
+              className={
+                chartDurationSelector === value ? selectedStyles : defaultStyles
+              }
+              onClick={() => {
+                dispatch(setDurationSelector(value));
+                dispatch(getChartDataOnDurationChange(currency));
+              }}
+            >
+              {value}
+            </div>
           </div>
         ))}
       </div>
