@@ -16,7 +16,7 @@ export default function HomeChartSectionMobile() {
 
   if (isLoading)
     return (
-      <div className="flex text-white justify-center items-center gap-10 bg-none w-full rounded-bl-md rounded-br-md relative p-10">
+      <div className="flex text-white justify-center items-center gap-10 bg-none w-full rounded-bl-md rounded-br-md relative py-10">
         <div className="bg-primary flex justify-center items-center pt-2 pb-2 pl-4 pr-4 rounded-xl h-[392px] w-full">
           <LoadingCircleLine />
         </div>
@@ -24,7 +24,7 @@ export default function HomeChartSectionMobile() {
     );
   if (error)
     return (
-      <div className="flex text-white justify-center items-center gap-10 bg-none w-full rounded-bl-md rounded-br-md relative p-10">
+      <div className="flex text-white justify-center items-center gap-10 bg-none w-full rounded-bl-md rounded-br-md relative py-10">
         <div className="bg-primary flex justify-center items-center pt-2 pb-2 pl-4 pr-4 rounded-xl h-[392px] w-full">
           <div className="text-themeTextColorThird text-2xl font-medium">
             Error loading chart data
@@ -35,7 +35,7 @@ export default function HomeChartSectionMobile() {
 
   return (
     <>
-      <div className="p-10 w-full flex justify-center items-center">
+      <div className="py-10 w-full flex justify-center items-center">
         {isPriceChart ? (
           <div className="w-full">
             <HomePriceChartMobile

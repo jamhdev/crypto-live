@@ -44,7 +44,7 @@ export default function HomeCarouselSectionMobile({
     return (
       <>
         <div className="w-full relative mt-10">
-          <div className="w-full flex gap-2 px-10 h-[78px] justify-center items-center">
+          <div className="w-full flex gap-2 h-[78px] justify-center items-center">
             <div className="w-[264px] h-[78px] border-highlightColor border-4 rounded-lg flex justify-center items-center">
               <LoadingCircleLine />
             </div>
@@ -69,7 +69,7 @@ export default function HomeCarouselSectionMobile({
     return (
       <>
         <div className="w-full relative mt-10">
-          <div className="w-full flex gap-2 px-10 h-[78px] justify-center items-center">
+          <div className="w-full flex gap-2 h-[78px] justify-center items-center">
             <div className="w-full h-[78px] border-highlightColor border-4 rounded-lg flex justify-center items-center text-themeTextColor">
               Error loading carousel
             </div>
@@ -81,7 +81,7 @@ export default function HomeCarouselSectionMobile({
   return (
     <>
       <div className="w-full relative mt-10">
-        <div className="w-full flex flex-col gap-2 px-10">
+        <div className="w-full flex flex-col gap-2">
           <div
             ref={emblaRef}
             className="flex text-themeTextColor embla"

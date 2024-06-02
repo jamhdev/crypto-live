@@ -28,6 +28,7 @@ const config: Config = {
         selectedGradient: `var(--color-selected-gradient)`,
       },
       fontSize: {},
+      screens: { xs: "370px", xsm: "500px" },
     },
   },
   plugins: [],

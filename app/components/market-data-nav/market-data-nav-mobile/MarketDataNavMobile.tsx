@@ -107,13 +107,17 @@ export default function MarketDataNavMobile() {
           {data ? data?.markets : "..."}
         </div>
         <div className="flex items-center justify-center gap-2">
-          {valueChanged()}
-          {data
-            ? marketCapCurrencyFormat.format(
-                data?.total_market_cap?.usd / numberToDivideMarketCapBy()
-              )
-            : "..."}
-          {billionOrTrillionSymbol()}
+          <div className="hidden xsm:flex justify-center items-center">
+            {valueChanged()}
+          </div>
+          <div className="flex justify-center items-center">
+            {data
+              ? marketCapCurrencyFormat.format(
+                  data?.total_market_cap?.usd / numberToDivideMarketCapBy()
+                )
+              : "..."}
+            {billionOrTrillionSymbol()}
+          </div>
         </div>
         <div className="flex justify-center items-center gap-2 text-sm">
           <div className="flex justify-center items-center w-[16px] h-[16px]">

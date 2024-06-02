@@ -102,7 +102,7 @@ export default function NewAssetModal({
       <div className="fixed inset-0 w-screen h-screen flex justify-center items-center z-50">
         <div className="w-full h-full backdrop-blur-[4px] z-10"></div>
         <div
-          className="fixed flex flex-col p-10 w-[886px] bg-background z-50 rounded-lg border-2 border-primary"
+          className="fixed flex flex-col p-10 w-full sm:w-[500px] md:w-[600px] lg:w-[886px] bg-background z-50 rounded-lg border-2 border-primary"
           ref={modalRef}
         >
           <div className="flex justify-between mb-10">
@@ -116,8 +116,8 @@ export default function NewAssetModal({
               {theme === "light" ? <ExitIconDark /> : <ExitIconLight />}
             </div>
           </div>
-          <div className="flex">
-            <div className="w-1/3 flex flex-col gap-2 justify-center items-center bg-chartBackground mr-6 rounded-lg">
+          <div className="flex justify-center items-center">
+            <div className="w-1/3 h-[178px] flex-col gap-2 justify-center items-center bg-chartBackground mr-6 rounded-lg hidden lg:flex">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/800px-Bitcoin.svg.png"
                 alt="Example coin image"
@@ -126,7 +126,7 @@ export default function NewAssetModal({
               />
               <div className="font-semibold text-2xl">Bitcoin (BTC)</div>
             </div>
-            <div className="w-2/3 flex flex-col gap-2">
+            <div className="w-2/3 flex-grow flex flex-col gap-2">
               <div className="bg-primary rounded-lg flex gap-2">
                 <NewAssetSelectCoinDropDown
                   newAssetModalData={newAssetModalData}
@@ -167,7 +167,8 @@ export default function NewAssetModal({
                   onClick={handleAddingAsset}
                 >
                   <div className="flex justify-center items-center bg-primary rounded-lg p-2 hover:bg-highlightColor cursor-pointer text-sm">
-                    Save and Continue
+                    <div className="sm:hidden">Save</div>
+                    <div className="hidden sm:inline">Save and Continue</div>
                   </div>
                 </div>
               </div>

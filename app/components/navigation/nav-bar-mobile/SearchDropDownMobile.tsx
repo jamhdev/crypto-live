@@ -115,8 +115,8 @@ export default function SearchDropDownMobile({
     <div
       className={
         isFocused
-          ? "bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1 relative m-auto"
-          : "bg-backgroundSecondary rounded-lg p-2 flex justify-center items-center gap-1 relative"
+          ? "bg-backgroundSecondary rounded-lg py-2 flex justify-center items-center gap-1 relative m-auto w-full sm:w-auto"
+          : "bg-backgroundSecondary rounded-lg py-2 flex justify-center items-center gap-1 relative"
       }
       ref={searchBarRef}
     >
@@ -125,7 +125,7 @@ export default function SearchDropDownMobile({
           onClick={() => {
             setIsFocused((prev) => !prev);
           }}
-          className="cursor-pointer p-2"
+          className="cursor-pointer w-[48px] py-2 flex justify-center items-center"
         >
           <DarkNavSearchIcon />
         </div>
@@ -134,7 +134,7 @@ export default function SearchDropDownMobile({
           onClick={() => {
             setIsFocused((prev) => !prev);
           }}
-          className="cursor-pointer p-2"
+          className="cursor-pointer w-[48px] py-2 flex justify-center items-center"
         >
           <LightNavSearchIcon />
         </div>
@@ -148,7 +148,7 @@ export default function SearchDropDownMobile({
         placeholder="Search..."
         className={
           isFocused
-            ? "bg-transparent min-w-[300px] text-themeTextColor outline-none"
+            ? "bg-transparent w-full xs:min-w-[300px] text-themeTextColor outline-none"
             : "hidden"
         }
         onFocus={() => {

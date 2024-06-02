@@ -54,9 +54,9 @@ export default function ConverterPage() {
   }, [firstCoinData.amount, firstCoinData.data, secondCoinData.data]);
 
   return (
-    <div className="text-themeTextColorSecondary w-full px-10 flex flex-col justify-center items-center mt-10">
-      <div className="flex w-full justify-center items-center relative">
-        <div className="basis-1/2 bg-chartBackground rounded-2xl text-themeTextColorSecondary flex flex-col items-center p-4 gap-4">
+    <div className="text-themeTextColorSecondary w-full flex flex-col justify-center items-center mt-10">
+      <div className="flex w-full justify-center items-center relative flex-col md:flex-row">
+        <div className="basis-1/2 bg-chartBackground rounded-2xl text-themeTextColorSecondary flex flex-col items-center p-4 gap-4 w-full">
           <div className="w-full opacity-50 text-sm">You sell</div>
           <ConverterCoinSelector
             coinData={firstCoinData}
@@ -75,7 +75,7 @@ export default function ConverterPage() {
           {switchIcon}
         </div>
         <div
-          className="basis-1/2 rounded-2xl text-themeTextColorSecondary flex flex-col items-center p-4 gap-4"
+          className="basis-1/2 rounded-2xl text-themeTextColorSecondary flex flex-col items-center p-4 gap-4 w-full"
           style={
             theme === "dark"
               ? { backgroundColor: "#1e1932" }
@@ -93,10 +93,14 @@ export default function ConverterPage() {
         </div>
       </div>
       <div className="flex flex-col w-full justify-center items-center mt-10  bg-chartBackground rounded-lg relative">
-        <ConverterChartDurationSelector
-          converterChartDurationSelector={converterChartDurationSelector}
-          setConverterChartDurationSelector={setConverterChartDurationSelector}
-        />
+        <div className="hidden lg:block">
+          <ConverterChartDurationSelector
+            converterChartDurationSelector={converterChartDurationSelector}
+            setConverterChartDurationSelector={
+              setConverterChartDurationSelector
+            }
+          />
+        </div>
         <ConverterCoinsChart
           firstCoinData={firstCoinData.data}
           secondCoinData={secondCoinData.data}

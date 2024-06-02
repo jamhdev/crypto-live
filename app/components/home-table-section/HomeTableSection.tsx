@@ -39,7 +39,38 @@ export default function HomeTableSection() {
   }, [dispatch, currency]);
 
   const setColumns = () => {
-    if (screenWidth < 600) {
+    if (screenWidth < 470) {
+      return [
+        {
+          accessorKey: "id",
+          header: "Name",
+          minWidth: 150,
+          maxWidth: 300,
+          size: 250,
+          cell: (props: any) => {
+            const { image, name, symbol, id } = props.row.original;
+            return (
+              <ColumnNameItem
+                image={image}
+                name={name}
+                symbol={symbol}
+                id={id}
+              />
+            );
+          },
+        },
+        {
+          accessorKey: "current_price",
+          header: "Price",
+          minWidth: 150,
+          maxWidth: 300,
+          size: 120,
+          cell: (props: any) => {
+            return <ColumnPriceItem price={props.getValue()} />;
+          },
+        },
+      ];
+    } else if (screenWidth < 600) {
       return [
         {
           accessorKey: "id",
@@ -498,7 +529,7 @@ export default function HomeTableSection() {
 
   if (isLoading)
     return (
-      <div className="flex flex-col min-w-full p-10 relative mt-10">
+      <div className="flex flex-col min-w-full py-10 relative mt-10">
         <div className="flex flex-col text-themeTextColor w-full items-center rounded-lg">
           {table.getHeaderGroups().map((headerGroup) => (
             <div
