@@ -6,6 +6,7 @@ import { AppDispatch } from "@/app/store/store";
 import { getChartData, getCoinData } from "@/app/store/chartDataSlice";
 import { AppContext } from "@/app/contexts/AppContext";
 import HomeCarouselSectionMobile from "./home-chart-and-carousel-section-mobile/HomeCarouselSectionMobile";
+import HomeChartSectionMobile from "./home-chart-and-carousel-section-mobile/HomeChartSectionMobile";
 
 export default function ChartAndCarouselContainer() {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,11 +22,13 @@ export default function ChartAndCarouselContainer() {
 
   const carouselSection =
     screenWidth > 934 ? <HomeCarouselSection /> : <HomeCarouselSectionMobile />;
+  const chartSection =
+    screenWidth > 934 ? <HomeChartSection /> : <HomeChartSectionMobile />;
 
   return (
     <>
       {carouselSection}
-      <HomeChartSection />
+      {chartSection}
     </>
   );
 }
