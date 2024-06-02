@@ -45,7 +45,7 @@ export default function CoinPage() {
     theme === "dark" ? colors.greenMain : colors.greenSecondary;
   const decreaseColor = colors.redMain;
   const circlePlusIcon = (
-    <div className="bg-highlightColor rounded-full min-w-[24px] min-h-[24px] flex items-center justify-center shadow-[0px_0px_10px_1px_rgb(107,106,222,0.5)]">
+    <div className="bg-highlightColor rounded-full min-w-[24px] min-h-[24px] w-[24px] h-[24px] flex items-center justify-center shadow-[0px_0px_10px_1px_rgb(107,106,222,0.5)]">
       <CirclePlusIcon />
     </div>
   );
@@ -86,9 +86,9 @@ export default function CoinPage() {
       <>
         {portfolioCoinNamesArray.includes(coinData.id) && (
           <div className="text-xl flex gap-2 items-center">
-            <div>Profit:</div>
+            <div className="text-sm xsm:text-base md:text-lg">Profit:</div>
             <div
-              className="font-medium text-2xl flex items-center"
+              className="font-medium text-lg sm:text-2xl flex items-center"
               style={
                 amountLostOrGained > 0
                   ? { color: increaseColor }
@@ -104,7 +104,7 @@ export default function CoinPage() {
               ) : (
                 <DecreaseValueIcon />
               )}
-              {currencyFormat.format(amountLostOrGained)}
+              {currencyFormat.format(Math.abs(amountLostOrGained))}
             </div>
           </div>
         )}
@@ -153,7 +153,7 @@ export default function CoinPage() {
     }%`;
 
     return (
-      <div className="text-themeTextColor w-full px-10">
+      <div className="text-themeTextColor w-full">
         <button
           onClick={() => setIsViewingCoinPage((prev) => !prev)}
           className="p-4 m-4 ml-0 bg-highlightColor text-themeTextColorThird font-medium rounded-lg"
@@ -161,9 +161,9 @@ export default function CoinPage() {
           Back
         </button>
         <div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="flex flex-col p-6 gap-6 bg-chartBackground rounded-lg">
-              <div className="flex gap-4 justify-start items-center">
+              <div className="hidden lg:flex gap-4 justify-start items-center">
                 <img
                   src={coinData?.image?.large}
                   alt={`${coinData?.name} logo`}
@@ -181,13 +181,34 @@ export default function CoinPage() {
                   </div>
                 </div>
               </div>
-              <div className="text-4xl font-semibold flex gap-4 justify-start items-center">
+              {/* MOBILE */}
+              <div className="lg:hidden flex flex-col gap-2 md:gap-4 justify-start items-center">
+                <div className="flex gap-2">
+                  <div className="text-lg md:text-2xl font-medium flex justify-center items-center">
+                    {coinData?.name} (
+                    {coinData?.symbol ? coinData.symbol.toUpperCase() : ""})
+                  </div>
+                  <img
+                    src={coinData?.image?.large}
+                    alt={`${coinData?.name} logo`}
+                    className="w-10 h-10 md:w-[64px] md:h-[64px]"
+                  />
+                </div>
+                <div>
+                  <div className="cursor-pointer flex gap-2">
+                    {coinData?.links?.homepage}
+                    <HyperlinkIcon />
+                  </div>
+                </div>
+              </div>
+              {/* MOBILE */}
+              <div className="text-lg xsm:text-2xl md:text-4xl font-semibold flex gap-2 xsm:gap-4 justify-start items-center">
                 <div>
                   {currencyFormat.format(
                     coinData?.market_data?.current_price[currency.toLowerCase()]
                   )}
                 </div>
-                <div className="text-xl flex gap-1 justify-center items-center">
+                <div className="flex gap-1 justify-center items-center">
                   {coinData?.market_data?.price_change_percentage_24h > 0 ? (
                     theme === "dark" ? (
                       <IncreaseValueIcon />
@@ -215,34 +236,36 @@ export default function CoinPage() {
               {profitSectionCaluclation()}
               <div className="w-full h-[1px] bg-themeTextColor"></div>
               <div className="flex justify-between items-center">
-                <div className="flex justify-center items-center gap-1">
+                <div className="flex justify-center items-center gap-1 text-xs xsm:text-base">
                   {theme === "dark" ? (
                     <ArrowUpLargeGreenIconSvg />
                   ) : (
                     <ArrowUpLargeGreenIconSecondarySvg />
                   )}
-                  All Time High -{" "}
-                  <div>
+                  All Time High <span className="hidden md:inline">-</span>{" "}
+                  <div className="hidden md:flex">
                     {new Date(
                       coinData?.market_data?.ath_date[currency.toLowerCase()]
                     ).toDateString()}
                   </div>
                 </div>
-                <div className="text-2xl">
+                <div className="text-lg xsm:text-2xl">
                   {currencyFormat.format(
                     coinData?.market_data?.ath[currency.toLowerCase()]
                   )}
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <div className="flex justify-center items-center gap-1">
+                <div className="flex justify-center items-center gap-1 text-xs xsm:text-base">
                   <ArrowDownLargeRedIconSvg />
-                  All Time Low -{" "}
-                  {new Date(
-                    coinData?.market_data?.atl_date[currency.toLowerCase()]
-                  ).toDateString()}
+                  All Time Low <span className="hidden md:inline">-</span>{" "}
+                  <div className="hidden md:flex">
+                    {new Date(
+                      coinData?.market_data?.atl_date[currency.toLowerCase()]
+                    ).toDateString()}
+                  </div>
                 </div>
-                <div className="text-2xl">
+                <div className="text-lg xsm:text-2xl">
                   {currencyFormat.format(
                     coinData?.market_data?.atl[currency.toLowerCase()]
                   )}
@@ -260,9 +283,9 @@ export default function CoinPage() {
 
           <div className="w-full h-[1px] bg-themeTextColor mt-10"></div>
 
-          <div className="grid grid-cols-2 gap-4 mt-10">
-            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8">
-              <div className="flex gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-10">
+            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8 overflow-hidden">
+              <div className="flex gap-2 justify-center items-center">
                 {circlePlusIcon}
                 <div>
                   Total Volume:{" "}
@@ -272,8 +295,8 @@ export default function CoinPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8">
-              <div className="flex gap-2">
+            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8 overflow-hidden">
+              <div className="flex gap-2 justify-center items-center">
                 {circlePlusIcon}
                 <div className="flex gap-2">
                   Max Supply:{" "}
@@ -290,7 +313,7 @@ export default function CoinPage() {
                 </div>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 justify-center items-center">
                 {circlePlusIcon}
                 Circulating Supply:{" "}
                 {plainCurrencyFormat.format(
@@ -320,8 +343,8 @@ export default function CoinPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8">
-              <div className="flex gap-2">
+            <div className="bg-chartBackground rounded-lg flex flex-col gap-8 items-start justify-start p-8 overflow-hidden">
+              <div className="flex gap-2 justify-center items-center">
                 {circlePlusIcon}
                 <div>
                   Market Cap:{" "}
@@ -330,7 +353,7 @@ export default function CoinPage() {
                   )}
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 justify-center items-center">
                 {circlePlusIcon}
                 Fully Diluted Valuation:{" "}
                 {currencyFormat.format(
