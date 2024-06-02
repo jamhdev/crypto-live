@@ -159,10 +159,9 @@ export default function PortfolioMain() {
       <div className="my-10"></div>
       <div className="w-full flex flex-col gap-2">
         {personalAssetData.map((value: PersonalAssetData) => (
-          <div>
+          <div key={value.id}>
             {screenWidth > 980 ? (
               <AssetItem
-                key={value.id}
                 value={value}
                 currentAssetData={currentAssetData}
                 personalAssetData={personalAssetData}
@@ -170,7 +169,6 @@ export default function PortfolioMain() {
               />
             ) : (
               <AssetItemMobile
-                key={value.id}
                 value={value}
                 currentAssetData={currentAssetData}
                 personalAssetData={personalAssetData}
