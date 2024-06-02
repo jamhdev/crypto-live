@@ -122,7 +122,7 @@ export default function PortfolioMain() {
   );
 
   return (
-    <div className="text-themeTextColor w-full px-10 py-10 flex items-center flex-col">
+    <div className="text-themeTextColor w-full px-10 py-10 flex items-center flex-col min-h-[650px]">
       {addingAsset && (
         <NewAssetModal
           setAddingAsset={setAddingAsset}
@@ -144,7 +144,7 @@ export default function PortfolioMain() {
             Add Asset
           </div>
         </div>
-        <div className="fixed bottom-24 right-4 bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-full xsm:hidden hover:scale-105 transition-all">
+        <div className="fixed bottom-24 right-4 bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-full xsm:hidden hover:scale-105 transition-all z-10">
           <div
             className="bg-highlightColor w-[45px] h-[45px] rounded-full flex justify-center items-center cursor-pointer font-bold"
             onClick={() => {
