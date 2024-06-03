@@ -17,6 +17,7 @@ export default function ThumbNavigation() {
   const portfolioIcon =
     theme === "dark" ? <ConverterLightIcon /> : <ConverterDarkIcon />;
   const selectedGradient = "#7878FA";
+
   return (
     <>
       <div className="fixed bottom-0 w-full h-[81px] bg-chartBackground flex justify-center items-center gap-2 sm:gap-4 md:gap-6 text-themeTextColor border-t-[1px] border-highlightColor">
@@ -52,6 +53,7 @@ export default function ThumbNavigation() {
           <div
             onClick={() => {
               setCurrentPage("converter");
+              setIsViewingCoinPage(false);
             }}
             className={
               currentPage === "converter"
@@ -73,6 +75,7 @@ export default function ThumbNavigation() {
           <div
             onClick={() => {
               setCurrentPage("portfolio");
+              setIsViewingCoinPage(false);
             }}
             className={
               currentPage === "portfolio"
