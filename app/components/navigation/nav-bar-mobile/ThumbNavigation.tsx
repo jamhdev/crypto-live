@@ -8,7 +8,8 @@ import ConverterDarkIcon from "./ConverterDarkIcon.svg";
 import { AppContext } from "@/app/contexts/AppContext";
 
 export default function ThumbNavigation() {
-  const { theme, currentPage, setCurrentPage } = useContext(AppContext);
+  const { theme, currentPage, setCurrentPage, setIsViewingCoinPage } =
+    useContext(AppContext);
   const overViewIcon =
     theme === "dark" ? <OverviewLightIcon /> : <OverviewDarkIcon />;
   const converterIcon =
@@ -28,6 +29,7 @@ export default function ThumbNavigation() {
         >
           <div
             onClick={() => {
+              setIsViewingCoinPage(false);
               setCurrentPage("home");
             }}
             className={

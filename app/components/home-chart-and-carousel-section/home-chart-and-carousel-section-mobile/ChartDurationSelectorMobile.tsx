@@ -23,8 +23,8 @@ export default function ChartDurationSelectorMobile() {
   const selectedStyles = `px-2 py-1 rounded-lg cursor-pointer bg-highlightColor font-medium text-themeTextColorThird`;
 
   return (
-    <div className="flex justify-start self-start text-themeTextColor m-auto md:m-0">
-      <div className="bg-chartDurationBackgroundColor flex gap-4 sm:gap-10 rounded-lg p-1">
+    <div className="flex text-themeTextColor">
+      <div className="bg-chartDurationBackgroundColor flex gap-4 sm:gap-10 rounded-lg p-1 m-auto md:m-0">
         {sortOptions.map((value) => (
           <div
             key={value}
