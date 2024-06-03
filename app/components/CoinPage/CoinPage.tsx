@@ -153,7 +153,7 @@ export default function CoinPage() {
     }%`;
 
     return (
-      <div className="text-themeTextColor w-full">
+      <div className="text-themeTextColor w-full mb-40">
         <button
           onClick={() => setIsViewingCoinPage((prev) => !prev)}
           className="p-4 m-4 ml-0 bg-highlightColor text-themeTextColorThird font-medium rounded-lg"
