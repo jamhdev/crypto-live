@@ -24,7 +24,7 @@ export default function ChartDurationSelectorMobile() {
 
   return (
     <div className="flex text-themeTextColor">
-      <div className="bg-chartDurationBackgroundColor flex gap-4 sm:gap-10 rounded-lg p-1 m-auto md:m-0">
+      <div className="bg-chartDurationBackgroundColor flex gap-4 xsm:gap-10 rounded-lg p-1 m-auto md:m-0">
         {sortOptions.map((value) => (
           <div
             key={value}
