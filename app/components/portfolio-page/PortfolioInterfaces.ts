@@ -80,7 +80,6 @@ export interface MarketData {
 
 export interface NewAssetModalData {
   coinName: string;
-  purchasedAmount: null | number;
   purchasedDate: null | Date;
 }
 

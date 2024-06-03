@@ -1,4 +1,10 @@
-import React, { SetStateAction, useContext, useEffect, useRef } from "react";
+import React, {
+  MutableRefObject,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import DownArrowIconLight from "./DownArrowIconLight.svg";
 import DownArrowIconDark from "./DownArrowIconDark.svg";
 import ExitIconLight from "./ExitIconLight.svg";
@@ -15,12 +21,14 @@ export default function NewAssetModal({
   setNewAssetModalData,
   personalAssetData,
   setPersonalAssetData,
+  purchasedAmountRef,
 }: {
   setAddingAsset: React.Dispatch<React.SetStateAction<boolean>>;
   newAssetModalData: NewAssetModalData;
   setNewAssetModalData: React.Dispatch<React.SetStateAction<NewAssetModalData>>;
   personalAssetData: any;
   setPersonalAssetData: React.Dispatch<SetStateAction<any>>;
+  purchasedAmountRef: MutableRefObject<HTMLInputElement | null>;
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
   const { theme } = useContext(AppContext);
@@ -40,11 +48,7 @@ export default function NewAssetModal({
     };
   }, []);
 
-  const handleSaveAndContinue = async (
-    date: Date,
-    name: string,
-    amount: number
-  ) => {
+  const handleSaveAndContinue = async (date: Date, name: string) => {
     const dateString = `${date?.getDate()}-${
       date?.getMonth() + 1
     }-${date?.getFullYear()}`;
@@ -58,7 +62,11 @@ export default function NewAssetModal({
           ...prev,
           {
             id: crypto.randomUUID(),
-            amount: amount,
+            amount:
+              !purchasedAmountRef.current ||
+              Number(purchasedAmountRef.current.value) <= 0
+                ? 1
+                : Number(purchasedAmountRef.current.value),
             dataDate: date,
             coinData: json,
           },
@@ -88,8 +96,7 @@ export default function NewAssetModal({
   const handleAddingAsset = () => {
     handleSaveAndContinue(
       newAssetModalData.purchasedDate as Date,
-      newAssetModalData.coinName,
-      newAssetModalData.purchasedAmount as number
+      newAssetModalData.coinName
     );
     setAddingAsset(false);
   };
@@ -135,11 +142,10 @@ export default function NewAssetModal({
               </div>
               <div className="bg-primary rounded-lg p-2 flex gap-2 ">
                 <input
+                  ref={purchasedAmountRef}
                   type="number"
                   className="h-full w-full bg-inherit outline-none"
                   placeholder="Purchased amount"
-                  value={newAssetModalData.purchasedAmount as number}
-                  onChange={handleAmountChange}
                 />
               </div>
               <div className="bg-primary rounded-lg p-2 flex gap-2">

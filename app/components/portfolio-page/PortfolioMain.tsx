@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import useLocalStorage from "../custom-hooks/useLocalStorage";
 import NewAssetModal from "./new-asset-modal/NewAssetModal";
 import AssetItem from "./AssetItem";
@@ -24,10 +24,11 @@ export default function PortfolioMain() {
   const [newAssetModalData, setNewAssetModalData] = useState<NewAssetModalData>(
     {
       coinName: "",
-      purchasedAmount: 1,
       purchasedDate: new Date(),
     }
   );
+
+  const purchasedAmountRef = useRef<HTMLInputElement | null>(null);
 
   const handleDeleteAssetConfirm = (
     id: string,
@@ -130,6 +131,7 @@ export default function PortfolioMain() {
           setNewAssetModalData={setNewAssetModalData}
           personalAssetData={personalAssetData}
           setPersonalAssetData={setPersonalAssetData}
+          purchasedAmountRef={purchasedAmountRef}
         />
       )}
       <div className="flex justify-between items-center w-full">
