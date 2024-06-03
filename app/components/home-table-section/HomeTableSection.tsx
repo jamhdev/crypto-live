@@ -582,7 +582,7 @@ export default function HomeTableSection() {
   return (
     <>
       <div
-        className="text-themeTextColor xl:w-full lg:px-4"
+        className="text-themeTextColor px-6 xsm:px-4 xl:w-full lg:px-4"
         style={{ width: table.getTotalSize() }}
       >
         {table.getHeaderGroups().map((headerGroup) => (
