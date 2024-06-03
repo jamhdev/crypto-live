@@ -26,9 +26,9 @@ export default function ChartAndCarouselContainer() {
     screenWidth > 934 ? <HomeChartSection /> : <HomeChartSectionMobile />;
 
   return (
-    <>
+    <div className="w-full mb-10">
       {carouselSection}
       {chartSection}
-    </>
+    </div>
   );
 }

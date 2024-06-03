@@ -529,7 +529,7 @@ export default function HomeTableSection() {
 
   if (isLoading)
     return (
-      <div className="flex flex-col min-w-full py-10 relative mt-10">
+      <div className="flex flex-col min-w-full py-10 relative">
         <div className="flex flex-col text-themeTextColor w-full items-center rounded-lg">
           {table.getHeaderGroups().map((headerGroup) => (
             <div
@@ -572,7 +572,7 @@ export default function HomeTableSection() {
     );
   if (error)
     return (
-      <div className="flex flex-col p-10 relative mt-10">
+      <div className="flex flex-col p-10 relative">
         <div className="flex justify-center items-center border-4 border-highlightColor w-full py-40 rounded-lg mb-2 h-[76px] mt-6">
           Error loading table data
         </div>
@@ -582,7 +582,7 @@ export default function HomeTableSection() {
   return (
     <>
       <div
-        className="text-themeTextColor p-10 xl:min-w-full"
+        className="text-themeTextColor xl:w-full lg:px-4"
         style={{ width: table.getTotalSize() }}
       >
         {table.getHeaderGroups().map((headerGroup) => (

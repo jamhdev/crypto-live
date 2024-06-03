@@ -23,7 +23,7 @@ export default function ChartDurationSelector() {
   const selectedStyles = `px-4 py-2 rounded-lg cursor-pointer bg-highlightColor font-medium text-themeTextColorThird`;
 
   return (
-    <div className="flex justify-start px-10 self-start text-themeTextColor m-auto md:m-0">
+    <div className="flex justify-start px-10 pl-0 self-start text-themeTextColor m-auto md:m-0">
       <div className="bg-chartDurationBackgroundColor flex gap-10 rounded-lg p-1">
         {sortOptions.map((value) => (
           <div
