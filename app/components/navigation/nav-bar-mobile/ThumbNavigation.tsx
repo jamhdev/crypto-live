@@ -20,7 +20,7 @@ export default function ThumbNavigation() {
 
   return (
     <>
-      <div className="fixed bottom-0 w-full h-[81px] bg-chartBackground flex justify-center items-center gap-2 sm:gap-4 md:gap-6 text-themeTextColor border-t-[1px] border-highlightColor">
+      <div className="fixed bottom-0 w-full h-[81px] bg-chartBackground flex justify-center items-center gap-2 sm:gap-4 md:gap-6 text-themeTextColor border-t-[1px] border-highlightColor z-10">
         <div
           className={
             currentPage === "home"

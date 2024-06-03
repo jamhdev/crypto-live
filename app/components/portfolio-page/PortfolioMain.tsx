@@ -123,7 +123,7 @@ export default function PortfolioMain() {
   );
 
   return (
-    <div className="text-themeTextColor w-full py-10 flex items-center flex-col min-h-[650px]">
+    <div className="text-themeTextColor w-full py-10 flex items-center flex-col min-h-[650px] mb-40">
       {addingAsset && (
         <NewAssetModal
           setAddingAsset={setAddingAsset}
