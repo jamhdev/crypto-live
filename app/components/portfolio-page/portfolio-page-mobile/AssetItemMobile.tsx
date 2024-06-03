@@ -172,7 +172,7 @@ export default function AssetItemMobile({
   );
 
   return (
-    <div className="text-themeTextColorThird w-full h-[315px] rounded-lg flex flex-col items-center relative">
+    <div className="text-themeTextColorThird w-full rounded-lg flex flex-col items-center relative">
       <div className="h-full w-full bg-chartBackground flex flex-col p-4 gap-1 relative rounded-t-lg">
         {deleteAssetSection}
         <div className="flex gap-2 flex-col mb-3">
