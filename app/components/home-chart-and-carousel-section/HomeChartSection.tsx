@@ -61,3 +61,17 @@ export default function HomeChartSection() {
     </>
   );
 }
+
+export function setAfterBuildTicks(axis: any) {
+  const ticks = axis.ticks;
+  if (ticks.length > 8) {
+    const newTicks = [];
+    const tickCount = 8;
+    const step = Math.floor(ticks.length / (tickCount - 1));
+    for (let i = 0; i < tickCount; i++) {
+      const index = i === tickCount - 1 ? ticks.length - 1 : i * step;
+      newTicks.push(ticks[index]);
+    }
+    axis.ticks = newTicks;
+  }
+}

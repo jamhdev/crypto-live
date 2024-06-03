@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
+import { setAfterBuildTicks } from "../HomeChartSection";
 
 export default function HomePriceChartMobile({
   currentSelectedCoinData,
@@ -131,19 +132,7 @@ const options = {
       border: {
         display: true,
       },
-      afterBuildTicks: function (axis: any) {
-        const ticks = axis.ticks;
-        if (ticks.length > 8) {
-          const newTicks = [];
-          const tickCount = 8;
-          const step = Math.floor(ticks.length / (tickCount - 1));
-          for (let i = 0; i < tickCount; i++) {
-            const index = i === tickCount - 1 ? ticks.length - 1 : i * step;
-            newTicks.push(ticks[index]);
-          }
-          axis.ticks = newTicks;
-        }
-      },
+      afterBuildTicks: setAfterBuildTicks,
     },
     y: {
       display: false,
