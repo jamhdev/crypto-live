@@ -12,25 +12,43 @@ export default function CoinOrConverterSelector() {
 
   return (
     <>
-      <div className="flex p-10 self-start m-auto md:m-0">
+      <div className="flex p-10 pl-0 pb-0 self-start m-auto md:m-0">
         <div className="w-[506px] h-[53px] bg-coinsOrConverterBackgroundColor rounded-lg flex justify-between items-center cursor-pointer">
           <div
-            className={currentPage === "home" ? selectedStyles : standardStyles}
-            onClick={() => {
-              setCurrentPage("home");
-            }}
+            className={
+              currentPage === "home"
+                ? "bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg flex-grow h-full"
+                : "flex-grow h-full"
+            }
           >
-            Coins
+            <div
+              className={
+                currentPage === "home" ? selectedStyles : standardStyles
+              }
+              onClick={() => {
+                setCurrentPage("home");
+              }}
+            >
+              Coins
+            </div>
           </div>
           <div
             className={
-              currentPage === "converter" ? selectedStyles : standardStyles
+              currentPage === "converter"
+                ? "bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg flex-grow h-full"
+                : "flex-grow h-full"
             }
-            onClick={() => {
-              setCurrentPage("converter");
-            }}
           >
-            Converter
+            <div
+              className={
+                currentPage === "converter" ? selectedStyles : standardStyles
+              }
+              onClick={() => {
+                setCurrentPage("converter");
+              }}
+            >
+              Converter
+            </div>
           </div>
         </div>
       </div>

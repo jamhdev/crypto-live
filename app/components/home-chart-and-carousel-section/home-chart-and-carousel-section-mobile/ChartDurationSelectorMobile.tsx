@@ -8,7 +8,7 @@ import { AppDispatch, RootState } from "@/app/store/store";
 import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function ChartDurationSelector() {
+export default function ChartDurationSelectorMobile() {
   const { theme, currency } = useContext(AppContext);
   const dispatch = useDispatch<AppDispatch>();
   const chartDurationSelector = useSelector(
@@ -18,13 +18,13 @@ export default function ChartDurationSelector() {
   const sortOptions: durationOption[] = ["1D", "7D", "14D", "1M", "1Y"];
   const defaultStyles =
     theme === "dark"
-      ? "text-[#A7A7CC] px-4 py-2 rounded-lg cursor-pointer"
-      : "px-4 py-2 rounded-lg cursor-pointer";
-  const selectedStyles = `px-4 py-2 rounded-lg cursor-pointer bg-highlightColor font-medium text-themeTextColorThird`;
+      ? "text-[#A7A7CC] px-2 py-1 rounded-lg cursor-pointer"
+      : "px-2 py-1 rounded-lg cursor-pointer";
+  const selectedStyles = `px-2 py-1 rounded-lg cursor-pointer bg-highlightColor font-medium text-themeTextColorThird`;
 
   return (
     <div className="flex text-themeTextColor">
-      <div className="bg-chartDurationBackgroundColor flex gap-10 rounded-lg p-1 m-auto md:m-0">
+      <div className="bg-chartDurationBackgroundColor flex gap-4 xsm:gap-10 rounded-lg p-1 m-auto md:m-0">
         {sortOptions.map((value) => (
           <div
             key={value}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import useLocalStorage from "../custom-hooks/useLocalStorage";
 import NewAssetModal from "./new-asset-modal/NewAssetModal";
 import AssetItem from "./AssetItem";
@@ -7,9 +7,12 @@ import {
   NewAssetModalData,
   PersonalAssetData,
 } from "./PortfolioInterfaces";
+import { AppContext } from "@/app/contexts/AppContext";
+import AssetItemMobile from "./portfolio-page-mobile/AssetItemMobile";
 
 export default function PortfolioMain() {
   const [addingAsset, setAddingAsset] = useState<boolean>(false);
+  const { screenWidth } = useContext(AppContext);
   const [personalAssetData, setPersonalAssetData] = useLocalStorage(
     "personalAssetData",
     []
@@ -21,10 +24,11 @@ export default function PortfolioMain() {
   const [newAssetModalData, setNewAssetModalData] = useState<NewAssetModalData>(
     {
       coinName: "",
-      purchasedAmount: 1,
       purchasedDate: new Date(),
     }
   );
+
+  const purchasedAmountRef = useRef<HTMLInputElement | null>(null);
 
   const handleDeleteAssetConfirm = (
     id: string,
@@ -119,7 +123,7 @@ export default function PortfolioMain() {
   );
 
   return (
-    <div className="text-themeTextColor w-full px-10 py-10 flex items-center flex-col">
+    <div className="text-themeTextColor w-full py-10 flex items-center flex-col min-h-[650px]">
       {addingAsset && (
         <NewAssetModal
           setAddingAsset={setAddingAsset}
@@ -127,30 +131,53 @@ export default function PortfolioMain() {
           setNewAssetModalData={setNewAssetModalData}
           personalAssetData={personalAssetData}
           setPersonalAssetData={setPersonalAssetData}
+          purchasedAmountRef={purchasedAmountRef}
         />
       )}
       <div className="flex justify-between items-center w-full">
         <div className="text-3xl">Portfolio</div>
-        <div
-          className="bg-highlightColor w-[244px] h-[45px] rounded-lg flex justify-center items-center cursor-pointer hover:scale-105 transition-all font-bold"
-          onClick={() => {
-            setAddingAsset((prev) => !prev);
-          }}
-        >
-          Add Asset
+        <div className="bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg hover:scale-105 transition-all hidden xsm:block">
+          <div
+            className="bg-highlightColor w-[244px] h-[45px] rounded-lg justify-center items-center cursor-pointer font-bold flex"
+            onClick={() => {
+              setAddingAsset((prev) => !prev);
+            }}
+          >
+            Add Asset
+          </div>
+        </div>
+        <div className="fixed bottom-24 right-4 bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-full xsm:hidden hover:scale-105 transition-all z-10">
+          <div
+            className="bg-highlightColor w-[45px] h-[45px] rounded-full flex justify-center items-center cursor-pointer font-bold"
+            onClick={() => {
+              setAddingAsset((prev) => !prev);
+            }}
+          >
+            +
+          </div>
         </div>
       </div>
       {personalAssetData.length < 1 ? emptyPortfolioVisual : null}
       <div className="my-10"></div>
       <div className="w-full flex flex-col gap-2">
         {personalAssetData.map((value: PersonalAssetData) => (
-          <AssetItem
-            key={value.id}
-            value={value}
-            currentAssetData={currentAssetData}
-            personalAssetData={personalAssetData}
-            handleDeleteAssetConfirm={handleDeleteAssetConfirm}
-          />
+          <div key={value.id}>
+            {screenWidth > 980 ? (
+              <AssetItem
+                value={value}
+                currentAssetData={currentAssetData}
+                personalAssetData={personalAssetData}
+                handleDeleteAssetConfirm={handleDeleteAssetConfirm}
+              />
+            ) : (
+              <AssetItemMobile
+                value={value}
+                currentAssetData={currentAssetData}
+                personalAssetData={personalAssetData}
+                handleDeleteAssetConfirm={handleDeleteAssetConfirm}
+              />
+            )}
+          </div>
         ))}
       </div>
     </div>

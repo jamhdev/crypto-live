@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { SetStateAction, useContext } from "react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -9,16 +9,18 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
-import { setAfterBuildTicks } from "./HomeChartSection";
+import { setAfterBuildTicks } from "../HomeChartSection";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Legend, Tooltip);
 
-export default function HomeVolumeChart({
+export default function HomeVolumeChartMobile({
   currentSelectedCoinData,
   durationFilteredCoinData,
+  setIsPriceChart,
 }: {
   currentSelectedCoinData: any;
   durationFilteredCoinData: any;
+  setIsPriceChart: React.Dispatch<SetStateAction<boolean>>;
 }) {
   const { currencyFormat, theme, currency } = useContext(AppContext);
 
@@ -52,32 +54,45 @@ export default function HomeVolumeChart({
   };
 
   return (
-    <>
-      <div
-        className="p-6 rounded-xl flex flex-col"
-        style={
-          theme === "dark"
-            ? { backgroundColor: "#1e1932" }
-            : { backgroundColor: "white" }
-        }
-      >
-        {durationFilteredCoinData ? (
-          <>
-            <div className="text-themeTextColorThird ">volume</div>
-            <div className="font-bold text-themeTextColorThird text-2xl">
-              {currencyFormat.format(
-                currentSelectedCoinData?.market_data?.total_volume[
-                  currency.toLowerCase()
-                ]
-              )}
-            </div>
-            <Bar data={data} options={options} />
-          </>
-        ) : (
-          <div>Loading...</div>
-        )}
+    <div
+      className="p-4 rounded-xl flex flex-col"
+      style={
+        theme === "dark"
+          ? { backgroundColor: "#1e1932" }
+          : { backgroundColor: "white" }
+      }
+    >
+      <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-0 sm:gap-4">
+          <div className="text-themeTextColorThird">volume</div>
+          <div className="font-bold text-themeTextColorThird sm:text-xl">
+            {currencyFormat.format(
+              currentSelectedCoinData?.market_data?.total_volume[
+                currency.toLowerCase()
+              ]
+            )}
+          </div>
+        </div>
+        <button
+          className="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-b from-selectedGradient to-highlightColor p-[1px] rounded-full flex justify-center items-center transition-all right-0 z-10 top-0 hover:scale-110"
+          onClick={() => {
+            setIsPriceChart((prev) => !prev);
+          }}
+        >
+          <div className="bg-highlightColor w-full h-full rounded-full flex justify-center items-center text-white text-center">
+            &gt;
+          </div>
+        </button>
       </div>
-    </>
+
+      {durationFilteredCoinData ? (
+        <>
+          <Bar data={data} options={options} />
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
+    </div>
   );
 }
 

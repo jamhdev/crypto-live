@@ -100,7 +100,6 @@ export default function MarketDataNav() {
           <AmountOfCoinsIcon />
           <span>Coins</span>
           <span>{data ? data?.active_cryptocurrencies : "..."}</span>
-          Next
         </div>
         <div className="flex justify-center items-center gap-2">
           <ExchangeMarketsIcon />

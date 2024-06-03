@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { SetStateAction, useContext } from "react";
 import {
   Chart as ChartJS,
   LineElement,
@@ -13,14 +13,16 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { AppContext } from "@/app/contexts/AppContext";
-import { setAfterBuildTicks } from "./HomeChartSection";
+import { setAfterBuildTicks } from "../HomeChartSection";
 
-export default function HomePriceChart({
+export default function HomePriceChartMobile({
   currentSelectedCoinData,
   durationFilteredCoinData,
+  setIsPriceChart,
 }: {
   currentSelectedCoinData: any;
   durationFilteredCoinData: any;
+  setIsPriceChart: React.Dispatch<SetStateAction<boolean>>;
 }) {
   ChartJS.register(
     LineElement,
@@ -70,28 +72,40 @@ export default function HomePriceChart({
   };
 
   return (
-    <>
-      <div className="bg-chartBackground p-6 rounded-xl flex flex-col">
-        {durationFilteredCoinData ? (
-          <>
-            <div className="text-themeTextColorSecondary">
-              {currentSelectedCoinData?.name}(
-              {currentSelectedCoinData?.symbol?.toUpperCase()})
-            </div>
-            <div className="font-bold text-themeTextColorThird text-2xl">
-              {currencyFormat.format(
-                currentSelectedCoinData?.market_data?.current_price[
-                  currency.toLowerCase()
-                ]
-              )}
-            </div>
-            <Line data={data} options={options} />
-          </>
-        ) : (
-          <div>Loading...</div>
-        )}
+    <div className="bg-chartBackground p-4 rounded-xl flex flex-col">
+      <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-0 sm:gap-4">
+          <div className="text-themeTextColorSecondary">
+            {currentSelectedCoinData?.name}(
+            {currentSelectedCoinData?.symbol?.toUpperCase()})
+          </div>
+          <div className="font-bold text-themeTextColorThird sm:text-xl">
+            {currencyFormat.format(
+              currentSelectedCoinData?.market_data?.current_price[
+                currency.toLowerCase()
+              ]
+            )}
+          </div>
+        </div>
+        <button
+          className="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-b from-selectedGradient to-highlightColor p-[1px] rounded-full flex justify-center items-center transition-all right-0 z-10 top-0 hover:scale-110"
+          onClick={() => {
+            setIsPriceChart((prev) => !prev);
+          }}
+        >
+          <div className="bg-highlightColor w-full h-full rounded-full flex justify-center items-center text-white text-center">
+            &gt;
+          </div>
+        </button>
       </div>
-    </>
+      {durationFilteredCoinData ? (
+        <>
+          <Line data={data} options={options} />
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
+    </div>
   );
 }
 

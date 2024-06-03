@@ -95,29 +95,34 @@ export default function MarketDataNavMobile() {
 
   return (
     <>
-      <div className="flex text-white justify-center items-center gap-10 bg-accent w-screen p-4 relative">
+      <div className="flex text-white justify-center items-center gap-2 sm:gap-6 md:gap-10 bg-accent w-screen p-4 relative">
         <div className="justify-center items-center gap-2 hidden lg:flex">
           <AmountOfCoinsIcon />
           <span>Coins</span>
           <span>{data ? data?.active_cryptocurrencies : "..."}</span>
-          Next
         </div>
-        <div className="flex justify-center items-center gap-2">
+        <div className="justify-center items-center gap-2 hidden md:flex">
           <ExchangeMarketsIcon />
           <span>Exchange</span>
           {data ? data?.markets : "..."}
         </div>
-        <div className="justify-center items-center gap-2 hidden md:flex">
-          {valueChanged()}
-          {data
-            ? marketCapCurrencyFormat.format(
-                data?.total_market_cap?.usd / numberToDivideMarketCapBy()
-              )
-            : "..."}
-          {billionOrTrillionSymbol()}
+        <div className="flex items-center justify-center gap-2">
+          <div className="hidden xsm:flex justify-center items-center">
+            {valueChanged()}
+          </div>
+          <div className="flex justify-center items-center">
+            {data
+              ? marketCapCurrencyFormat.format(
+                  data?.total_market_cap?.usd / numberToDivideMarketCapBy()
+                )
+              : "..."}
+            {billionOrTrillionSymbol()}
+          </div>
         </div>
         <div className="flex justify-center items-center gap-2 text-sm">
-          <BitcoinIcon />
+          <div className="flex justify-center items-center w-[16px] h-[16px]">
+            <BitcoinIcon />
+          </div>
           <span>
             {data
               ? marketCapPercentageFormat.format(
@@ -126,7 +131,7 @@ export default function MarketDataNavMobile() {
               : "..."}
             %
           </span>
-          <div className="bg-[rgb(255,255,255,0.4)] w-[53px] h-[6px] rounded-full relative">
+          <div className="bg-[rgb(255,255,255,0.4)] w-[48px] h-[6px] rounded-full relative">
             <div
               className={`bg-[#f7931a] h-full rounded-full`}
               style={{ width: percentageBarBtc }}
@@ -134,12 +139,14 @@ export default function MarketDataNavMobile() {
           </div>
         </div>
         <div className="flex justify-center items-center gap-2 text-sm">
-          <EthereumIcon />
+          <div className="flex justify-center items-center w-[16px] h-[16px]">
+            <EthereumIcon />
+          </div>
           {data
             ? marketCapPercentageFormat.format(data?.market_cap_percentage?.eth)
             : "..."}
           %
-          <div className="bg-[rgb(255,255,255,0.4)] w-[53px] h-[6px] rounded-full relative">
+          <div className="bg-[rgb(255,255,255,0.4)] w-[48px] h-[6px] rounded-full relative">
             <div
               className={`bg-[#5a7ff2] h-full rounded-full`}
               style={{ width: percentageBarEth }}

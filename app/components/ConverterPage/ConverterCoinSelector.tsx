@@ -90,49 +90,55 @@ export default function ConverterCoinSelector({
   return coinData.data !== null ? (
     <div className="flex flex-col w-full">
       <div className="flex w-full mt-2 items-center justify-center">
-        <img
-          src={coinData.data?.image?.small}
-          alt="coin image"
-          width={24}
-          height={24}
-        />
-        <div className="relative w-full">
-          <div className="flex gap-2">
-            <input
-              autoComplete="off"
-              type="text"
-              name="coin-text-input"
-              className="appearance-none bg-transparent w-full p-2 outline-none"
-              value={coinData.name}
-              onChange={(e) => {
-                setCoinData((prev: ConverterInputData) => {
-                  return { ...prev, name: e.target.value };
-                });
-              }}
-              onFocus={() => {
-                setIsCoinNameFocused(true);
-              }}
-              onBlur={() => {
-                setTimeout(() => {
-                  setIsCoinNameFocused(false);
-                }, 400);
-              }}
-            />
+        <div className="flex justify-center items-center">
+          <img
+            src={coinData.data?.image?.small}
+            alt="coin image"
+            width={24}
+            height={24}
+          />
+          <div className="relative w-full">
+            <div className="flex gap-2">
+              <input
+                autoComplete="off"
+                type="text"
+                name="coin-text-input"
+                className="appearance-none bg-transparent w-full p-2 outline-none whitespace-nowrap text-ellipsis overflow-hidden"
+                value={coinData.name}
+                onChange={(e) => {
+                  setCoinData((prev: ConverterInputData) => {
+                    return { ...prev, name: e.target.value };
+                  });
+                }}
+                onFocus={() => {
+                  setIsCoinNameFocused(true);
+                }}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setIsCoinNameFocused(false);
+                  }, 400);
+                }}
+              />
+            </div>
+            {isCoinNameFocused && coinData.name.length > 0 && (
+              <CoinSearchSelector
+                coinData={coinData}
+                isCoinNameFocused={isCoinNameFocused}
+                isCoinAmountFocused={isCoinAmountFocused}
+                setCoinData={setCoinData}
+              />
+            )}
           </div>
-          {isCoinNameFocused && coinData.name.length > 0 && (
-            <CoinSearchSelector
-              coinData={coinData}
-              isCoinNameFocused={isCoinNameFocused}
-              isCoinAmountFocused={isCoinAmountFocused}
-              setCoinData={setCoinData}
-            />
-          )}
         </div>
         <input
           type="number"
           step={1}
           name=""
-          className="appearance-none bg-transparent p-2"
+          className={
+            isCoinNameFocused
+              ? "hidden"
+              : "appearance-none bg-transparent p-2 max-w-[100px] sm:max-w-full"
+          }
           value={coinData.amount}
           onChange={handleAmountInputChange}
           onFocus={() => {

@@ -90,6 +90,7 @@ export default function NavBar() {
           className="flex gap-1"
           onClick={() => {
             setCurrentPage("portfolio");
+            setIsViewingCoinPage(false);
           }}
         >
           <DarkPortfolioNavIcon />
@@ -132,6 +133,7 @@ export default function NavBar() {
           className="flex gap-1"
           onClick={() => {
             setCurrentPage("portfolio");
+            setIsViewingCoinPage(false);
           }}
         >
           <LightPortfolioNavIcon />

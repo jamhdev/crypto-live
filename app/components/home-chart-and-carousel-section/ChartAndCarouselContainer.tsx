@@ -5,10 +5,12 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store/store";
 import { getChartData, getCoinData } from "@/app/store/chartDataSlice";
 import { AppContext } from "@/app/contexts/AppContext";
+import HomeCarouselSectionMobile from "./home-chart-and-carousel-section-mobile/HomeCarouselSectionMobile";
+import HomeChartSectionMobile from "./home-chart-and-carousel-section-mobile/HomeChartSectionMobile";
 
 export default function ChartAndCarouselContainer() {
   const dispatch = useDispatch<AppDispatch>();
-  const { currency } = useContext(AppContext);
+  const { currency, screenWidth } = useContext(AppContext);
 
   useEffect(() => {
     dispatch(getCoinData());
@@ -18,10 +20,15 @@ export default function ChartAndCarouselContainer() {
     dispatch(getChartData(currency));
   }, [dispatch]);
 
+  const carouselSection =
+    screenWidth > 934 ? <HomeCarouselSection /> : <HomeCarouselSectionMobile />;
+  const chartSection =
+    screenWidth > 934 ? <HomeChartSection /> : <HomeChartSectionMobile />;
+
   return (
-    <>
-      <HomeCarouselSection />
-      <HomeChartSection />
-    </>
+    <div className="w-full mb-10">
+      {carouselSection}
+      {chartSection}
+    </div>
   );
 }

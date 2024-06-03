@@ -30,9 +30,11 @@ export default function RootLayout({
 function BodyWrapper({ children }: { children: ReactNode }) {
   return (
     <body
-      className={`${inter.className} bg-background max-w-[1440px] flex justify-center items-center flex-col m-auto overflow-x-hidden`}
+      className={`${inter.className} bg-background max-w-[1440px] m-auto overflow-x-hidden`}
     >
-      {children}
+      <div className="flex justify-center items-center flex-col m-auto px-4 md:px-8 lg:px-10">
+        {children}
+      </div>
     </body>
   );
 }

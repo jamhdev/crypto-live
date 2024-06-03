@@ -26,14 +26,22 @@ export default function ConverterChartDurationSelector({
             key={value}
             className={
               converterChartDurationSelector === value
-                ? selectedStyles
-                : defaultStyles
+                ? "bg-gradient-to-b from-selectedGradient to-transparent p-[1px] rounded-lg"
+                : ""
             }
-            onClick={() => {
-              setConverterChartDurationSelector(value);
-            }}
           >
-            {value}
+            <div
+              className={
+                converterChartDurationSelector === value
+                  ? selectedStyles
+                  : defaultStyles
+              }
+              onClick={() => {
+                setConverterChartDurationSelector(value);
+              }}
+            >
+              {value}
+            </div>
           </div>
         ))}
       </div>
