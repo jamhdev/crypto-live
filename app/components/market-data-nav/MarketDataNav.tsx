@@ -82,13 +82,13 @@ export default function MarketDataNav() {
 
   if (isLoading)
     return (
-      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
+      <div className="flex text-white justify-center items-center gap-10 bg-accent w-screen p-4 rounded-bl-md rounded-br-md relative">
         <LoadingCircleLine />
       </div>
     );
   if (error)
     return (
-      <div className="flex text-white justify-center items-center gap-10 bg-accent w-full p-4 rounded-bl-md rounded-br-md relative">
+      <div className="flex text-white justify-center items-center gap-10 bg-accent w-screen p-4 rounded-bl-md rounded-br-md relative">
         <div>Error loading market data</div>
       </div>
     );
