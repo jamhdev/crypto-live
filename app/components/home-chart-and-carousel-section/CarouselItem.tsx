@@ -50,7 +50,7 @@ export default function CarouselItem({
       }
     >
       <div
-        className={selectedStyles}
+        className={`${selectedStyles} select-none`}
         onClick={() => {
           dispatch(setCoinSelected(id));
           dispatch(getCoinData());
