@@ -49,9 +49,10 @@ export default function NewAssetModal({
   }, []);
 
   const handleSaveAndContinue = async (date: Date, name: string) => {
-    const dateString = `${date?.getDate()}-${
-      date?.getMonth() + 1
-    }-${date?.getFullYear()}`;
+    const dateString = `${String(date.getDate()).padStart(2, "0")}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}-${date.getFullYear()}`;
+
     const endpoint = `/coins/${name.toLowerCase()}/history?date=${dateString}`;
 
     const response = await fetch(
