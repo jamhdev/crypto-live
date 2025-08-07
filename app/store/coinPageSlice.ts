@@ -12,12 +12,15 @@ export const getCoinPageData = createAsyncThunk(
     const isNewCoinSelected = name !== state.coinPageData.coinData.id;
 
     if (isFetchedYet || moreThan5MinutesSinceLastFetch || isNewCoinSelected) {
-      const proxyUrl = "https://corsproxy.io/?";
-      const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
-      const response = await fetch(proxyUrl + targetUrl);
+      const endpoint = `/coins/${name}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`;
+
+      const response = await fetch(
+        `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+      );
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
+
       const data = await response.json();
       return data;
     } else {

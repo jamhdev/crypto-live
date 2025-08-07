@@ -16,9 +16,10 @@ export const getTableData = createAsyncThunk(
       if (process.env.NODE_ENV === "development") {
         return { data: tableData, currency };
       } else {
-        const proxyUrl = "https://corsproxy.io/?";
-        const targetUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.toLowerCase()}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
-        const response = await fetch(proxyUrl + targetUrl);
+        const endpoint = `/coins/markets?vs_currency=${currency.toLowerCase()}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`;
+        const response = await fetch(
+          `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+        );
         if (!response.ok) {
           throw new Error(`API request failed with status ${response.status}`);
         }

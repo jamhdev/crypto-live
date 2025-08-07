@@ -25,17 +25,17 @@ export default function ConverterCoinSelector({
   const { currencyFormat, currency } = useContext(AppContext);
 
   const initialFetch = async () => {
+    const endpoint = `/coins/${coinData?.name}`;
     const response = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${coinData?.name}`
+      `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
     );
     const data = await response.json();
-    setCoinData((prev: ConverterInputData) => {
-      return {
-        ...prev,
-        data: data,
-        name: getCoinNameFormatted(data),
-      };
-    });
+
+    setCoinData((prev: ConverterInputData) => ({
+      ...prev,
+      data,
+      name: getCoinNameFormatted(data),
+    }));
   };
 
   const chartDataFetch = async () => {
@@ -43,13 +43,17 @@ export default function ConverterCoinSelector({
       coinData?.fetchName,
       converterChartDurationSelector
     );
-    const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = `https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}/market_chart?vs_currency=${currency.toLowerCase()}&days=${days}&interval=${interval}`;
-    const response = await fetch(proxyUrl + targetUrl);
+
+    const endpoint = `/coins/${name.toLowerCase()}/market_chart?vs_currency=${currency.toLowerCase()}&days=${days}&interval=${interval}`;
+    const response = await fetch(
+      `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+    );
     const data = await response.json();
-    setCoinData((prev: ConverterInputData) => {
-      return { ...prev, coinChartData: data };
-    });
+
+    setCoinData((prev: ConverterInputData) => ({
+      ...prev,
+      coinChartData: data,
+    }));
   };
 
   useEffect(() => {

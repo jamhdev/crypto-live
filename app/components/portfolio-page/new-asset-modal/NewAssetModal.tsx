@@ -52,26 +52,27 @@ export default function NewAssetModal({
     const dateString = `${date?.getDate()}-${
       date?.getMonth() + 1
     }-${date?.getFullYear()}`;
-    const proxyUrl = "https://corsproxy.io/?";
-    const fetchUrl = `https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}/history?date=${dateString}`;
-    const response = await fetch(proxyUrl + fetchUrl);
+    const endpoint = `/coins/${name.toLowerCase()}/history?date=${dateString}`;
+
+    const response = await fetch(
+      `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+    );
     const json = await response.json();
+
     if (response.ok) {
-      setPersonalAssetData((prev: any) => {
-        return [
-          ...prev,
-          {
-            id: crypto.randomUUID(),
-            amount:
-              !purchasedAmountRef.current ||
-              Number(purchasedAmountRef.current.value) <= 0
-                ? 1
-                : Number(purchasedAmountRef.current.value),
-            dataDate: date,
-            coinData: json,
-          },
-        ];
-      });
+      setPersonalAssetData((prev: any) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          amount:
+            !purchasedAmountRef.current ||
+            Number(purchasedAmountRef.current.value) <= 0
+              ? 1
+              : Number(purchasedAmountRef.current.value),
+          dataDate: date,
+          coinData: json,
+        },
+      ]);
     } else {
       throw Error("Error setting asset. Please try again later.");
     }

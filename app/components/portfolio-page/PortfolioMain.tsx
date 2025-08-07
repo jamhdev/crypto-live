@@ -54,10 +54,11 @@ export default function PortfolioMain() {
   };
 
   const fetchNewCurrentCoinData = async (name: string) => {
-    const proxyUrl = "https://corsproxy.io/?";
-    const fetchUrl = `https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}`;
+    const endpoint = `/coins/${name.toLowerCase()}`;
     try {
-      const response = await fetch(proxyUrl + fetchUrl);
+      const response = await fetch(
+        `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+      );
       if (response.ok) {
         const json = await response.json();
         return json;

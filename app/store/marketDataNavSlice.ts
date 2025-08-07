@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { marketData } from "@/mock-api/mock-db";
 import { RootState } from "./store";
+
 export const getMarketData = createAsyncThunk(
   "getMarketData",
   async (_, thunkApi) => {
@@ -14,12 +15,14 @@ export const getMarketData = createAsyncThunk(
       if (process.env.NODE_ENV === "development") {
         return marketData;
       } else {
-        const proxyUrl = "https://corsproxy.io/?";
-        const targetUrl = `https://api.coingecko.com/api/v3/global`;
-        const response = await fetch(proxyUrl + targetUrl);
+        const endpoint = `/global`;
+        const response = await fetch(
+          `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+        );
         if (!response.ok) {
           throw new Error(`API request failed with status ${response.status}`);
         }
+
         const data = await response.json();
         return data.data;
       }

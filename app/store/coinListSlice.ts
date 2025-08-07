@@ -17,14 +17,15 @@ export const getCoinList = createAsyncThunk(
       }
     }
 
-    const proxyUrl = "https://corsproxy.io/?";
-    const targetUrl = "https://api.coingecko.com/api/v3/coins/list";
-    const response = await fetch(proxyUrl + targetUrl);
+    const endpoint = "/coins/list";
+    const response = await fetch(
+      `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+    );
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`);
     }
-    const data = await response.json();
 
+    const data = await response.json();
     localStorage.setItem(localStorageKey, JSON.stringify(data));
 
     return data;

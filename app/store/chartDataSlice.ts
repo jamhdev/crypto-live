@@ -31,9 +31,10 @@ export const getChartData = createAsyncThunk(
         durationSelector
       );
 
-      const proxyUrl = "https://corsproxy.io/?";
-      const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
-      const response = await fetch(proxyUrl + targetUrl);
+      const endpoint = `/coins/${name}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
+      const response = await fetch(
+        `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+      );
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
@@ -61,12 +62,15 @@ export const getChartDataOnDurationChange = createAsyncThunk(
         coinSelected,
         durationSelector
       );
-      const proxyUrl = "https://corsproxy.io/?";
-      const targetUrl = `https://api.coingecko.com/api/v3/coins/${name}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
-      const response = await fetch(proxyUrl + targetUrl);
+
+      const endpoint = `/coins/${name}/market_chart?vs_currency=${currency}&days=${days}&interval=${interval}`;
+      const response = await fetch(
+        `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+      );
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
+
       const data = await response.json();
       return { data, currency };
     } else {
@@ -91,12 +95,15 @@ export const getCoinData = createAsyncThunk(
 
     if (isFetchedYet || moreThan5MinutesSinceLastFetch || isNewCoinSelected) {
       const coinSelected = state.chartData.coinSelected;
-      const proxyUrl = "https://corsproxy.io/?";
-      const targetUrl = `https://api.coingecko.com/api/v3/coins/${coinSelected}?x_cg_demo_api_key=CG-feKTBnbFHDQBTa8xeXnnvWpW`;
-      const response = await fetch(proxyUrl + targetUrl);
+      const endpoint = `/coins/${coinSelected}`;
+
+      const response = await fetch(
+        `/api/cg?endpoint=${encodeURIComponent(endpoint)}`
+      );
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
+
       const data = await response.json();
       return data;
     } else {
