@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CryptoLive
 
-## Getting Started
+Welcome to **CryptoLive**, a modern, responsive web application for real-time cryptocurrency tracking and portfolio management. This app allows users to track cryptocurrency prices, view individual coin details, compare coins, and manage their personal cryptocurrency portfolio.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Real-Time Cryptocurrency Tracking:** Track live prices and market data for a wide range of cryptocurrencies.
+- **Coin Details:** View individual coin details, including current price, market cap, volume, and historical data.
+- **Coin Comparison:** Compare multiple cryptocurrencies side-by-side to analyze their performance.
+- **Personal Portfolio:** Manage and track your cryptocurrency holdings. Portfolio data persists across sessions using local storage.
+- **Responsive Design:** Optimized for a seamless experience on various devices, from desktops to smartphones.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **React:** For building the user interface and handling state management.
+- **Next.js:** For server-side rendering, routing, and fast page transitions.
+- **Tailwind CSS:** For responsive and customizable styling.
+- **Redux:** For state management to persist portfolio data.
+- **External API:** For fetching real-time cryptocurrency data (CoinGecko).
+- **Local Storage:** To persist user portfolio data across browser sessions.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## How to Use
 
-## Learn More
+1. **Track Cryptocurrencies:** Browse and track the current market prices of various cryptocurrencies, including Bitcoin, Ethereum, and more.
+2. **View Coin Details:** Explore detailed information about individual coins such as price, market cap, trading volume, and historical data.
+3. **Compare Coins:** Use the compare feature to analyze multiple coins side by side and make informed decisions.
+4. **Manage Portfolio:** Add cryptocurrencies to your portfolio and track your holdings across sessions. Your portfolio is stored in local storage, so it persists even if you reload the page.
+5. **Responsive Experience:** Enjoy a seamless browsing experience whether you're using a desktop or mobile device.
 
-To learn more about Next.js, take a look at the following resources:
+This app combines modern web technologies to provide a powerful, user-friendly, and efficient tool for cryptocurrency tracking and portfolio management.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
