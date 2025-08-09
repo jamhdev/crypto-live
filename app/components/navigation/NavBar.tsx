@@ -172,7 +172,7 @@ export default function NavBar() {
           >
             <NavLogoSvg />
             <div className="text-themeTextColorSecondary font-bold">
-              Logoipsm
+              CryptoLive
             </div>
           </div>
 
